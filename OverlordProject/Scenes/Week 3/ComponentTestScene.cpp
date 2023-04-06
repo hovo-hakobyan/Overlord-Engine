@@ -42,7 +42,7 @@ void ComponentTestScene::Initialize()
 
 	pSphere->GetTransform()->Translate(0, 10.f, 0);
 
-	 pRigidBody = pSphere->AddComponent(new RigidBodyComponent(false));
+	pRigidBody = pSphere->AddComponent(new RigidBodyComponent(false));
 	pRigidBody->AddCollider(PxSphereGeometry{ 1.f }, *pBouncyMaterial);
 	pRigidBody->SetCollisionGroup(CollisionGroup::Group1);
 

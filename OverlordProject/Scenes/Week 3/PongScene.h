@@ -17,7 +17,7 @@ protected:
 	void OnGUI() override;
 
 private:
-
+	GameObject* m_pLeftPaddle{};
 };
 
 
