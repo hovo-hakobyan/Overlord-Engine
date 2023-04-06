@@ -2,7 +2,6 @@
 #include "PongScene.h"
 #include "Prefabs/CubePrefab.h"
 #include "Prefabs/SpherePrefab.h"
-#include "Prefabs/TorusPrefab.h"
 
 PongScene::PongScene() :
 	GameScene(L"Pong Scene")
@@ -16,14 +15,15 @@ void PongScene::Initialize()
 	//Materials
 	auto pBouncyMaterial = physX.createMaterial(.5f, .5f, 1.f);
 
+
 	//Set a new fixed camera
+	auto prevCamera = m_SceneContext.pCamera;
 	const auto pFixedCamera = new FixedCamera();
 	pFixedCamera->GetTransform()->Translate(0.f, 0.f, -30.f);
 	AddChild(pFixedCamera);
 	SetActiveCamera(pFixedCamera->GetComponent<CameraComponent>());
 
 	//remove the old camera
-	auto prevCamera = m_SceneContext.pCamera;
 	RemoveChild(prevCamera->GetGameObject(),true);
 
 	//Init paddles
