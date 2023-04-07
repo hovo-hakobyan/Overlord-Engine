@@ -25,13 +25,18 @@ private:
 		SecondDown
 	};
 
-	float m_PaddleSpeed{ 10.f };
+	float m_PaddleSpeed{ 15.f };
+	float m_BallSpeed{ 20.f };
 
 	GameObject* m_pLeftPaddle{};
 	GameObject* m_pRightPaddle{};
+	GameObject* m_pBall{};
 
 	RigidBodyComponent* m_pLeftRigidBody{};
 	RigidBodyComponent* m_pRightRigidBody{};
+	RigidBodyComponent* m_pBallRigidBody{};
+
+	void Reset();
 };
 
 

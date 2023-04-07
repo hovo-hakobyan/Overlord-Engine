@@ -13,7 +13,7 @@ void PongScene::Initialize()
 	auto& physX = PxGetPhysics();
 
 	//Materials
-	auto pBouncyMaterial = physX.createMaterial(.5f, .5f, 1.f);
+	auto pBouncyMaterial = physX.createMaterial(.0f, .0f, 1.f);
 
 	//Set a new fixed camera
 	auto prevCamera = m_SceneContext.pCamera;
@@ -26,7 +26,7 @@ void PongScene::Initialize()
 	RemoveChild(prevCamera->GetGameObject(),true);
 
 	//Init paddles
-	const XMFLOAT3 paddleSize{ 1.f,6.f,2.5f };
+	const XMFLOAT3 paddleSize{ 0.3f,6.f,2.5f };
 	XMFLOAT3 paddleStart{ -20.f,0.f,0.f };
 	PxBoxGeometry paddleGeo{ paddleSize.x / 2.f,paddleSize.y / 2.f, paddleSize.z / 2.f };
 
@@ -45,6 +45,41 @@ void PongScene::Initialize()
 	m_pRightRigidBody = m_pRightPaddle->AddComponent(new RigidBodyComponent());
 	m_pRightRigidBody->AddCollider(paddleGeo, *pBouncyMaterial);
 	m_pRightRigidBody->SetKinematic(true);
+
+	//Ball init
+	float ballRadius = 0.5f;
+
+	//Ball
+	m_pBall = new SpherePrefab(ballRadius);
+	AddChild(m_pBall);
+	m_pBallRigidBody = m_pBall->AddComponent(new RigidBodyComponent());
+	m_pBallRigidBody->AddCollider(PxSphereGeometry{ ballRadius}, *pBouncyMaterial);
+	m_pBallRigidBody->SetConstraint(RigidBodyConstraint::AllRot | RigidBodyConstraint::TransZ, false);
+
+
+	Reset();
+
+	//Init borders
+	float borderLength = 50.f;
+	float borderWidth = .5f;
+	float borderDepth = 5.f;
+	float windowHeight = 13.6f;
+	
+	//Top collider
+	XMFLOAT3 borderSize{borderLength,borderWidth,borderDepth};
+	PxBoxGeometry borderGeo{ borderSize.x / 2.f,borderSize.y / 2.f, borderSize.z / 2.f };
+	auto pBorder = new CubePrefab(borderSize, XMFLOAT4{ Colors::Black });
+	AddChild(pBorder);
+	pBorder->GetTransform()->Translate(0.f, windowHeight, 0.f);
+	auto pBorderRigidBody = pBorder->AddComponent(new RigidBodyComponent(true));
+	pBorderRigidBody->AddCollider(borderGeo, *pBouncyMaterial);
+
+	//Bottom collider
+	pBorder = new CubePrefab(borderSize, XMFLOAT4{ Colors::Black });
+	AddChild(pBorder);
+	pBorder->GetTransform()->Translate(0.f, -windowHeight, 0.f);
+	pBorderRigidBody = pBorder->AddComponent(new RigidBodyComponent(true));
+	pBorderRigidBody->AddCollider(borderGeo, *pBouncyMaterial);
 
 	//Input
 	auto input = m_SceneContext.pInput;
@@ -93,4 +128,13 @@ void PongScene::Draw()
 
 void PongScene::OnGUI()
 {
+}
+
+void PongScene::Reset()
+{
+	m_pBall->GetTransform()->Translate(0.0f, 0.0f, 0.0f);
+
+	XMFLOAT3 force{ m_BallSpeed,20.f,0.f };
+
+	m_pBallRigidBody->AddForce(force, PxForceMode::eIMPULSE);
 }
