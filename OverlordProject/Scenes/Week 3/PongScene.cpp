@@ -64,22 +64,60 @@ void PongScene::Initialize()
 	float borderWidth = .5f;
 	float borderDepth = 5.f;
 	float windowHeight = 13.6f;
+	float windowWidth = 24.f;
 	
 	//Top collider
 	XMFLOAT3 borderSize{borderLength,borderWidth,borderDepth};
 	PxBoxGeometry borderGeo{ borderSize.x / 2.f,borderSize.y / 2.f, borderSize.z / 2.f };
-	auto pBorder = new CubePrefab(borderSize, XMFLOAT4{ Colors::Black });
+	auto pBorder = new CubePrefab(borderSize, XMFLOAT4{ Colors::Transparent });
 	AddChild(pBorder);
 	pBorder->GetTransform()->Translate(0.f, windowHeight, 0.f);
 	auto pBorderRigidBody = pBorder->AddComponent(new RigidBodyComponent(true));
 	pBorderRigidBody->AddCollider(borderGeo, *pBouncyMaterial);
 
 	//Bottom collider
-	pBorder = new CubePrefab(borderSize, XMFLOAT4{ Colors::Black });
+	pBorder = new CubePrefab(borderSize, XMFLOAT4{ Colors::Transparent });
 	AddChild(pBorder);
 	pBorder->GetTransform()->Translate(0.f, -windowHeight, 0.f);
 	pBorderRigidBody = pBorder->AddComponent(new RigidBodyComponent(true));
 	pBorderRigidBody->AddCollider(borderGeo, *pBouncyMaterial);
+
+	//Left collider
+	borderSize = XMFLOAT3{ borderWidth,borderLength,borderDepth };
+	borderGeo = PxBoxGeometry{ borderSize.x / 2.f,borderSize.y / 2.f, borderSize.z / 2.f };
+
+	auto pLeftCol = new CubePrefab(borderSize, XMFLOAT4{ Colors::Transparent });
+	AddChild(pLeftCol);
+	pLeftCol->GetTransform()->Translate(-windowWidth, 0.f, 0.f);
+	pBorderRigidBody = pLeftCol->AddComponent(new RigidBodyComponent(true));
+	pBorderRigidBody->AddCollider(borderGeo, *pBouncyMaterial,true);
+
+
+	pLeftCol->SetOnTriggerCallBack([=] (GameObject*, GameObject*, PxTriggerAction triggerAction )
+		{
+			if (triggerAction == PxTriggerAction::ENTER)
+			{
+				Reset();
+			}
+		}
+	);
+
+	//right collider
+	auto pRightCol = new CubePrefab(borderSize, XMFLOAT4{ Colors::Transparent });
+	AddChild(pRightCol);
+	pRightCol->GetTransform()->Translate(windowWidth, 0.f, 0.f);
+	pBorderRigidBody = pRightCol->AddComponent(new RigidBodyComponent(true));
+	pBorderRigidBody->AddCollider(borderGeo, *pBouncyMaterial, true);
+
+
+	pRightCol->SetOnTriggerCallBack([=](GameObject*, GameObject*, PxTriggerAction triggerAction)
+		{
+			if (triggerAction == PxTriggerAction::ENTER)
+			{
+				Reset();
+			}
+		}
+	);
 
 	//Input
 	auto input = m_SceneContext.pInput;
@@ -93,6 +131,14 @@ void PongScene::Initialize()
 
 void PongScene::Update()
 {
+	if (m_ShouldReset)
+	{
+		XMFLOAT3 force{ m_BallSpeed,20.f,0.f };
+
+		m_pBallRigidBody->AddForce(force, PxForceMode::eIMPULSE);
+		m_ShouldReset = false;
+	}
+
 	const auto input = m_SceneContext.pInput;
 	float deltaTime = m_SceneContext.pGameTime->GetElapsed();
 
@@ -133,8 +179,5 @@ void PongScene::OnGUI()
 void PongScene::Reset()
 {
 	m_pBall->GetTransform()->Translate(0.0f, 0.0f, 0.0f);
-
-	XMFLOAT3 force{ m_BallSpeed,20.f,0.f };
-
-	m_pBallRigidBody->AddForce(force, PxForceMode::eIMPULSE);
+	m_ShouldReset = true;
 }

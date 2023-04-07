@@ -28,6 +28,8 @@ private:
 	float m_PaddleSpeed{ 15.f };
 	float m_BallSpeed{ 20.f };
 
+	bool m_ShouldReset{ true };
+
 	GameObject* m_pLeftPaddle{};
 	GameObject* m_pRightPaddle{};
 	GameObject* m_pBall{};
