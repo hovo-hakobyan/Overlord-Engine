@@ -26,12 +26,12 @@ void PongScene::Initialize()
 	RemoveChild(prevCamera->GetGameObject(),true);
 
 	//Init paddles
-	const XMFLOAT3 paddleSize{ 0.3f,6.f,2.5f };
+
 	XMFLOAT3 paddleStart{ -20.f,0.f,0.f };
-	PxBoxGeometry paddleGeo{ paddleSize.x / 2.f,paddleSize.y / 2.f, paddleSize.z / 2.f };
+	PxBoxGeometry paddleGeo{ m_PaddleSize.x / 2.f,m_PaddleSize.y / 2.f, m_PaddleSize.z / 2.f };
 
 	//Left paddle
-	m_pLeftPaddle = new CubePrefab(paddleSize, XMFLOAT4{ Colors::Red });
+	m_pLeftPaddle = new CubePrefab(m_PaddleSize, XMFLOAT4{ Colors::Red });
 	AddChild(m_pLeftPaddle);
 	m_pLeftPaddle->GetTransform()->Translate(paddleStart);
 	m_pLeftRigidBody = m_pLeftPaddle->AddComponent(new RigidBodyComponent());
@@ -39,7 +39,7 @@ void PongScene::Initialize()
 	m_pLeftRigidBody->SetKinematic(true);
 
 	//Right paddle
-	m_pRightPaddle = new CubePrefab(paddleSize, XMFLOAT4{ Colors::Green });
+	m_pRightPaddle = new CubePrefab(m_PaddleSize, XMFLOAT4{ Colors::Green });
 	AddChild(m_pRightPaddle);
 	m_pRightPaddle->GetTransform()->Translate(-paddleStart.x, paddleStart.y, paddleStart.z);
 	m_pRightRigidBody = m_pRightPaddle->AddComponent(new RigidBodyComponent());
@@ -63,22 +63,21 @@ void PongScene::Initialize()
 	float borderLength = 50.f;
 	float borderWidth = .5f;
 	float borderDepth = 5.f;
-	float windowHeight = 13.6f;
-	float windowWidth = 24.f;
+
 	
 	//Top collider
 	XMFLOAT3 borderSize{borderLength,borderWidth,borderDepth};
 	PxBoxGeometry borderGeo{ borderSize.x / 2.f,borderSize.y / 2.f, borderSize.z / 2.f };
 	auto pBorder = new CubePrefab(borderSize, XMFLOAT4{ Colors::Transparent });
 	AddChild(pBorder);
-	pBorder->GetTransform()->Translate(0.f, windowHeight, 0.f);
+	pBorder->GetTransform()->Translate(0.f, m_MaxHeight, 0.f);
 	auto pBorderRigidBody = pBorder->AddComponent(new RigidBodyComponent(true));
 	pBorderRigidBody->AddCollider(borderGeo, *pBouncyMaterial);
 
 	//Bottom collider
 	pBorder = new CubePrefab(borderSize, XMFLOAT4{ Colors::Transparent });
 	AddChild(pBorder);
-	pBorder->GetTransform()->Translate(0.f, -windowHeight, 0.f);
+	pBorder->GetTransform()->Translate(0.f, -m_MaxHeight, 0.f);
 	pBorderRigidBody = pBorder->AddComponent(new RigidBodyComponent(true));
 	pBorderRigidBody->AddCollider(borderGeo, *pBouncyMaterial);
 
@@ -88,7 +87,7 @@ void PongScene::Initialize()
 
 	auto pLeftCol = new CubePrefab(borderSize, XMFLOAT4{ Colors::Transparent });
 	AddChild(pLeftCol);
-	pLeftCol->GetTransform()->Translate(-windowWidth, 0.f, 0.f);
+	pLeftCol->GetTransform()->Translate(-m_MaxWidth, 0.f, 0.f);
 	pBorderRigidBody = pLeftCol->AddComponent(new RigidBodyComponent(true));
 	pBorderRigidBody->AddCollider(borderGeo, *pBouncyMaterial,true);
 
@@ -105,7 +104,7 @@ void PongScene::Initialize()
 	//right collider
 	auto pRightCol = new CubePrefab(borderSize, XMFLOAT4{ Colors::Transparent });
 	AddChild(pRightCol);
-	pRightCol->GetTransform()->Translate(windowWidth, 0.f, 0.f);
+	pRightCol->GetTransform()->Translate(m_MaxWidth, 0.f, 0.f);
 	pBorderRigidBody = pRightCol->AddComponent(new RigidBodyComponent(true));
 	pBorderRigidBody->AddCollider(borderGeo, *pBouncyMaterial, true);
 
@@ -145,26 +144,44 @@ void PongScene::Update()
 	if (input->IsActionTriggered(InputIds::FirstUp))
 	{
 		XMFLOAT3 currentPos{ m_pLeftRigidBody->GetPosition() };
-		XMFLOAT3 destination{currentPos.x,currentPos.y + m_PaddleSpeed * deltaTime,currentPos.z};
-		m_pLeftRigidBody->GetTransform()->Translate(destination);
+
+		if (currentPos.y < m_MaxHeight - m_PaddleSize.y / 2.f)
+		{
+			XMFLOAT3 destination{ currentPos.x,currentPos.y + m_PaddleSpeed * deltaTime,currentPos.z };
+			m_pLeftRigidBody->GetTransform()->Translate(destination);
+		}
+
 	}
 	if (input->IsActionTriggered(InputIds::FirstDown))
 	{
 		XMFLOAT3 currentPos{ m_pLeftRigidBody->GetPosition() };
-		XMFLOAT3 destination{ currentPos.x,currentPos.y - m_PaddleSpeed * deltaTime,currentPos.z };
-		m_pLeftRigidBody->GetTransform()->Translate(destination);
+
+		if (currentPos.y > -m_MaxHeight + m_PaddleSize.y / 2.f)
+		{
+			XMFLOAT3 destination{ currentPos.x,currentPos.y - m_PaddleSpeed * deltaTime,currentPos.z };
+			m_pLeftRigidBody->GetTransform()->Translate(destination);
+		}
 	}
 	if (input->IsActionTriggered(InputIds::SecondDown))
 	{
 		XMFLOAT3 currentPos{ m_pRightRigidBody->GetPosition() };
-		XMFLOAT3 destination{ currentPos.x,currentPos.y - m_PaddleSpeed * deltaTime,currentPos.z };
-		m_pRightRigidBody->GetTransform()->Translate(destination);
+
+		if (currentPos.y > -m_MaxHeight + m_PaddleSize.y / 2.f)
+		{
+			XMFLOAT3 destination{ currentPos.x,currentPos.y - m_PaddleSpeed * deltaTime,currentPos.z };
+			m_pRightRigidBody->GetTransform()->Translate(destination);
+		}
+		
 	}
 	if (input->IsActionTriggered(InputIds::SecondUp))
 	{
 		XMFLOAT3 currentPos{ m_pRightRigidBody->GetPosition() };
-		XMFLOAT3 destination{ currentPos.x,currentPos.y + m_PaddleSpeed * deltaTime,currentPos.z };
-		m_pRightRigidBody->GetTransform()->Translate(destination);
+		if (currentPos.y <m_MaxHeight - m_PaddleSize.y / 2.f)
+		{
+			XMFLOAT3 destination{ currentPos.x,currentPos.y + m_PaddleSpeed * deltaTime,currentPos.z };
+			m_pRightRigidBody->GetTransform()->Translate(destination);
+		}
+
 	}
 }
 

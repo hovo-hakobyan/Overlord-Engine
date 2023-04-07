@@ -27,6 +27,9 @@ private:
 
 	float m_PaddleSpeed{ 15.f };
 	float m_BallSpeed{ 20.f };
+	float m_MaxHeight = 13.6f;
+	float m_MaxWidth = 24.f;
+	const XMFLOAT3 m_PaddleSize{ 0.3f,6.f,2.5f };
 
 	bool m_ShouldReset{ true };
 
