@@ -16,4 +16,5 @@ void DiffuseMaterial::SetDiffuseTexture(const std::wstring& assetFile)
 
 void DiffuseMaterial::InitializeEffectVariables()
 {
+
 }
