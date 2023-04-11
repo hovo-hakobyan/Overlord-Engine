@@ -27,7 +27,7 @@
 #include "Scenes/Week 4/ModelTestScene.h"
 #include "Scenes/Week 4/UberMaterialScene.h"
 #include "Scenes/Week 4/SpikyScene.h"
-//#include "Scenes/Week 4/SpriteTestScene.h"
+#include "Scenes/Week 4/SpriteTestScene.h"
 #endif
 
 #ifdef W5
@@ -96,16 +96,16 @@ void MainGame::Initialize()
 
 #ifdef W3
 	SceneManager::Get()->AddGameScene(new PongScene());
-	//SceneManager::Get()->AddGameScene(new MinionScene());
-	//SceneManager::Get()->AddGameScene(new ComponentTestScene());
-	//SceneManager::Get()->AddGameScene(new PongScene());
+	SceneManager::Get()->AddGameScene(new MinionScene());
+	SceneManager::Get()->AddGameScene(new ComponentTestScene());
+	SceneManager::Get()->AddGameScene(new PongScene());
 #endif
 
 #ifdef W4
-	//SceneManager::Get()->AddGameScene(new ModelTestScene());
-	//SceneManager::Get()->AddGameScene(new UberMaterialScene());
+	SceneManager::Get()->AddGameScene(new ModelTestScene());
+	SceneManager::Get()->AddGameScene(new UberMaterialScene());
 	SceneManager::Get()->AddGameScene(new SpikyScene());
-	//SceneManager::Get()->AddGameScene(new SpriteTestScene());
+	SceneManager::Get()->AddGameScene(new SpriteTestScene());
 #endif
 
 #ifdef W5

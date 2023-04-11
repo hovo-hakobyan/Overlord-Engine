@@ -55,18 +55,24 @@ VS_DATA MainVS(VS_DATA input)
 void CreateVertex(inout TriangleStream<GS_DATA> triStream, float3 pos, float4 col, float2 texCoord, float rotation, float2 rotCosSin, float2 offset, float2 pivotOffset)
 {
     if (rotation != 0)
-    {
-		//Step 3.
-		//Do rotation calculations
-		//Transform to origin
+    {	
+		float2 pivotPoint = (offset + pivotOffset);
+		//Move vertex back to origin
+		pos.xy -= pivotPoint;
+				
 		//Rotate
+		pos.x = pos.x * rotCosSin.x - pos.y * rotCosSin.y;
+		pos.y = pos.y * rotCosSin.x + pos.y * rotCosSin.y;
+		
 		//Retransform to initial position
+		pos.xy += offset;
     }
     else
     {
 		//Step 2.
 		//No rotation calculations (no need to do the rotation calculations if there is no rotation applied > redundant operations)
 		//Just apply the pivot offset
+		pos.xy -= pivotOffset;
     }
 
 	//Geometry Vertex Output
@@ -81,12 +87,15 @@ void CreateVertex(inout TriangleStream<GS_DATA> triStream, float3 pos, float4 co
 void MainGS(point VS_DATA vertex[1], inout TriangleStream<GS_DATA> triStream)
 {
 	//Given Data (Vertex Data)
-    float3 position = float3(0, 0, 0); //Extract the position data from the VS_DATA vertex struct
-    float2 offset = float2(0, 0); //Extract the offset data from the VS_DATA vertex struct (initial X and Y position)
-    float rotation = 0; //Extract the rotation data from the VS_DATA vertex struct
-    float2 pivot = float2(0, 0); //Extract the pivot data from the VS_DATA vertex struct
-    float2 scale = float2(0, 0); //Extract the scale data from the VS_DATA vertex struct
+    float3 position = vertex[0].TransformData.xyz;
+    float2 offset = vertex[0].TransformData.xy;
+    float rotation = vertex[0].TransformData.w;
+    float2 pivot = vertex[0].TransformData2.xy;
+    float2 scale = vertex[0].TransformData2.zw;
+	float4 color = vertex[0].Color;
     float2 texCoord = float2(0, 0); //Initial Texture Coordinate
+	float2 rotCosSin = rotation == 0 ? float2(1.0f,0.0f) : float2(cos(rotation),sin(rotation));
+	float2 pivotOffset = gTextureSize * scale * pivot;
 	
 	//...
 
@@ -98,16 +107,24 @@ void MainGS(point VS_DATA vertex[1], inout TriangleStream<GS_DATA> triStream)
 	// LB----------RB
 
 	//VERTEX 1 [LT]
-    CreateVertex(triStream, position, float4(1, 1, 1, 1), texCoord, rotation, float2(0, 0), offset, float2(0, 0)); //Change the color data too!
-
+    CreateVertex(triStream, position, color, texCoord, rotation, rotCosSin, offset, pivotOffset); //Change the color data too!
+	
 	//VERTEX 2 [RT]
-    CreateVertex(triStream, position, float4(1, 1, 1, 1), texCoord, rotation, float2(0, 0), offset, float2(0, 0)); //Change the color data too!
+	position.x += gTextureSize.x * scale.x;
+	texCoord.x = 1.0f;
+    CreateVertex(triStream, position, color, texCoord, rotation, rotCosSin, offset, pivotOffset); //Change the color data too!
 
 	//VERTEX 3 [LB]
-    CreateVertex(triStream, position, float4(1, 1, 1, 1), texCoord, rotation, float2(0, 0), offset, float2(0, 0)); //Change the color data too!
+	position.y +=  gTextureSize.y * scale.y;
+	position.x -= gTextureSize.x * scale.x;
+	texCoord = float2(0.0f,1.0f);
+	CreateVertex(triStream, position, color, texCoord, rotation, rotCosSin, offset, pivotOffset); //Change the color data too!
 
 	//VERTEX 4 [RB]
-    CreateVertex(triStream, position, float4(1, 1, 1, 1), texCoord, rotation, float2(0, 0), offset, float2(0, 0)); //Change the color data too!
+	position.x += gTextureSize.x * scale.x;
+	texCoord.x = 1.0f;
+    CreateVertex(triStream, position, color, texCoord, rotation, rotCosSin, offset, pivotOffset); //Change the color data too!
+
 }
 
 //PIXEL SHADER
@@ -118,13 +135,13 @@ float4 MainPS(GS_DATA input) : SV_TARGET
 }
 
 // Default Technique
-technique11 Default
+technique10 Default
 {
     pass p0
     {
         SetRasterizerState(BackCulling);
         SetBlendState(EnableBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-		//SetDepthStencilState(NoDepth,0);
+		SetDepthStencilState(NoDepth,0);
         SetVertexShader(CompileShader(vs_4_0, MainVS()));
         SetGeometryShader(CompileShader(gs_4_0, MainGS()));
         SetPixelShader(CompileShader(ps_4_0, MainPS()));
