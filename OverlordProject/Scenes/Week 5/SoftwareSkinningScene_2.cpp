@@ -36,7 +36,6 @@ void SoftwareSkinningScene_2::Initialize()
 void SoftwareSkinningScene_2::Update()
 {
 
-
 	if (m_ShoutAutoRotate)
 	{
 		float animationSpeed = 45.f;
