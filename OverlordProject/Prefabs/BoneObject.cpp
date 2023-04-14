@@ -9,9 +9,22 @@ BoneObject::BoneObject(BaseMaterial* pMaterial, float length):
 
 void BoneObject::AddBone(BoneObject* pBone)
 {
-	pBone->GetTransform()->Translate(m_Length, 0.f, 0.f);
+	pBone->GetTransform()->Translate(GetTransform()->GetWorldPosition().x+ m_Length, 0.f, 0.f);
 
 	AddChild(pBone);
+}
+
+void BoneObject::CalculateBindPose()
+{
+	XMFLOAT4X4 worldMat = GetTransform()->GetWorld();
+	XMMATRIX worldMatXM = XMLoadFloat4x4(&worldMat);
+	XMMATRIX worldMatXMInv = XMMatrixInverse(nullptr,worldMatXM);
+	XMStoreFloat4x4(&m_BindPose, worldMatXMInv);
+
+	for (BoneObject* pChildBone : GetChildren<BoneObject>() )
+	{
+		pChildBone->CalculateBindPose();
+	}
 }
 
 void BoneObject::Initialize(const SceneContext&)
@@ -26,4 +39,5 @@ void BoneObject::Initialize(const SceneContext&)
 	//Orient the bone along x-axis
 	pEmpty->GetTransform()->Rotate(0.f, -90.f, 0.f);
 	pEmpty->GetTransform()->Scale(m_Length);
+
 }
