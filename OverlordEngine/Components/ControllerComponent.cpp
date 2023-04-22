@@ -10,7 +10,17 @@ void ControllerComponent::Initialize(const SceneContext& /*sceneContext*/)
 {
 	if(!m_IsInitialized)
 	{
-		TODO_W7(L"Complete the ControllerComponent Intialization")
+		XMFLOAT3 pos = GetTransform()->GetWorldPosition();
+		m_ControllerDesc.position = PxExtendedVec3{ pos.x,pos.y,pos.z };
+		m_ControllerDesc.userData = static_cast<void*>(this);
+
+		PxControllerManager* pManager = m_pScene->GetPhysxProxy()->GetControllerManager();
+		PxController* c = pManager->createController(m_ControllerDesc);
+		ASSERT_NULL(c, L"PxController returned nullptr");
+		m_pController = c;
+		m_pController->getActor()->userData = static_cast<void*>(m_pController);
+		SetCollisionGroup(static_cast<CollisionGroup>(m_CollisionGroups.word0));
+		SetCollisionIgnoreGroup(static_cast<CollisionGroup>(m_CollisionGroups.word1));
 	}
 }
 
