@@ -54,32 +54,48 @@ VS_DATA MainVS(VS_DATA input)
 void CreateVertex(inout TriangleStream<GS_DATA> triStream, float3 pos, float4 col, float2 texCoord, int channel)
 {
 	//Create a new GS_DATA object
+	GS_DATA gsData = (GS_DATA)0;
+
 	//Fill in all the fields
+	gsData.Position = mul(float4(pos, 1.0f), gTransform);
+	gsData.Color = col;
+	gsData.TexCoord = texCoord;
+	gsData.Channel = channel;
 	//Append it to the TriangleStream
+	triStream.Append(gsData);
 }
 
 [maxvertexcount(4)]
 void MainGS(point VS_DATA vertex[1], inout TriangleStream<GS_DATA> triStream)
 {
-	//REMOVE THIS >
-	GS_DATA dummyData = (GS_DATA)0; //Just some dummy data
-	triStream.Append(dummyData); //The geometry shader needs to emit something, see what happens if it doesn't emit anything.
-	//< STOP REMOVING
-
 	//Create a Quad using the character information of the given vertex
 	//Note that the Vertex.CharSize is in screenspace, TextureCoordinates aren't ;) [Range 0 > 1]
+	float3 pos = vertex[0].Position;
+	float4 col = vertex[0].Color;
+	float2 texCoord = vertex[0].TexCoord;
+	int channel = vertex[0].Channel;
+	float2 size = vertex[0].CharSize;
 
 	//1. Vertex Left-Top
-	//CreateVertex(...);
+	CreateVertex(triStream, pos, col, texCoord, channel);
 
 	//2. Vertex Right-Top
-	//...
+	pos.x += size.x;
+	texCoord.x += size.x / gTextureSize.x;
+	CreateVertex(triStream, pos, col, texCoord, channel);
+
 
 	//3. Vertex Left-Bottom
-	//...
+	pos.x -= size.x;
+	pos.y += size.y;
+	texCoord.x -= size.x / gTextureSize.x;
+	texCoord.y += size.y / gTextureSize.y;
+	CreateVertex(triStream, pos, col, texCoord, channel);
 
 	//4. Vertex Right-Bottom
-	//...
+	pos.x += size.x;
+	texCoord.x += size.x / gTextureSize.x;
+	CreateVertex(triStream, pos, col, texCoord, channel);
 }
 
 //PIXEL SHADER
@@ -87,10 +103,13 @@ void MainGS(point VS_DATA vertex[1], inout TriangleStream<GS_DATA> triStream)
 float4 MainPS(GS_DATA input) : SV_TARGET{
 
 	//Sample the texture and return the correct channel [Vertex.Channel]
+	float4 color = gSpriteTexture.Sample(samPoint,input.TexCoord);
+	
 	//You can iterate a float4 just like an array, using the index operator
 	//Also, don't forget to colorize ;) [Vertex.Color]
+	color = color[input.Channel] * input.Color;
 
-	return input.Color; //TEMP
+	return color;
 }
 
 // Default Technique
