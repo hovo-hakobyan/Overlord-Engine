@@ -15,31 +15,54 @@ void Character::Initialize(const SceneContext& /*sceneContext*/)
 	//Camera
 	const auto pCamera = AddChild(new FixedCamera());
 	m_pCameraComponent = pCamera->GetComponent<CameraComponent>();
-	//m_pCameraComponent->SetActive(true); //Uncomment to make this camera the active camera
+	m_pCameraComponent->SetActive(true); //Uncomment to make this camera the active camera
 
 	pCamera->GetTransform()->Translate(0.f, m_CharacterDesc.controller.height * .5f, 0.f);
 }
 
-void Character::Update(const SceneContext& /*sceneContext*/)
+void Character::Update(const SceneContext& sceneContext)
 {
 	if (m_pCameraComponent->IsActive())
 	{
-		//constexpr float epsilon{ 0.01f }; //Constant that can be used to compare if a float is near zero
+		constexpr float epsilon{ 0.01f }; //Constant that can be used to compare if a float is near zero
 
 		//***************
 		//HANDLE INPUT
 
 		//## Input Gathering (move)
-		//XMFLOAT2 move; //Uncomment
+		XMFLOAT2 move = { 0.f,0.f };
 		//move.y should contain a 1 (Forward) or -1 (Backward) based on the active input (check corresponding actionId in m_CharacterDesc)
+		if (sceneContext.pInput->IsActionTriggered(m_CharacterDesc.actionId_MoveForward))
+		{
+			move.y = 1;
+		}
+		else if (sceneContext.pInput->IsActionTriggered(m_CharacterDesc.actionId_MoveBackward))
+		{
+			move.y = -1;
+		}
+		
 		//Optional: if move.y is near zero (abs(move.y) < epsilon), you could use the ThumbStickPosition.y for movement
 
 		//move.x should contain a 1 (Right) or -1 (Left) based on the active input (check corresponding actionId in m_CharacterDesc)
+		if (sceneContext.pInput->IsActionTriggered(m_CharacterDesc.actionId_MoveRight))
+		{
+			move.x = 1;
+		}
+		else if(sceneContext.pInput->IsActionTriggered(m_CharacterDesc.actionId_MoveLeft))
+		{
+			move.x = -1;
+		}
+
 		//Optional: if move.x is near zero (abs(move.x) < epsilon), you could use the Left ThumbStickPosition.x for movement
 
 		//## Input Gathering (look)
-		//XMFLOAT2 look{ 0.f, 0.f }; //Uncomment
+		XMFLOAT2 look{ 0.f, 0.f };
 		//Only if the Left Mouse Button is Down >
+		if (InputManager::IsMouseButton(InputState::down,1))
+		{
+			POINT mouseMovement = InputManager::GetMouseMovement();
+			look = { static_cast<float>(mouseMovement.x),static_cast<float>(mouseMovement.y) };
+		}
 			// Store the MouseMovement in the local 'look' variable (cast is required)
 		//Optional: in case look.x AND look.y are near zero, you could use the Right ThumbStickPosition for look
 
@@ -47,48 +70,82 @@ void Character::Update(const SceneContext& /*sceneContext*/)
 		//GATHERING TRANSFORM INFO
 
 		//Retrieve the TransformComponent
+		TransformComponent* pTransform = GetTransform();
 		//Retrieve the forward & right vector (as XMVECTOR) from the TransformComponent
+		XMVECTOR forward =XMLoadFloat3(&pTransform->GetForward());
+		XMVECTOR right = XMLoadFloat3(&pTransform->GetRight());
 
 		//***************
 		//CAMERA ROTATION
 
 		//Adjust the TotalYaw (m_TotalYaw) & TotalPitch (m_TotalPitch) based on the local 'look' variable
+		float deltaTime = sceneContext.pGameTime->GetElapsed();
+		m_TotalPitch += look.y * m_CharacterDesc.rotationSpeed * deltaTime;
+		m_TotalYaw += look.x * m_CharacterDesc.rotationSpeed * deltaTime;
 		//Make sure this calculated on a framerate independent way and uses CharacterDesc::rotationSpeed.
 		//Rotate this character based on the TotalPitch (X) and TotalYaw (Y)
-
+		pTransform->Rotate(0.f, m_TotalYaw, 0.f);
+		sceneContext.pCamera->GetTransform()->Rotate(m_TotalPitch, 0.f, 0.f);
 		//********
 		//MOVEMENT
 
 		//## Horizontal Velocity (Forward/Backward/Right/Left)
 		//Calculate the current move acceleration for this frame (m_MoveAcceleration * ElapsedTime)
+		float currentAcceleration = m_MoveAcceleration * deltaTime;
 		//If the character is moving (= input is pressed)
+		if (fabs(move.x) > epsilon || fabs(move.y) > epsilon)
+		{
 			//Calculate & Store the current direction (m_CurrentDirection) >> based on the forward/right vectors and the pressed input
+			XMVECTOR dir = forward * move.y + right * move.x;
+			XMStoreFloat3(&m_CurrentDirection, dir);
 			//Increase the current MoveSpeed with the current Acceleration (m_MoveSpeed)
+			m_MoveSpeed += currentAcceleration;
 			//Make sure the current MoveSpeed stays below the maximum MoveSpeed (CharacterDesc::maxMoveSpeed)
-		//Else (character is not moving, or stopped moving)
+			m_MoveSpeed = m_MoveSpeed >= m_CharacterDesc.maxMoveSpeed ? m_CharacterDesc.maxMoveSpeed : m_MoveSpeed;
+		}
+		else //character is not moving, or stopped moving)
+		{
 			//Decrease the current MoveSpeed with the current Acceleration (m_MoveSpeed)
+			m_MoveSpeed -= currentAcceleration;
 			//Make sure the current MoveSpeed doesn't get smaller than zero
+			m_MoveSpeed = m_MoveSpeed <= 0.f ? 0.f : m_MoveSpeed;
+		}
+			
 
 		//Now we can calculate the Horizontal Velocity which should be stored in m_TotalVelocity.xz
 		//Calculate the horizontal velocity (m_CurrentDirection * MoveSpeed)
 		//Set the x/z component of m_TotalVelocity (horizontal_velocity x/z)
 		//It's important that you don't overwrite the y component of m_TotalVelocity (contains the vertical velocity)
+		m_TotalVelocity.x = m_CurrentDirection.x * m_MoveSpeed;
+		m_TotalVelocity.z = m_CurrentDirection.z * m_MoveSpeed;
 
 		//## Vertical Movement (Jump/Fall)
 		//If the Controller Component is NOT grounded (= freefall)
+		//eCollision_Down means character has collision below
+		if (!(m_pControllerComponent->GetCollisionFlags() & PxControllerCollisionFlag::eCOLLISION_DOWN) )
+		{
 			//Decrease the y component of m_TotalVelocity with a fraction (ElapsedTime) of the Fall Acceleration (m_FallAcceleration)
 			//Make sure that the minimum speed stays above -CharacterDesc::maxFallSpeed (negative!)
-		//Else If the jump action is triggered
+			m_TotalVelocity.y -= m_FallAcceleration * deltaTime;
+			m_TotalVelocity.y = m_TotalVelocity.y < -m_CharacterDesc.maxFallSpeed ? -m_CharacterDesc.maxFallSpeed : m_TotalVelocity.y;
+		}
+		else if (sceneContext.pInput->IsActionTriggered(m_CharacterDesc.actionId_Jump))//Else If the jump action is triggered
+		{
 			//Set m_TotalVelocity.y equal to CharacterDesc::JumpSpeed
-		//Else (=Character is grounded, no input pressed)
-			//m_TotalVelocity.y is zero
-
+			m_TotalVelocity.y = m_CharacterDesc.JumpSpeed;
+		}
+		else//Else (=Character is grounded, no input pressed)
+		{
+			m_TotalVelocity.y = 0.f;
+		}
+			
 		//************
 		//DISPLACEMENT
 
 		//The displacement required to move the Character Controller (ControllerComponent::Move) can be calculated using our TotalVelocity (m/s)
 		//Calculate the displacement (m) for the current frame and move the ControllerComponent
-
+		XMFLOAT3 displacement = { m_TotalVelocity.x * deltaTime, m_TotalVelocity.y * deltaTime,m_TotalVelocity.z * deltaTime };
+		m_pControllerComponent->Move(displacement);
 		//The above is a simple implementation of Movement Dynamics, adjust the code to further improve the movement logic and behaviour.
 		//Also, it can be usefull to use a seperate RayCast to check if the character is grounded (more responsive)
 	}
