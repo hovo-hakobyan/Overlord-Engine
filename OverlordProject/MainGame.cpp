@@ -8,12 +8,14 @@
  //#define W6
  //#define W7
 //#define W8
- #define W9
+// #define W9
 // #define W10
 
 /*MILESTONE Content*/
  //#define MILESTONE_1
 // #define MILESTONE_2
+
+#define OWN_SCENES
 
 #pragma region Lab/Milestone Includes
 #ifdef W3
@@ -74,6 +76,10 @@
 #include "Scenes/Week 8/ShadowMappingScene.h"
 #include "Scenes/Week 9/ParticleScene.h"
 #include "Scenes/Week 10/PostProcessingScene.h"
+#endif
+
+#ifdef OWN_SCENES
+#include "Scenes/OwnTestScenes/GrassTestScene.h"
 #endif
 
 #pragma endregion
@@ -152,6 +158,10 @@ void MainGame::Initialize()
 	SceneManager::Get()->AddGameScene(new ShadowMappingScene());
 	SceneManager::Get()->AddGameScene(new ParticleScene());
 	SceneManager::Get()->AddGameScene(new PostProcessingScene());
+#endif
+
+#ifdef OWN_SCENES
+	SceneManager::Get()->AddGameScene(new GrassTestScene());
 #endif
 }
 

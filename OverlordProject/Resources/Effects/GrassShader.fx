@@ -5,9 +5,8 @@
 //GLOBAL VARIABLES
 //****************
 float4x4 gMatrixWorldViewProj : WORLDVIEWPROJECTION;
-float4 gColorDiffuse : COLOR = float4(1.0, 1.0, 1.0, 1.0);
-float4 gBottomColor : COLOR = float4(1.0f, 0.7529f, 0.7961f, 1.0f);
-float4 gTopColor : COLOR = float4(0.0f, 1.0f, 0.0f, 1.0f);
+float4 gBottomColor : COLOR = float4(0.095f, 0.493f, 0.157f, 1.0f);
+float4 gTopColor : COLOR = float4(0.674f, 0.875f, 0.396f, 1.0f);
 
 float gTwoPI = 6.28378530718f;
 float gPi = 3.14159265359f;
@@ -19,7 +18,7 @@ float gBendAmount
 	float UIMin = 0;
 	float UIMax = 1;
 	float UIStep = 0.01f;
-> = 0.0f;
+> = 0.6f;
 
 float gBladeWidth
 <
@@ -131,7 +130,7 @@ GS_DATA CreateVertex(float3 pos, float2 uv)
 
 
 [maxvertexcount(3)]
-void BladeGenerator(point VS_INPUT IN[1], inout TriangleStream<GS_DATA> triStream)
+void BladeGenerator(triangle VS_INPUT IN[3], inout TriangleStream<GS_DATA> triStream)
 {
     float3 pos = IN[0].vertex;
     float3 normal = normalize(IN[0].normal);
@@ -147,8 +146,7 @@ void BladeGenerator(point VS_INPUT IN[1], inout TriangleStream<GS_DATA> triStrea
     float3x3 bendRotationMat = AngleAxis3x3(rand(pos.zzx) * gBendAmount * gPi * 0.5, float3(-1, 0, 0));
 	
     float3x3 transformationMat = mul(mul(tangentToLocal, facingRotationMat), bendRotationMat);
-    GS_DATA o = (GS_DATA) 0;
-	
+
 	//add randomness to prevent the uniform look of the blades
 	// / 2 - 1 to map it to [-1,1] range
     float height = (rand(pos.zyx) * 2 - 1) * gBladeHeightRandom + gBladeHeight;
