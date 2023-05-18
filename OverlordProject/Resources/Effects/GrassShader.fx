@@ -1,15 +1,24 @@
 //DX10 - FLAT SHADER
 //Digital Arts & Entertainment
 
-
 //GLOBAL VARIABLES
 //****************
 float4x4 gMatrixWorldViewProj : WORLDVIEWPROJECTION;
 float4 gBottomColor : COLOR = float4(0.095f, 0.493f, 0.157f, 1.0f);
 float4 gTopColor : COLOR = float4(0.674f, 0.875f, 0.396f, 1.0f);
 
+
 float gTwoPI = 6.28378530718f;
 float gPi = 3.14159265359f;
+
+float gTime
+<
+	string UIName = "Time";
+	string UIWidget = "slider";
+	float UIMin = 0;
+	float UIMax = 5;
+	float UIStep = 0.1f;
+>;
 
 float gBendAmount
 <
@@ -55,6 +64,32 @@ float gBladeHeightRandom
 	float UIMax = 1.0f;
 	float UIStep = 0.05f;
 > = 0.45f;
+
+//Wind
+float gWindHarmony
+<
+	string UIName = "Wind Harmony";
+	string UIWidget = "slider";
+	float UIMin = 0.1f;
+	float UIMax = 1.0f;
+	float UIStep = 0.01f;
+> = 0.1f;
+
+float3 gWindDirection
+<
+	string UIName = "Wind Direction";
+	float UIMin = 0.1f;
+	float UIMax = 1.0f;
+	float UIStep = 0.01f;
+> = float3(0.2f, 1.0f, 0.2f);
+
+float gWindStrength
+<
+	string UIName = "Wind Strength";
+	float UIMin = 0.1f;
+	float UIMax = 1.5f;
+	float UIStep = 0.01f;
+> = 1.0f;
 
 //STATES
 //******
@@ -108,6 +143,13 @@ float rand(float3 seed)
     return frac(sin(dot(seed, float3(12.9898, 78.233, 45.5432))) * 43758.5453);
 }
 
+float2 sincos(float x)
+{
+    float s = sqrt(1 - x * x);
+    float c = x;
+    return float2(s, c);
+}
+
 //****************
 // VERTEX SHADER *
 //****************
@@ -119,6 +161,7 @@ VS_INPUT MainVS(VS_INPUT vsData)
 //***************
 // GEOMETRY SHADER *
 //***************
+
 
 GS_DATA CreateVertex(float3 pos, float2 uv)
 {
@@ -132,7 +175,6 @@ GS_DATA CreateVertex(float3 pos, float2 uv)
 [maxvertexcount(9)]
 void BladeGenerator(triangle VS_INPUT IN[3], inout TriangleStream<GS_DATA> triStream)
 {
-	
     for (int i = 0; i < 3; ++i)
     {
         float3 pos = IN[i].vertex;
@@ -147,8 +189,12 @@ void BladeGenerator(triangle VS_INPUT IN[3], inout TriangleStream<GS_DATA> triSt
         float3x3 facingRotationMat = AngleAxis3x3(rand(pos) * gTwoPI, float3(0, 0.0, 1));
 		//range is between 0-90 deg;
         float3x3 bendRotationMat = AngleAxis3x3(rand(pos.zzx) * gBendAmount * gPi * 0.5, float3(-1, 0, 0));
-	
-        float3x3 transformationMat = mul(mul(tangentToLocal, facingRotationMat), bendRotationMat);
+		
+        float windOffset = pos.x * gWindHarmony + gTime;
+        float windAngle = sin(windOffset) * gWindStrength;
+        float3x3 windRotation = AngleAxis3x3(windAngle, gWindDirection);
+		
+        float3x3 transformationMat = mul(mul(mul(tangentToLocal, windRotation), facingRotationMat), bendRotationMat);
 
 		//add randomness to prevent the uniform look of the blades
 		// / 2 - 1 to map it to [-1,1] range

@@ -33,6 +33,8 @@ void GrassTestScene::Update()
 	float deltaTime = m_SceneContext.pGameTime->GetElapsed();
 
 	m_pGround->GetTransform()->Rotate(0.f, degPerSec * deltaTime, 0.f);
+	
+	m_pGrassMat->UpdateTime(m_SceneContext.pGameTime->GetTotal());
 }
 
 void GrassTestScene::Draw()

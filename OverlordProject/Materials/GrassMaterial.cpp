@@ -7,7 +7,12 @@ GrassMaterial::GrassMaterial():
 
 }
 
+void GrassMaterial::UpdateTime(float gameTime)
+{
+	SetVariable_Scalar(L"gTime", gameTime);
+}
+
 void GrassMaterial::InitializeEffectVariables()
 {
-
+	
 }
