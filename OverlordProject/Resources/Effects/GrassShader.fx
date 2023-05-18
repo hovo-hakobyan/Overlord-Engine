@@ -194,8 +194,12 @@ void BladeGenerator(triangle VS_INPUT IN[3], inout TriangleStream<GS_DATA> triSt
         float windAngle = sin(windOffset) * gWindStrength;
         float3x3 windRotation = AngleAxis3x3(windAngle, gWindDirection);
 		
+		//This matrix includes wind sway, so we only apply this to the top vertex
         float3x3 transformationMat = mul(mul(mul(tangentToLocal, windRotation), facingRotationMat), bendRotationMat);
-
+		
+		//We don't want sway at the bottom vertices
+        float3x3 transformationMatFacing = mul(tangentToLocal, facingRotationMat);
+		
 		//add randomness to prevent the uniform look of the blades
 		// / 2 - 1 to map it to [-1,1] range
         float height = (rand(pos.zyx) * 2 - 1) * gBladeHeightRandom + gBladeHeight;
@@ -205,11 +209,11 @@ void BladeGenerator(triangle VS_INPUT IN[3], inout TriangleStream<GS_DATA> triSt
 		//mulitply by tangenttolocal matrix to align vertex with their input point's normal
 	
 		//Left bottom vertex
-        float3 vertexInPos = pos + mul(transformationMat, float3(width, 0.0f, 0.0f));
+        float3 vertexInPos = pos + mul(transformationMatFacing, float3(width, 0.0f, 0.0f));
         triStream.Append(CreateVertex(vertexInPos, float2(0, 0)));
 	
 		//Right bottom vertex
-        vertexInPos = pos + mul(transformationMat, float3(-width, 0.0f, 0.0f));
+        vertexInPos = pos + mul(transformationMatFacing, float3(-width, 0.0f, 0.0f));
         triStream.Append(CreateVertex(vertexInPos, float2(1, 0)));
 	
 		//Top vertex
