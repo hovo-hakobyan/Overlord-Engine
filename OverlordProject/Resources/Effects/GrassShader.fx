@@ -24,19 +24,19 @@ float gBladeWidth
 <
 	string UIName = "Blade Width";
 	string UIWidget = "slider";
-	float UIMin = 0.1f;
+	float UIMin = 0.001f;
 	float UIMax = 1.0f;
 	float UIStep = 0.05f;
-> = 0.05f;
+> = 0.001f;
 
 float gBladeHeight
 <
 	string UIName = "Blade Height";
 	string UIWidget = "slider";
-	float UIMin = 0.1f;
-	float UIMax = 1.0f;
-	float UIStep = 0.05f;
-> = 0.5f;
+	float UIMin = 1.0f;
+	float UIMax = 5.0f;
+	float UIStep = 0.1f;
+> = 2.0f;
 
 float gBladeWidthRandom
 <
@@ -45,7 +45,7 @@ float gBladeWidthRandom
 	float UIMin = 0.01f;
 	float UIMax = 1.0f;
 	float UIStep = 0.05f;
-> = 0.02f;
+> = 0.01f;
 
 float gBladeHeightRandom
 <
@@ -54,7 +54,7 @@ float gBladeHeightRandom
 	float UIMin = 0.1f;
 	float UIMax = 1.0f;
 	float UIStep = 0.05f;
-> = 0.3f;
+> = 0.45f;
 
 //STATES
 //******
@@ -129,43 +129,48 @@ GS_DATA CreateVertex(float3 pos, float2 uv)
 }
 
 
-[maxvertexcount(3)]
+[maxvertexcount(9)]
 void BladeGenerator(triangle VS_INPUT IN[3], inout TriangleStream<GS_DATA> triStream)
 {
-    float3 pos = IN[0].vertex;
-    float3 normal = normalize(IN[0].normal);
-    float3 tangent = normalize(IN[0].tangent);
-    float3 binormal = normalize(cross(normal, tangent));
 	
-    float3x3 tangentToLocal = float3x3(tangent, binormal, normal);
+    for (int i = 0; i < 3; ++i)
+    {
+        float3 pos = IN[i].vertex;
+        float3 normal = normalize(IN[i].normal);
+        float3 tangent = normalize(IN[i].tangent);
+        float3 binormal = normalize(cross(normal, tangent));
 	
-	//Matrix for random facing 
-	//Use pos for seed to keep it consistent between frames
-    float3x3 facingRotationMat = AngleAxis3x3(rand(pos) * gTwoPI, float3(0, 0.0, 1));
-	//range is between 0-90 deg;
-    float3x3 bendRotationMat = AngleAxis3x3(rand(pos.zzx) * gBendAmount * gPi * 0.5, float3(-1, 0, 0));
+        float3x3 tangentToLocal = float3x3(tangent, binormal, normal);
 	
-    float3x3 transformationMat = mul(mul(tangentToLocal, facingRotationMat), bendRotationMat);
+		//Matrix for random facing 
+		//Use pos for seed to keep it consistent between frames
+        float3x3 facingRotationMat = AngleAxis3x3(rand(pos) * gTwoPI, float3(0, 0.0, 1));
+		//range is between 0-90 deg;
+        float3x3 bendRotationMat = AngleAxis3x3(rand(pos.zzx) * gBendAmount * gPi * 0.5, float3(-1, 0, 0));
+	
+        float3x3 transformationMat = mul(mul(tangentToLocal, facingRotationMat), bendRotationMat);
 
-	//add randomness to prevent the uniform look of the blades
-	// / 2 - 1 to map it to [-1,1] range
-    float height = (rand(pos.zyx) * 2 - 1) * gBladeHeightRandom + gBladeHeight;
-    float width = (rand(pos.xzy) * 2 - 1) * gBladeWidthRandom + gBladeWidth;
+		//add randomness to prevent the uniform look of the blades
+		// / 2 - 1 to map it to [-1,1] range
+        float height = (rand(pos.zyx) * 2 - 1) * gBladeHeightRandom + gBladeHeight;
+        float width = (rand(pos.xzy) * 2 - 1) * gBladeWidthRandom + gBladeWidth;
 	
-	//pos prevents the triangles being rendered on top of each other
-	//mulitply by tangenttolocal matrix to align vertex with their input point's normal
+		//pos prevents the triangles being rendered on top of each other
+		//mulitply by tangenttolocal matrix to align vertex with their input point's normal
 	
-	//Left bottom vertex
-    float3 vertexInPos = pos + mul(transformationMat, float3(width, 0.0f, 0.0f));
-    triStream.Append(CreateVertex(vertexInPos, float2(0, 0)));
+		//Left bottom vertex
+        float3 vertexInPos = pos + mul(transformationMat, float3(width, 0.0f, 0.0f));
+        triStream.Append(CreateVertex(vertexInPos, float2(0, 0)));
 	
-	//Right bottom vertex
-    vertexInPos = pos + mul(transformationMat, float3(-width, 0.0f, 0.0f));
-    triStream.Append(CreateVertex(vertexInPos, float2(1, 0)));
+		//Right bottom vertex
+        vertexInPos = pos + mul(transformationMat, float3(-width, 0.0f, 0.0f));
+        triStream.Append(CreateVertex(vertexInPos, float2(1, 0)));
 	
-	//Top vertex
-    vertexInPos = pos + mul(transformationMat, float3(0.0f, 0.0f, -height));
-    triStream.Append(CreateVertex(vertexInPos, float2(0.5f, 1)));
+		//Top vertex
+        vertexInPos = pos + mul(transformationMat, float3(0.0f, 0.0f, -height));
+        triStream.Append(CreateVertex(vertexInPos, float2(0.5f, 1)));
+    }
+  
 }
 
 //***************
