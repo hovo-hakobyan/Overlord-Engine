@@ -18,7 +18,6 @@ protected:
 	void OnGUI() override;
 
 private:
-	GameObject* m_pGround{};
 	GrassMaterial* m_pGrassMat{};
 };
 

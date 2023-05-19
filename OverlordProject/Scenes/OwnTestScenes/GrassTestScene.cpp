@@ -14,25 +14,33 @@ void GrassTestScene::Initialize()
 	m_SceneContext.settings.drawGrid = false;
 
 
-	XMFLOAT3 size = { 2.0f,0.1f,2.0f };
-
-	m_pGround = new GameObject();
-	AddChild(m_pGround);
+	int nrCols = 10;
+	int nrRows = 10;
+	float size = 10.0f;
 
 	m_pGrassMat = MaterialManager::Get()->CreateMaterial<GrassMaterial>();
-	const auto pModel = new ModelComponent(L"Meshes/GroundPlane.ovm");
-	pModel->SetMaterial(m_pGrassMat);
+	
 
-	m_pGround->AddComponent(pModel);
-	m_pGround->GetTransform()->Scale(15.0f);
+	for (int row = 0; row < nrRows; row++)
+	{
+		for (int col = 0; col < nrCols; col++)
+		{
+			const auto pModel = new ModelComponent(L"Meshes/GroundPlane.ovm");
+			pModel->SetMaterial(m_pGrassMat);
+			auto pGround = new GameObject();
+			AddChild(pGround);
+			pGround->AddComponent(pModel);
+			pGround->GetTransform()->Scale(size);
+			pGround->GetTransform()->Translate(col * size, 0.0f, row * size);
+		}
+	}
+
+	
+
 }
 
 void GrassTestScene::Update()
 {
-	float degPerSec = 20.f;
-	float deltaTime = m_SceneContext.pGameTime->GetElapsed();
-
-	m_pGround->GetTransform()->Rotate(0.f, degPerSec * deltaTime, 0.f);
 	
 	m_pGrassMat->UpdateTime(m_SceneContext.pGameTime->GetTotal());
 }

@@ -1,15 +1,18 @@
 //DX10 - FLAT SHADER
 //Digital Arts & Entertainment
 
+//Implemented using this tutorial
+//https://roystan.net/articles/grass-shader/
+
 //GLOBAL VARIABLES
 //****************
 float4x4 gMatrixWorldViewProj : WORLDVIEWPROJECTION;
 float4 gBottomColor : COLOR = float4(0.095f, 0.493f, 0.157f, 1.0f);
 float4 gTopColor : COLOR = float4(0.674f, 0.875f, 0.396f, 1.0f);
 
-
 float gTwoPI = 6.28378530718f;
 float gPi = 3.14159265359f;
+int gBladeSegments = 3;
 
 float gTime
 <
@@ -65,6 +68,24 @@ float gBladeHeightRandom
 	float UIStep = 0.05f;
 > = 0.45f;
 
+float gBladeForward
+<
+	string UIName = "Blade Forward";
+	string UIWidget = "slider";
+	float UIMin = 0.1f;
+	float UIMax = 1.0f;
+	float UIStep = 0.01f;
+> = 0.38f;
+
+float gBladeCurve
+<
+	string UIName = "Blade Curve";
+	string UIWidget = "slider";
+	float UIMin = 1.f;
+	float UIMax = 4.0f;
+	float UIStep = 0.5f;
+> = 2.0f;
+
 //Wind
 float gWindHarmony
 <
@@ -89,7 +110,7 @@ float gWindStrength
 	float UIMin = 0.1f;
 	float UIMax = 1.5f;
 	float UIStep = 0.01f;
-> = 1.0f;
+> = 0.5f;
 
 //STATES
 //******
@@ -143,13 +164,6 @@ float rand(float3 seed)
     return frac(sin(dot(seed, float3(12.9898, 78.233, 45.5432))) * 43758.5453);
 }
 
-float2 sincos(float x)
-{
-    float s = sqrt(1 - x * x);
-    float c = x;
-    return float2(s, c);
-}
-
 //****************
 // VERTEX SHADER *
 //****************
@@ -171,8 +185,19 @@ GS_DATA CreateVertex(float3 pos, float2 uv)
     return o;
 }
 
+GS_DATA GenerateGrassVertex(float3 vertexPosition, float width, float height, float forward, float2 uv, float3x3 transformMat)
+{
+	//pos prevents the triangles being rendered on top of each other
+		//mulitply by tangenttolocal matrix to align vertex with their input point's normal
+    float3 tangentPoint = float3(width, forward, height);
+	
+    float3 localPosition = vertexPosition + mul(transformMat, tangentPoint);
+    return CreateVertex(localPosition, uv);
+}
 
-[maxvertexcount(9)]
+//3 blades
+//7 vertices each blade
+[maxvertexcount(21)]
 void BladeGenerator(triangle VS_INPUT IN[3], inout TriangleStream<GS_DATA> triStream)
 {
     for (int i = 0; i < 3; ++i)
@@ -204,21 +229,33 @@ void BladeGenerator(triangle VS_INPUT IN[3], inout TriangleStream<GS_DATA> triSt
 		// / 2 - 1 to map it to [-1,1] range
         float height = (rand(pos.zyx) * 2 - 1) * gBladeHeightRandom + gBladeHeight;
         float width = (rand(pos.xzy) * 2 - 1) * gBladeWidthRandom + gBladeWidth;
+		
+        float forward = rand(pos.xxz) * gBladeForward;
+		
+		//We want to add segments to each blade
+        for (int i = 0; i < gBladeSegments; i++)
+        {
+			//[0,1] how far are we along the blade
+            float t = i / (float) gBladeSegments;
+			
+			//As we go up, the blade width decreases and the height increases
+            float segmentHeight = height * t;
+            float segmentWidth = width * (1 - t);
+			//t to a power to shape the balde into a curve
+            float segmentForward = pow(t, gBladeCurve) * forward;
+			
+			//The bottom vertex doesn't need wind animations
+            float3x3 transformMatrix = i == 0 ? transformationMatFacing : transformationMat;
+			
+			//Left vertex
+            triStream.Append(GenerateGrassVertex(pos, segmentWidth, -segmentHeight, -segmentForward, float2(0, t), transformMatrix));
 	
-		//pos prevents the triangles being rendered on top of each other
-		//mulitply by tangenttolocal matrix to align vertex with their input point's normal
-	
-		//Left bottom vertex
-        float3 vertexInPos = pos + mul(transformationMatFacing, float3(width, 0.0f, 0.0f));
-        triStream.Append(CreateVertex(vertexInPos, float2(0, 0)));
-	
-		//Right bottom vertex
-        vertexInPos = pos + mul(transformationMatFacing, float3(-width, 0.0f, 0.0f));
-        triStream.Append(CreateVertex(vertexInPos, float2(1, 0)));
-	
+			//Right vertex
+            triStream.Append(GenerateGrassVertex(pos, -segmentWidth, -segmentHeight, -segmentForward, float2(1, t), transformMatrix));
+        }
+		
 		//Top vertex
-        vertexInPos = pos + mul(transformationMat, float3(0.0f, 0.0f, -height));
-        triStream.Append(CreateVertex(vertexInPos, float2(0.5f, 1)));
+        triStream.Append(GenerateGrassVertex(pos, 0, -height, -forward, float2(0.5f, 1), transformationMat));
     }
   
 }
