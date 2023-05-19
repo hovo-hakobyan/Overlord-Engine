@@ -34,6 +34,9 @@
     <ClCompile Include="Scenes\Week 9\ParticleScene.cpp" />
     <ClCompile Include="Scenes\OwnTestScenes\GrassTestScene.cpp" />
     <ClCompile Include="Materials\GrassMaterial.cpp" />
+    <ClCompile Include="Scenes\Week 10\PostProcessingScene.cpp" />
+    <ClCompile Include="Materials\Post\PostGrayscale.cpp" />
+    <ClCompile Include="Materials\Post\PostBlur.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h" />
@@ -68,5 +71,8 @@
     <ClInclude Include="Scenes\Week 9\ParticleScene.h" />
     <ClInclude Include="Scenes\OwnTestScenes\GrassTestScene.h" />
     <ClInclude Include="Materials\GrassMaterial.h" />
+    <ClInclude Include="Scenes\Week 10\PostProcessingScene.h" />
+    <ClInclude Include="Materials\Post\PostGrayscale.h" />
+    <ClInclude Include="Materials\Post\PostBlur.h" />
   </ItemGroup>
 </Project>
