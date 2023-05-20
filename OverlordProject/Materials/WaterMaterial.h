@@ -17,6 +17,9 @@ protected:
 
 private:
 	TextureData* m_pWaterTexture{};
+	TextureData* m_pFoamTexture{};
+	TextureData* m_pNormalTexture{};
+	TextureData* m_pNoiseTexture{};
 
 };
 

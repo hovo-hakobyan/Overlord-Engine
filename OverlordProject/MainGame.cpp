@@ -162,8 +162,8 @@ void MainGame::Initialize()
 #endif
 
 #ifdef OWN_SCENES
-	SceneManager::Get()->AddGameScene(new GrassTestScene());
 	SceneManager::Get()->AddGameScene(new WaterTestScene());
+	SceneManager::Get()->AddGameScene(new GrassTestScene());
 #endif
 }
 

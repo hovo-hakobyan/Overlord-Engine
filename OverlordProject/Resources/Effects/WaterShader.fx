@@ -5,11 +5,28 @@
 //GLOBAL VARIABLES
 //****************
 float4x4 gMatrixWorldViewProj : WORLDVIEWPROJECTION;
-float4 gColorDiffuse : COLOR = float4(1.0, 1.0, 1.0, 1.0);
 
 Texture2D gWaterTexture
 <
 	string UIName = "Water Texture";
+	string UIWidget = "Texture";
+>;
+
+Texture2D gFoamTexture
+<
+	string UIName = "Foam Texture";
+	string UIWidget = "Texture";
+>;
+
+Texture2D gNormalMapTexture
+<
+	string UIName = "Normal Map Texture";
+	string UIWidget = "Texture";
+>;
+
+Texture2D gNoiseTexture
+<
+	string UIName = "Noise Texture";
 	string UIWidget = "Texture";
 >;
 
@@ -26,15 +43,26 @@ float waveAmplitude
 <
 	string UIName = "Wave Amplitude";
 	string UIWidget = "slider";
+	float UIMin = 0;
+	float UIMax = 5;
+	float UIStep = 0.1f;
 > = 15.6f;
 
 float waveFrequency
 <
 	string UIName = "Wave Frequency";
 	string UIWidget = "slider";
+	float UIMin = 0;
+	float UIMax = 5;
+	float UIStep = 0.1f;
 > = 3.4f;
 
 float2 gWaterMovementSpeed = float2(0.005f, 0.005f);
+float4 gFoamColor = float4(0.0980f, 0.7294f, 0.8706f, 1.0); // Foam color
+float gFoamThreshold = 0.96; // Foam texture threshold
+float2 gNormalMapStrength = float2(1.0f, 0.4f); // Normal map strength
+float2 gNoiseScale = float2(1.9f, 0.3f); // Noise texture scale
+float gNoiseStrength = 0.0f; // Noise strength
 
 struct VS_DATA
 {
@@ -47,7 +75,6 @@ struct PS_DATA
     float4 position : SV_POSITION;
     float2 uv : TEXCOORD0;
 };
-
 
 //STATES
 //******
@@ -66,7 +93,7 @@ PS_DATA MainVS(VS_DATA input)
     output.uv = input.uv;
 	
 	// Offset the position based on the vertex index
-    float offset = sin(input.position.x * waveAmplitude + time) * waveFrequency;
+    float offset = sin(input.position.x * waveAmplitude + time) * waveFrequency; // Adjust the offset as needed
     float offset1 = sin(input.position.z * waveAmplitude + time) * waveFrequency;
     output.position.y += offset + offset1;
     return output;
@@ -81,6 +108,20 @@ float4 MainPS(PS_DATA input) : SV_Target
     uv += time * gWaterMovementSpeed.y;
     uv += time * gWaterMovementSpeed.x;
     float4 waterColor = gWaterTexture.SampleLevel(gWaterSampler, uv, 0);
+	
+	//Foam
+    float4 foam = gFoamTexture.Sample(gWaterSampler, uv);
+    waterColor = lerp(waterColor, gFoamColor, step(gFoamThreshold, foam.r));
+	
+	//Normal map 
+    float4 normalMap = gNormalMapTexture.Sample(gWaterSampler, uv);
+    float2 normalOffset = normalize(normalMap.xy - 0.5f) * gNormalMapStrength;
+    uv += normalOffset;
+	
+	//Noise
+    float4 noise = gNoiseTexture.Sample(gWaterSampler, uv * gNoiseScale);
+    waterColor.rgb += noise.rgb * gNoiseStrength;
+	
     return waterColor;
 }
 
