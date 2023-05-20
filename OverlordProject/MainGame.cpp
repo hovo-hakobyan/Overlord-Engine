@@ -9,13 +9,13 @@
  //#define W7
 //#define W8
  //#define W9
- #define W10
+ //#define W10
 
 /*MILESTONE Content*/
  //#define MILESTONE_1
  //#define MILESTONE_2
 
-//#define OWN_SCENES
+#define OWN_SCENES
 
 #pragma region Lab/Milestone Includes
 #ifdef W3
@@ -80,6 +80,7 @@
 
 #ifdef OWN_SCENES
 #include "Scenes/OwnTestScenes/GrassTestScene.h"
+#include "Scenes/OwnTestScenes/WaterTestScene.h"
 #endif
 
 #pragma endregion
@@ -162,6 +163,7 @@ void MainGame::Initialize()
 
 #ifdef OWN_SCENES
 	SceneManager::Get()->AddGameScene(new GrassTestScene());
+	SceneManager::Get()->AddGameScene(new WaterTestScene());
 #endif
 }
 

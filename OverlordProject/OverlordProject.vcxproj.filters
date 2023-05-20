@@ -37,6 +37,8 @@
     <ClCompile Include="Scenes\Week 10\PostProcessingScene.cpp" />
     <ClCompile Include="Materials\Post\PostGrayscale.cpp" />
     <ClCompile Include="Materials\Post\PostBlur.cpp" />
+    <ClCompile Include="Scenes\OwnTestScenes\WaterTestScene.cpp" />
+    <ClCompile Include="Materials\WaterMaterial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h" />
@@ -74,5 +76,7 @@
     <ClInclude Include="Scenes\Week 10\PostProcessingScene.h" />
     <ClInclude Include="Materials\Post\PostGrayscale.h" />
     <ClInclude Include="Materials\Post\PostBlur.h" />
+    <ClInclude Include="Scenes\OwnTestScenes\WaterTestScene.h" />
+    <ClInclude Include="Materials\WaterMaterial.h" />
   </ItemGroup>
 </Project>
