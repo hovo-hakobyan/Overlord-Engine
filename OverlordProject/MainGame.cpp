@@ -15,7 +15,9 @@
  //#define MILESTONE_1
  //#define MILESTONE_2
 
-#define OWN_SCENES
+//#define OWN_SCENES
+
+#define FINAL_SCENE
 
 #pragma region Lab/Milestone Includes
 #ifdef W3
@@ -82,6 +84,10 @@
 #include "Scenes/OwnTestScenes/GrassTestScene.h"
 #include "Scenes/OwnTestScenes/WaterTestScene.h"
 #endif
+
+#ifdef FINAL_SCENE
+#include "Scenes/Battle City 3D/BattleCityScene.h"
+#endif // FINAL_SCENE
 
 #pragma endregion
 
@@ -165,6 +171,11 @@ void MainGame::Initialize()
 	SceneManager::Get()->AddGameScene(new WaterTestScene());
 	SceneManager::Get()->AddGameScene(new GrassTestScene());
 #endif
+
+#ifdef FINAL_SCENE
+	SceneManager::Get()->AddGameScene(new BattleCityScene());
+#endif // FINAL_SCENE
+
 }
 
 LRESULT MainGame::WindowProcedureHook(HWND /*hWnd*/, UINT message, WPARAM wParam, LPARAM lParam)
