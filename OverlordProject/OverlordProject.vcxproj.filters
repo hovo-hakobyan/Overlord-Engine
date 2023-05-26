@@ -40,6 +40,7 @@
     <ClCompile Include="Scenes\OwnTestScenes\WaterTestScene.cpp" />
     <ClCompile Include="Materials\WaterMaterial.cpp" />
     <ClCompile Include="Scenes\Battle City 3D\BattleCityScene.cpp" />
+    <ClCompile Include="WorldBuilder\BMPLevelParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h" />
@@ -80,5 +81,27 @@
     <ClInclude Include="Scenes\OwnTestScenes\WaterTestScene.h" />
     <ClInclude Include="Materials\WaterMaterial.h" />
     <ClInclude Include="Scenes\Battle City 3D\BattleCityScene.h" />
+    <ClInclude Include="External\CImgLib\CImg.h" />
+    <ClInclude Include="WorldBuilder\BMPLevelParser.h" />
+    <ClInclude Include="External\CImgLib\plugins\add_fileformat.h" />
+    <ClInclude Include="External\CImgLib\plugins\bayer.h" />
+    <ClInclude Include="External\CImgLib\plugins\chlpca.h" />
+    <ClInclude Include="External\CImgLib\plugins\cvMat.h" />
+    <ClInclude Include="External\CImgLib\plugins\draw_gradient.h" />
+    <ClInclude Include="External\CImgLib\plugins\inpaint.h" />
+    <ClInclude Include="External\CImgLib\plugins\ipl.h" />
+    <ClInclude Include="External\CImgLib\plugins\ipl_alt.h" />
+    <ClInclude Include="External\CImgLib\plugins\jpeg_buffer.h" />
+    <ClInclude Include="External\CImgLib\plugins\loop_macros.h" />
+    <ClInclude Include="External\CImgLib\plugins\matlab.h" />
+    <ClInclude Include="External\CImgLib\plugins\nlmeans.h" />
+    <ClInclude Include="External\CImgLib\plugins\skeleton.h" />
+    <ClInclude Include="External\CImgLib\plugins\tiff_stream.h" />
+    <ClInclude Include="External\CImgLib\plugins\tinymatwriter.h" />
+    <ClInclude Include="External\CImgLib\plugins\vrml.h" />
+    <ClInclude Include="External\CImgLib\plugins\vtk.h" />
+    <ClInclude Include="External\CImgLib\plugins\jerror.h" />
+    <ClInclude Include="External\CImgLib\plugins\jpeglib.h" />
+    <ClInclude Include="External\CImg\CImg.h" />
   </ItemGroup>
 </Project>
