@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "LevelBuilder.h"
 #include "Materials/GrassMaterial.h"
-#include "Materials/DiffuseMaterial.h"
+#include "Materials/GroundMaterial.h"
 #include "Materials/WaterMaterial.h"
 
 
@@ -13,8 +13,7 @@ LevelBuilder::LevelBuilder(GameScene* gameScene,float tileSize):
 	m_LevelParser = new BMPLevelParser();
 	m_pGrassMaterial = MaterialManager::Get()->CreateMaterial<GrassMaterial>();
 	m_pWaterMaterial = MaterialManager::Get()->CreateMaterial<WaterMaterial>();
-	m_pDefaultMaterial = MaterialManager::Get()->CreateMaterial<DiffuseMaterial>();
-	m_pDefaultMaterial->SetDiffuseTexture(L"Textures/GroundBrick.jpg");
+	m_pGroundMaterial = MaterialManager::Get()->CreateMaterial<GroundMaterial>();
 }
 
 LevelBuilder::~LevelBuilder()
@@ -67,13 +66,13 @@ void LevelBuilder::BuildNextLevel()
 			switch (currentTileType)
 			{
 			case TileTypes::Ground:
-				pModel->SetMaterial(m_pDefaultMaterial);
+				pModel->SetMaterial(m_pGroundMaterial);
 				break;
 			case TileTypes::SolidWall:
-				pModel->SetMaterial(m_pDefaultMaterial);
+				pModel->SetMaterial(m_pGroundMaterial);
 				break;
 			case TileTypes::BrickWall:
-				pModel->SetMaterial(m_pDefaultMaterial);
+				pModel->SetMaterial(m_pGroundMaterial);
 				break;
 			case TileTypes::Grass:
 				pModel->SetMaterial(m_pGrassMaterial);

@@ -42,7 +42,6 @@ void GrassTestScene::Initialize()
 void GrassTestScene::Update()
 {
 	
-	m_pGrassMat->UpdateTime(m_SceneContext.pGameTime->GetTotal());
 }
 
 void GrassTestScene::Draw()

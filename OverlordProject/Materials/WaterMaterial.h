@@ -10,7 +10,7 @@ public:
 	WaterMaterial& operator=(const WaterMaterial& other) = delete;
 	WaterMaterial& operator=(WaterMaterial&& other) noexcept = delete;
 
-	void UpdateTime(float gameTime);
+	
 
 protected:
 	void InitializeEffectVariables() override;

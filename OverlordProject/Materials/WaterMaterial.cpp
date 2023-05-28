@@ -7,11 +7,6 @@ WaterMaterial::WaterMaterial():
 	m_pWaterTexture = ContentManager::Load<TextureData>(L"Textures/water/WaterTexture.jpg");
 }
 
-void WaterMaterial::UpdateTime(float gameTime)
-{
-	SetVariable_Scalar(L"time", gameTime);
-}
-
 void WaterMaterial::InitializeEffectVariables()
 {
 	SetVariable_Texture(L"gWaterTexture", m_pWaterTexture);

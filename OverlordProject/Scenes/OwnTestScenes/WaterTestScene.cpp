@@ -49,7 +49,7 @@ void WaterTestScene::Initialize()
 
 void WaterTestScene::Update()
 {
-	m_pWaterMat->UpdateTime(m_SceneContext.pGameTime->GetTotal());
+
 }
 
 void WaterTestScene::Draw()

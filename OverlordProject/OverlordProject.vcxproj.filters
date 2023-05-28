@@ -42,6 +42,7 @@
     <ClCompile Include="Scenes\Battle City 3D\BattleCityScene.cpp" />
     <ClCompile Include="WorldBuilder\BMPLevelParser.cpp" />
     <ClCompile Include="WorldBuilder\LevelBuilder.cpp" />
+    <ClCompile Include="Materials\GroundMaterial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h" />
@@ -105,5 +106,6 @@
     <ClInclude Include="External\CImgLib\plugins\jpeglib.h" />
     <ClInclude Include="External\CImg\CImg.h" />
     <ClInclude Include="WorldBuilder\LevelBuilder.h" />
+    <ClInclude Include="Materials\GroundMaterial.h" />
   </ItemGroup>
 </Project>

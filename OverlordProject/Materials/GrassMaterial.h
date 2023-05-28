@@ -10,7 +10,6 @@ public:
 	GrassMaterial& operator=(const GrassMaterial& other) = delete;
 	GrassMaterial& operator=(GrassMaterial&& other) noexcept = delete;
 
-	void UpdateTime(float gameTime);
 
 protected:
 	void InitializeEffectVariables() override;

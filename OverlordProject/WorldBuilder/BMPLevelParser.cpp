@@ -28,7 +28,7 @@ TileCollection BMPLevelParser::GetLevelData(const std::string& filePath, uint8_t
 		{
 			int idx = y * cols + x;
 			float xData = x * tileWidth + tileHeight / 2.0f;
-			float yData = y * tileHeight + tileHeight / 2.0f;
+			float yData =(rows * tileHeight) -  (y * tileHeight + tileHeight / 2.0f);
 			const unsigned char* color = img.data(static_cast<int>(xData), static_cast<int>(yData));
 
 			//we just use Red value to compare 
