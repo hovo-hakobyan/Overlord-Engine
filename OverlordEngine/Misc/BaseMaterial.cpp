@@ -6,7 +6,8 @@ std::map<std::string, BaseMaterial::eRootVariable> BaseMaterial::m_RootVariableS
 		{"world", eRootVariable::WORLD},
 		{"view", eRootVariable::VIEW},
 		{"viewinverse", eRootVariable::VIEW_INVERSE},
-		{"worldviewprojection", eRootVariable::WORLD_VIEW_PROJECTION}
+		{"worldviewprojection", eRootVariable::WORLD_VIEW_PROJECTION},
+		{"time",eRootVariable::TIME},
 };
 
 BaseMaterial::~BaseMaterial()
@@ -75,6 +76,12 @@ void BaseMaterial::UpdateEffectVariables(const SceneContext& sceneContext, const
 			auto& viewInv = sceneContext.pCamera->GetViewInverse();
 			m_RootVariableLUT[static_cast<UINT>(eRootVariable::VIEW_INVERSE)]->AsMatrix()->SetMatrix(&viewInv._11);
 		}
+
+		if (m_RootVariableLUT[static_cast<UINT>(eRootVariable::TIME)])
+		{
+			m_RootVariableLUT[static_cast<UINT>(eRootVariable::TIME)]->AsScalar()->SetFloat(sceneContext.pGameTime->GetTotal());
+		}
+
 
 		OnUpdateModelVariables(sceneContext, pModelComponent);
 	}

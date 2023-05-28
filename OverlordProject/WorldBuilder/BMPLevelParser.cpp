@@ -10,7 +10,7 @@ BMPLevelParser::BMPLevelParser()
 
 }
 
-const std::vector<TileTypes> BMPLevelParser::GetLevelData(const std::string& filePath, uint8_t rows, uint8_t cols)
+TileCollection BMPLevelParser::GetLevelData(const std::string& filePath, uint8_t rows, uint8_t cols)
 {
 	CImg<unsigned char> img(filePath.c_str());
 
@@ -20,7 +20,7 @@ const std::vector<TileTypes> BMPLevelParser::GetLevelData(const std::string& fil
 	const float tileWidth = static_cast<float>(imgWidth) / cols;
 	const float tileHeight = static_cast<float>(imgHeight) / rows;
 
-	std::vector<TileTypes> levelData(rows * cols);
+	TileCollection levelData(rows * cols);
 	Tiles tiles;
 	for (int y = 0; y < rows; ++y) 
 	{
@@ -34,26 +34,25 @@ const std::vector<TileTypes> BMPLevelParser::GetLevelData(const std::string& fil
 			//we just use Red value to compare 
 			const int r = static_cast<int>(color[0]);
 
-
 			if (r == tiles.ground)
 			{
-				levelData[idx] = TileTypes::Ground;
+				levelData[idx] = new TileTypes{ TileTypes::Ground };
 			}
 			else if (r == tiles.brickWall)
 			{
-				levelData[idx] = TileTypes::BrickWall;
+				levelData[idx] = new TileTypes{ TileTypes::BrickWall };
 			}
 			else if (r == tiles.solidWall)
 			{
-				levelData[idx] = TileTypes::SolidWall;
+				levelData[idx] = new TileTypes{ TileTypes::SolidWall };
 			}
 			else if (r == tiles.water)
 			{
-				levelData[idx] = TileTypes::Water;
+				levelData[idx] = new TileTypes{ TileTypes::Water };
 			}
 			else if (r == tiles.grass)
 			{
-				levelData[idx] = TileTypes::Grass;
+				levelData[idx] = new TileTypes{ TileTypes::Grass };
 			}
 		}
 	}

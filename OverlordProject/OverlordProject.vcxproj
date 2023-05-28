@@ -145,6 +145,7 @@
     <ClCompile Include="Materials\UberMaterial.cpp" />
     <ClCompile Include="Scenes\OwnTestScenes\WaterTestScene.cpp" />
     <ClCompile Include="Materials\WaterMaterial.cpp" />
+    <ClCompile Include="WorldBuilder\LevelBuilder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OverlordEngine\OverlordEngine.vcxproj">
@@ -212,6 +213,7 @@
     <ClInclude Include="Materials\UberMaterial.h" />
     <ClInclude Include="Scenes\OwnTestScenes\WaterTestScene.h" />
     <ClInclude Include="Materials\WaterMaterial.h" />
+    <ClInclude Include="WorldBuilder\LevelBuilder.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "BattleCityScene.h"
-#include "WorldBuilder/BMPLevelParser.h"
+#include "WorldBuilder/LevelBuilder.h"
 
 BattleCityScene::BattleCityScene():
 	GameScene(L"Battle City")
@@ -8,16 +8,23 @@ BattleCityScene::BattleCityScene():
 
 }
 
+BattleCityScene::~BattleCityScene()
+{
+	SafeDelete(m_pLevelBuilder);
+}
+
 void BattleCityScene::Initialize()
 {
-	auto pLevelParser = new BMPLevelParser();
-	auto levelData = pLevelParser->GetLevelData("Resources/Levels/Level1.bmp", 13, 13);
+	m_SceneContext.settings.drawGrid = false;
 
-	delete pLevelParser;
+	m_pLevelBuilder = new LevelBuilder{this,1};
+	m_pLevelBuilder->AddLevel("Resources/Levels/Level1.bmp", 13, 13);
+	m_pLevelBuilder->BuildNextLevel();
 }
 
 void BattleCityScene::Update()
 {
+
 }
 
 void BattleCityScene::Draw()
@@ -26,4 +33,5 @@ void BattleCityScene::Draw()
 
 void BattleCityScene::OnGUI()
 {
+
 }

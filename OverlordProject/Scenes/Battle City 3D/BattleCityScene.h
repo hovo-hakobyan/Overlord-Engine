@@ -5,7 +5,7 @@ class BattleCityScene final : public GameScene
 {
 public:
 	BattleCityScene();
-	~BattleCityScene() override = default;
+	~BattleCityScene() override;
 
 	BattleCityScene(const BattleCityScene& other) = delete;
 	BattleCityScene(BattleCityScene&& other) noexcept = delete;
@@ -19,6 +19,6 @@ protected:
 	void OnGUI() override;
 
 private:
-
+	class LevelBuilder* m_pLevelBuilder{};
 };
 

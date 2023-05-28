@@ -54,6 +54,7 @@ protected:
 		VIEW,
 		VIEW_INVERSE,
 		WORLD_VIEW_PROJECTION,
+		TIME,
 
 		COUNT //@End
 	};

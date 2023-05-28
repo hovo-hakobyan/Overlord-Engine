@@ -14,8 +14,8 @@ enum class TileTypes
 {
 	Ground,SolidWall,BrickWall,Grass,Water
 };
-
-class BMPLevelParser
+typedef std::vector<TileTypes*> TileCollection;
+class BMPLevelParser final
 {
 public:
 	BMPLevelParser();
@@ -25,7 +25,7 @@ public:
 	BMPLevelParser& operator=(const BMPLevelParser& other) = delete;
 	BMPLevelParser& operator=(BMPLevelParser&& other) noexcept = delete;
 
-	const std::vector<TileTypes> GetLevelData(const std::string& filePath, uint8_t rows, uint8_t cols);
+	TileCollection GetLevelData(const std::string& filePath, uint8_t rows, uint8_t cols);
 private:
 
 };

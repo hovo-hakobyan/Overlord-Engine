@@ -9,19 +9,12 @@
 float4x4 gMatrixWorldViewProj : WORLDVIEWPROJECTION;
 float4 gBottomColor : COLOR = float4(0.095f, 0.493f, 0.157f, 1.0f);
 float4 gTopColor : COLOR = float4(0.674f, 0.875f, 0.396f, 1.0f);
+float gTime : TIME;
 
 float gTwoPI = 6.28378530718f;
 float gPi = 3.14159265359f;
 int gBladeSegments = 3;
 
-float gTime
-<
-	string UIName = "Time";
-	string UIWidget = "slider";
-	float UIMin = 0;
-	float UIMax = 5;
-	float UIStep = 0.1f;
->;
 
 float gBendAmount
 <
@@ -271,7 +264,7 @@ float4 MainPS(GS_DATA input) : SV_TARGET
 
 //TECHNIQUES
 //**********
-technique10 DefaultTechnique
+technique11 DefaultTechnique
 {
     pass p0
     {
