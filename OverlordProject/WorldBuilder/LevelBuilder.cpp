@@ -61,33 +61,54 @@ void LevelBuilder::BuildNextLevel()
 			int idx = row * nrCols + col;
 			auto currentTileType = *m_Levels[m_CurrentLevelIdx][idx];
 
-			const auto pModel = new ModelComponent(L"Meshes/GroundPlane.ovm");
-			
-			switch (currentTileType)
+			//Create the ground, except if the tile is water tile
+			if (currentTileType != TileTypes::Water)
 			{
-			case TileTypes::Ground:
-				pModel->SetMaterial(m_pGroundMaterial);
-				break;
-			case TileTypes::SolidWall:
-				pModel->SetMaterial(m_pGroundMaterial);
-				break;
-			case TileTypes::BrickWall:
-				pModel->SetMaterial(m_pGroundMaterial);
-				break;
-			case TileTypes::Grass:
-				pModel->SetMaterial(m_pGrassMaterial);
-				break;
-			case TileTypes::Water:
-				pModel->SetMaterial(m_pWaterMaterial);
-				break;
-			}
+				const auto pGroundModel = new ModelComponent(L"Meshes/GroundPlane.ovm");
+				pGroundModel->SetMaterial(m_pGroundMaterial);
+				auto pGround = new GameObject();
+				m_pGameScene->AddChild(pGround);
+				pGround->AddComponent(pGroundModel);
+				pGround->GetTransform()->Scale(m_TileSize);
+				pGround->GetTransform()->Translate(currentPos);
 
-			auto pGround = new GameObject();
-			m_pGameScene->AddChild(pGround);
-			pGround->AddComponent(pModel);
-			pGround->GetTransform()->Scale(m_TileSize);
-			pGround->GetTransform()->Translate(currentPos);
+			}
 			
+
+			//Create the terrain type on top of the ground
+			//Or just water, since if this is a water tile, there is no ground
+			if (currentTileType != TileTypes::Ground)
+			{
+				ModelComponent* pTerrainModel{};
+
+				switch (currentTileType)
+				{
+				case TileTypes::SolidWall:
+					pTerrainModel = new ModelComponent(L"Meshes/GroundPlane.ovm");
+					pTerrainModel->SetMaterial(m_pGroundMaterial);
+					break;
+				case TileTypes::BrickWall:
+					pTerrainModel = new ModelComponent(L"Meshes/GroundPlane.ovm");
+					pTerrainModel->SetMaterial(m_pGroundMaterial);
+					break;
+				case TileTypes::Grass:
+					pTerrainModel = new ModelComponent(L"Meshes/GroundPlane.ovm");
+					pTerrainModel->SetMaterial(m_pGrassMaterial);
+					break;
+				case TileTypes::Water:
+					pTerrainModel = new ModelComponent(L"Meshes/GroundPlane.ovm");
+					pTerrainModel->SetMaterial(m_pWaterMaterial);
+					break;
+				}
+
+				auto pTerrainObj = new GameObject();
+				m_pGameScene->AddChild(pTerrainObj);
+				pTerrainObj->AddComponent(pTerrainModel);
+				pTerrainObj->GetTransform()->Scale(m_TileSize);
+				pTerrainObj->GetTransform()->Translate(currentPos);
+
+				
+			}
 			currentPos.x += m_TileSize;
 		}
 		currentPos.x = 0.0f;
