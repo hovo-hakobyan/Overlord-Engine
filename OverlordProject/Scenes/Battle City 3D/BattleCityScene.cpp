@@ -16,6 +16,17 @@ BattleCityScene::~BattleCityScene()
 void BattleCityScene::Initialize()
 {
 	m_SceneContext.settings.drawGrid = false;
+	
+	//Set a new fixed camera
+	auto prevCamera = m_SceneContext.pCamera;
+	const auto pFixedCamera = new FixedCamera();
+	pFixedCamera->GetTransform()->Translate(6.f, 17.f, 3.f);
+	pFixedCamera->GetTransform()->Rotate(80.0f, 0.0f, 0.0f);
+	AddChild(pFixedCamera);
+	SetActiveCamera(pFixedCamera->GetComponent<CameraComponent>());
+
+	//remove the old camera
+	RemoveChild(prevCamera->GetGameObject(), true);
 
 	m_pLevelBuilder = new LevelBuilder{this,1};
 	m_pLevelBuilder->AddLevel("Resources/Levels/Level1.bmp", 13, 13);
@@ -24,7 +35,7 @@ void BattleCityScene::Initialize()
 
 void BattleCityScene::Update()
 {
-
+	
 }
 
 void BattleCityScene::Draw()

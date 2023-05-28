@@ -41,7 +41,7 @@ float gBladeHeight
 	float UIMin = 1.0f;
 	float UIMax = 5.0f;
 	float UIStep = 0.1f;
-> = 2.0f;
+> = 1.2f;
 
 float gBladeWidthRandom
 <
