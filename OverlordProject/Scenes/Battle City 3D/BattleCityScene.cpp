@@ -16,6 +16,7 @@ BattleCityScene::~BattleCityScene()
 void BattleCityScene::Initialize()
 {
 	m_SceneContext.settings.drawGrid = false;
+	m_SceneContext.settings.enableOnGUI = true;
 	
 	//Set a new fixed camera
 	auto prevCamera = m_SceneContext.pCamera;
@@ -44,5 +45,5 @@ void BattleCityScene::Draw()
 
 void BattleCityScene::OnGUI()
 {
-
+	//m_pLevelBuilder->temp();
 }

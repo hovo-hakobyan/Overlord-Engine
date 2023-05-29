@@ -11,7 +11,7 @@ float3 m_LightDirection : DIRECTION
 <
 	string UIName = "LightDirection";
 	string Object = "TargetLight";
-> = float3(-.577f,-.577f,.577f);
+> = float3(-1.377f,-1.377f,1.477f);
 
 Texture2D gTextureNormal
 <

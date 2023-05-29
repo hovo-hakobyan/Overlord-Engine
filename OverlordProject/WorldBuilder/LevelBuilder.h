@@ -22,7 +22,7 @@ public:
 	void BuildNextLevel();
 
 
-
+	void temp();
 private:
 	std::vector<TileCollection> m_Levels;
 	std::vector<LevelInfo*> m_LevelInfo;

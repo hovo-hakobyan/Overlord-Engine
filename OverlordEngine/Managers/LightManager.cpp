@@ -3,7 +3,7 @@
 
 LightManager::LightManager()
 {
-	m_DirectionalLight.direction = { -.577f,-.577f,.577f , 1.0f };
+	m_DirectionalLight.direction = { -1.377f,-1.877f,1.477f , 1.0f };
 	m_DirectionalLight.color = { 0.9f, 0.9f, 0.8f, 1.0f };
 }
 
