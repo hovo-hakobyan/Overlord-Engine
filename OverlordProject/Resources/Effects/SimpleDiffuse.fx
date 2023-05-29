@@ -25,11 +25,6 @@ Texture2D gTextureDiffuse
 	string ResourceType = "Texture";
 >;
 
-Texture2D gTextureHeight
-<
-	string UIName = "Height Texture";
-	string UIWidget = "Texture";
->;
 
 SamplerState gDiffuseSampler
 {
@@ -115,7 +110,7 @@ float4 MainPS(PSInput input) : SV_TARGET
 
 //TECHNIQUES
 //**********
-technique10 DefaultTechnique {
+technique11 DefaultTechnique {
 	pass p0 {
 		SetRasterizerState(gRS_NoCulling);	
 		SetVertexShader(CompileShader(vs_4_0, MainVS()));

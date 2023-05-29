@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "LevelBuilder.h"
 #include "Materials/GrassMaterial.h"
-#include "Materials/GroundMaterial.h"
+#include "Materials/SimpleDiffuse.h"
+#include "Materials/DiffuseMaterial.h"
 #include "Materials/WaterMaterial.h"
 
 
@@ -13,7 +14,19 @@ LevelBuilder::LevelBuilder(GameScene* gameScene,float tileSize):
 	m_LevelParser = new BMPLevelParser();
 	m_pGrassMaterial = MaterialManager::Get()->CreateMaterial<GrassMaterial>();
 	m_pWaterMaterial = MaterialManager::Get()->CreateMaterial<WaterMaterial>();
-	m_pGroundMaterial = MaterialManager::Get()->CreateMaterial<GroundMaterial>();
+
+	m_pGroundMaterial = MaterialManager::Get()->CreateMaterial<SimpleDiffuseMaterial>();
+	m_pGroundMaterial->SetDiffuseTexture(L"Textures/ground/soilAlbedo.tif");
+	m_pGroundMaterial->SetNormalMapTexture(L"Textures/ground/soilNormal.tif");
+
+	m_pSolidWallMaterial = MaterialManager::Get()->CreateMaterial<SimpleDiffuseMaterial>();
+	m_pSolidWallMaterial->SetDiffuseTexture(L"Textures/wall/solidWallAlbedo.tif");
+	m_pSolidWallMaterial->SetNormalMapTexture(L"Textures/wall/solidWallNormal.tif");
+
+	m_pBrickWallMaterial = MaterialManager::Get()->CreateMaterial<SimpleDiffuseMaterial>();
+	m_pBrickWallMaterial->SetDiffuseTexture(L"Textures/wall/brickAlbedo.tif");
+	m_pBrickWallMaterial->SetNormalMapTexture(L"Textures/wall/brickNormal.tif");
+	
 }
 
 LevelBuilder::~LevelBuilder()
@@ -54,6 +67,7 @@ void LevelBuilder::BuildNextLevel()
 	const int nrCols = m_LevelInfo[m_CurrentLevelIdx]->cols;
 	const int nrRows = m_LevelInfo[m_CurrentLevelIdx]->rows;
 	XMFLOAT3 currentPos{};
+	auto pMat = PxGetPhysics().createMaterial(1.0f, 1.0f, 0.f);
 	for (int row = 0; row < nrRows; ++row)
 	{
 		for (int col = 0; col < nrCols; ++col)
@@ -81,33 +95,51 @@ void LevelBuilder::BuildNextLevel()
 			{
 				ModelComponent* pTerrainModel{};
 
+				auto pTerrainObj = new GameObject();
+				m_pGameScene->AddChild(pTerrainObj);
+				XMFLOAT3 wallSize{ m_TileSize,2.0f,m_TileSize };
+				PxBoxGeometry wallGeo{ wallSize.x / 2.f,wallSize.y / 2.f, wallSize.z / 2.f };
+				
 				switch (currentTileType)
 				{
 				case TileTypes::SolidWall:
-					pTerrainModel = new ModelComponent(L"Meshes/GroundPlane.ovm");
-					pTerrainModel->SetMaterial(m_pGroundMaterial);
+					{
+						pTerrainModel = new ModelComponent(L"Meshes/SolidWall.ovm");
+						pTerrainModel->SetMaterial(m_pSolidWallMaterial);
+						pTerrainObj->GetTransform()->Translate(currentPos.x,currentPos.y + wallSize.y / 2.0f,currentPos.z);
+						pTerrainObj->GetTransform()->Scale(m_TileSize, wallSize.y / 2.0f, m_TileSize);
+						auto pRigidBody = pTerrainObj->AddComponent(new RigidBodyComponent(true));
+						pRigidBody->AddCollider(wallGeo, *pMat);
+					}
 					break;
 				case TileTypes::BrickWall:
-					pTerrainModel = new ModelComponent(L"Meshes/GroundPlane.ovm");
-					pTerrainModel->SetMaterial(m_pGroundMaterial);
+					{
+						pTerrainModel = new ModelComponent(L"Meshes/SolidWall.ovm");
+						pTerrainModel->SetMaterial(m_pBrickWallMaterial);
+						pTerrainObj->GetTransform()->Translate(currentPos.x, currentPos.y + wallSize.y / 2.0f, currentPos.z);	
+						pTerrainObj->GetTransform()->Scale(m_TileSize, wallSize.y / 2.0f, m_TileSize);
+						auto pRigidBody = pTerrainObj->AddComponent(new RigidBodyComponent(true));
+						pRigidBody->AddCollider(wallGeo, *pMat);
+						
+					}			
 					break;
 				case TileTypes::Grass:
 					pTerrainModel = new ModelComponent(L"Meshes/GroundPlane.ovm");
 					pTerrainModel->SetMaterial(m_pGrassMaterial);
+					pTerrainObj->GetTransform()->Translate(currentPos.x, currentPos.y, currentPos.z);
+					pTerrainObj->GetTransform()->Scale(m_TileSize, 1.0f, m_TileSize);
 					break;
 				case TileTypes::Water:
 					pTerrainModel = new ModelComponent(L"Meshes/GroundPlane.ovm");
+					pTerrainObj->GetTransform()->Translate(currentPos.x, currentPos.y, currentPos.z);
+					pTerrainObj->GetTransform()->Scale(m_TileSize, 1.0f, m_TileSize);
 					pTerrainModel->SetMaterial(m_pWaterMaterial);
 					break;
 				}
-
-				auto pTerrainObj = new GameObject();
-				m_pGameScene->AddChild(pTerrainObj);
+			
 				pTerrainObj->AddComponent(pTerrainModel);
-				pTerrainObj->GetTransform()->Scale(m_TileSize);
-				pTerrainObj->GetTransform()->Translate(currentPos);
-
 				
+
 			}
 			currentPos.x += m_TileSize;
 		}

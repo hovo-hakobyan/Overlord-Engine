@@ -34,6 +34,9 @@ private:
 
 	class GrassMaterial* m_pGrassMaterial{};
 	class WaterMaterial* m_pWaterMaterial{};
-	class GroundMaterial* m_pGroundMaterial{};
+	class SimpleDiffuseMaterial* m_pGroundMaterial{};
+	class SimpleDiffuseMaterial* m_pSolidWallMaterial{};
+	class SimpleDiffuseMaterial* m_pBrickWallMaterial{};
+	
 };
 
