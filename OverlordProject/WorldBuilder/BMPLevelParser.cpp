@@ -54,6 +54,10 @@ TileCollection BMPLevelParser::GetLevelData(const std::string& filePath, uint8_t
 			{
 				levelData[idx] = new TileTypes{ TileTypes::Grass };
 			}
+			else if (r == tiles.borderWall)
+			{
+				levelData[idx] = new TileTypes{ TileTypes::BorderWall };
+			}
 		}
 	}
 

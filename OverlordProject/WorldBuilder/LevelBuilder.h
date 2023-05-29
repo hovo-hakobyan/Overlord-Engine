@@ -37,6 +37,7 @@ private:
 	class SimpleDiffuseMaterial* m_pGroundMaterial{};
 	class SimpleDiffuseMaterial* m_pSolidWallMaterial{};
 	class SimpleDiffuseMaterial* m_pBrickWallMaterial{};
+	class SimpleDiffuseMaterial* m_pBorderWallMaterial{};
 	
 };
 

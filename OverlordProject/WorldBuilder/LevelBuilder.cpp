@@ -4,6 +4,7 @@
 #include "Materials/SimpleDiffuse.h"
 #include "Materials/DiffuseMaterial.h"
 #include "Materials/WaterMaterial.h"
+#include "Materials/Shadow/DiffuseMaterial_Shadow.h"
 
 
 
@@ -27,6 +28,10 @@ LevelBuilder::LevelBuilder(GameScene* gameScene,float tileSize):
 	m_pBrickWallMaterial->SetDiffuseTexture(L"Textures/wall/brickAlbedo.tif");
 	m_pBrickWallMaterial->SetNormalMapTexture(L"Textures/wall/brickNormal.tif");
 	
+	m_pBorderWallMaterial = MaterialManager::Get()->CreateMaterial<SimpleDiffuseMaterial>();
+	m_pBorderWallMaterial->SetDiffuseTexture(L"Textures/wall/borderAlbedo.tif");
+	m_pBorderWallMaterial->SetNormalMapTexture(L"Textures/wall/borderNormal.tif");
+
 }
 
 LevelBuilder::~LevelBuilder()
@@ -75,8 +80,8 @@ void LevelBuilder::BuildNextLevel()
 			int idx = row * nrCols + col;
 			auto currentTileType = *m_Levels[m_CurrentLevelIdx][idx];
 
-			//Create the ground, except if the tile is water tile
-			if (currentTileType != TileTypes::Water)
+			//Create the ground, except if the tile is water tile, solid wall tile, or border tile
+			if (currentTileType != TileTypes::Water && currentTileType != TileTypes::SolidWall && currentTileType != TileTypes::BorderWall)
 			{
 				const auto pGroundModel = new ModelComponent(L"Meshes/GroundPlane.ovm");
 				pGroundModel->SetMaterial(m_pGroundMaterial);
@@ -97,7 +102,11 @@ void LevelBuilder::BuildNextLevel()
 
 				auto pTerrainObj = new GameObject();
 				m_pGameScene->AddChild(pTerrainObj);
-				XMFLOAT3 wallSize{ m_TileSize,2.0f,m_TileSize };
+
+				XMFLOAT3 wallSize{ m_TileSize,1.5f,m_TileSize };
+				XMFLOAT3 borderWallSize{ m_TileSize,2.5f,m_TileSize };
+
+				PxBoxGeometry borderWallGeo{ borderWallSize.x / 2.0f,borderWallSize.y / 2.0f ,borderWallSize.z / 2.0f };
 				PxBoxGeometry wallGeo{ wallSize.x / 2.f,wallSize.y / 2.f, wallSize.z / 2.f };
 				
 				switch (currentTileType)
@@ -122,6 +131,16 @@ void LevelBuilder::BuildNextLevel()
 						pRigidBody->AddCollider(wallGeo, *pMat);
 						
 					}			
+					break;
+					case TileTypes::BorderWall:
+					{
+						pTerrainModel = new ModelComponent(L"Meshes/SolidWall.ovm");
+						pTerrainModel->SetMaterial(m_pBorderWallMaterial);
+						pTerrainObj->GetTransform()->Translate(currentPos.x, currentPos.y + borderWallSize.y / 2.0f, currentPos.z);
+						pTerrainObj->GetTransform()->Scale(m_TileSize, borderWallSize.y / 2.0f, m_TileSize);
+						auto pRigidBody = pTerrainObj->AddComponent(new RigidBodyComponent(true));
+						pRigidBody->AddCollider(borderWallGeo, *pMat);
+					}
 					break;
 				case TileTypes::Grass:
 					pTerrainModel = new ModelComponent(L"Meshes/GroundPlane.ovm");
