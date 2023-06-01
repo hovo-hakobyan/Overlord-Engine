@@ -44,6 +44,7 @@
     <ClCompile Include="WorldBuilder\LevelBuilder.cpp" />
     <ClCompile Include="Materials\SimpleDiffuse.cpp" />
     <ClCompile Include="Prefabs\Hatch.cpp" />
+    <ClCompile Include="Prefabs\PlayerTank.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h" />
@@ -109,5 +110,6 @@
     <ClInclude Include="WorldBuilder\LevelBuilder.h" />
     <ClInclude Include="Materials\SimpleDiffuse.h" />
     <ClInclude Include="Prefabs\Hatch.h" />
+    <ClInclude Include="Prefabs\PlayerTank.h" />
   </ItemGroup>
 </Project>

@@ -93,6 +93,7 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Prefabs\PlayerTank.cpp" />
     <ClCompile Include="Prefabs\Hatch.cpp" />
     <ClCompile Include="Materials\SimpleDiffuse.cpp" />
     <ClCompile Include="WorldBuilder\BMPLevelParser.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="External\CImgLib\plugins\vrml.h" />
     <ClInclude Include="External\CImgLib\plugins\vtk.h" />
     <ClInclude Include="External\CImg\CImg.h" />
+    <ClInclude Include="Prefabs\PlayerTank.h" />
     <ClInclude Include="Prefabs\Hatch.h" />
     <ClInclude Include="Materials\SimpleDiffuse.h" />
     <ClInclude Include="WorldBuilder\BMPLevelParser.h" />

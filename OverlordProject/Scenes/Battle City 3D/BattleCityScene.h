@@ -20,5 +20,7 @@ protected:
 
 private:
 	class LevelBuilder* m_pLevelBuilder{};
+
+	void LockCamera();
 };
 
