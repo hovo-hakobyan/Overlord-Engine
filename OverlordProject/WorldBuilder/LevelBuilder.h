@@ -21,6 +21,8 @@ public:
 	void AddLevel(const std::string& filePath, uint8_t rows, uint8_t cols);
 	void BuildNextLevel();
 
+	std::vector<XMFLOAT3> GetEnemyStartLocations() const;
+	XMFLOAT3 GetPlayerStartLocation() const;
 
 	void temp();
 private:
@@ -38,6 +40,9 @@ private:
 	class SimpleDiffuseMaterial* m_pSolidWallMaterial{};
 	class SimpleDiffuseMaterial* m_pBrickWallMaterial{};
 	class SimpleDiffuseMaterial* m_pBorderWallMaterial{};
+
+	std::vector<XMFLOAT3> m_EnemySpawnLocations;
+	XMFLOAT3 m_PlayerSpawnLocation;
 	
 };
 
