@@ -58,6 +58,18 @@ TileCollection BMPLevelParser::GetLevelData(const std::string& filePath, uint8_t
 			{
 				levelData[idx] = new TileTypes{ TileTypes::BorderWall };
 			}
+			else if (r == tiles.base)
+			{
+				levelData[idx] = new TileTypes{ TileTypes::Base };
+			}
+			else if (r == tiles.playerSpawn)
+			{
+				levelData[idx] = new TileTypes{ TileTypes::PlayerSpawn };
+			}
+			else if (r == tiles.enemySpawn)
+			{
+				levelData[idx] = new TileTypes{ TileTypes::EnemySpawn };
+			}
 		}
 	}
 

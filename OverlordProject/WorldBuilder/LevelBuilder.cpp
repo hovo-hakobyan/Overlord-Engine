@@ -5,6 +5,7 @@
 #include "Materials/DiffuseMaterial.h"
 #include "Materials/WaterMaterial.h"
 #include "Materials/Shadow/DiffuseMaterial_Shadow.h"
+#include "Prefabs/Hatch.h"
 
 
 
@@ -80,8 +81,9 @@ void LevelBuilder::BuildNextLevel()
 			int idx = row * nrCols + col;
 			auto currentTileType = *m_Levels[m_CurrentLevelIdx][idx];
 
-			//Create the ground, except if the tile is water tile, solid wall tile, or border tile
-			if (currentTileType != TileTypes::Water && currentTileType != TileTypes::SolidWall && currentTileType != TileTypes::BorderWall)
+			//Create the ground, except if the tile is water tile, solid wall tile, border tile or spawn tile
+			if (currentTileType != TileTypes::Water && currentTileType != TileTypes::SolidWall && currentTileType != TileTypes::BorderWall
+				&& currentTileType != TileTypes::PlayerSpawn && currentTileType != TileTypes::EnemySpawn)
 			{
 				const auto pGroundModel = new ModelComponent(L"Meshes/GroundPlane.ovm");
 				pGroundModel->SetMaterial(m_pGroundMaterial);
@@ -95,13 +97,12 @@ void LevelBuilder::BuildNextLevel()
 			
 
 			//Create the terrain type on top of the ground
-			//Or just water, since if this is a water tile, there is no ground
+			
 			if (currentTileType != TileTypes::Ground)
 			{
 				ModelComponent* pTerrainModel{};
 
-				auto pTerrainObj = new GameObject();
-				m_pGameScene->AddChild(pTerrainObj);
+				
 
 				XMFLOAT3 wallSize{ m_TileSize,1.5f,m_TileSize };
 				XMFLOAT3 borderWallSize{ m_TileSize,2.5f,m_TileSize };
@@ -113,52 +114,83 @@ void LevelBuilder::BuildNextLevel()
 				{
 				case TileTypes::SolidWall:
 					{
+						auto pTerrainObj = new GameObject();
+						m_pGameScene->AddChild(pTerrainObj);
 						pTerrainModel = new ModelComponent(L"Meshes/SolidWall.ovm");
 						pTerrainModel->SetMaterial(m_pSolidWallMaterial);
 						pTerrainObj->GetTransform()->Translate(currentPos.x,currentPos.y + wallSize.y / 2.0f,currentPos.z);
 						pTerrainObj->GetTransform()->Scale(m_TileSize, wallSize.y / 2.0f, m_TileSize);
 						auto pRigidBody = pTerrainObj->AddComponent(new RigidBodyComponent(true));
 						pRigidBody->AddCollider(wallGeo, *pMat);
+						pTerrainObj->AddComponent(pTerrainModel);
 					}
 					break;
 				case TileTypes::BrickWall:
 					{
+						auto pTerrainObj = new GameObject();
+						m_pGameScene->AddChild(pTerrainObj);
 						pTerrainModel = new ModelComponent(L"Meshes/SolidWall.ovm");
 						pTerrainModel->SetMaterial(m_pBrickWallMaterial);
 						pTerrainObj->GetTransform()->Translate(currentPos.x, currentPos.y + wallSize.y / 2.0f, currentPos.z);	
 						pTerrainObj->GetTransform()->Scale(m_TileSize, wallSize.y / 2.0f, m_TileSize);
 						auto pRigidBody = pTerrainObj->AddComponent(new RigidBodyComponent(true));
 						pRigidBody->AddCollider(wallGeo, *pMat);
+						pTerrainObj->AddComponent(pTerrainModel);
 						
 					}			
 					break;
 					case TileTypes::BorderWall:
 					{
+						auto pTerrainObj = new GameObject();
+						m_pGameScene->AddChild(pTerrainObj);
 						pTerrainModel = new ModelComponent(L"Meshes/SolidWall.ovm");
 						pTerrainModel->SetMaterial(m_pBorderWallMaterial);
 						pTerrainObj->GetTransform()->Translate(currentPos.x, currentPos.y + borderWallSize.y / 2.0f, currentPos.z);
 						pTerrainObj->GetTransform()->Scale(m_TileSize, borderWallSize.y / 2.0f, m_TileSize);
 						auto pRigidBody = pTerrainObj->AddComponent(new RigidBodyComponent(true));
 						pRigidBody->AddCollider(borderWallGeo, *pMat);
+						pTerrainObj->AddComponent(pTerrainModel);
 					}
 					break;
 				case TileTypes::Grass:
-					pTerrainModel = new ModelComponent(L"Meshes/GroundPlane.ovm");
-					pTerrainModel->SetMaterial(m_pGrassMaterial);
-					pTerrainObj->GetTransform()->Translate(currentPos.x, currentPos.y, currentPos.z);
-					pTerrainObj->GetTransform()->Scale(m_TileSize, 1.0f, m_TileSize);
+					{
+						auto pTerrainObj = new GameObject();
+						m_pGameScene->AddChild(pTerrainObj);
+						pTerrainModel = new ModelComponent(L"Meshes/GroundPlane.ovm");
+						pTerrainModel->SetMaterial(m_pGrassMaterial);
+						pTerrainObj->GetTransform()->Translate(currentPos.x, currentPos.y, currentPos.z);
+						pTerrainObj->GetTransform()->Scale(m_TileSize, 1.0f, m_TileSize);
+						pTerrainObj->AddComponent(pTerrainModel);
+					}					
 					break;
 				case TileTypes::Water:
-					pTerrainModel = new ModelComponent(L"Meshes/GroundPlane.ovm");
-					pTerrainObj->GetTransform()->Translate(currentPos.x, currentPos.y, currentPos.z);
-					pTerrainObj->GetTransform()->Scale(m_TileSize, 1.0f, m_TileSize);
-					pTerrainModel->SetMaterial(m_pWaterMaterial);
+					{
+						auto pTerrainObj = new GameObject();
+						m_pGameScene->AddChild(pTerrainObj);
+						pTerrainModel = new ModelComponent(L"Meshes/GroundPlane.ovm");
+						pTerrainObj->GetTransform()->Translate(currentPos.x, currentPos.y, currentPos.z);
+						pTerrainObj->GetTransform()->Scale(m_TileSize, 1.0f, m_TileSize);
+						pTerrainModel->SetMaterial(m_pWaterMaterial);
+						pTerrainObj->AddComponent(pTerrainModel);
+					}
+						
 					break;
+				case TileTypes::EnemySpawn:
+					{
+						auto hatch = new Hatch(currentPos, XMFLOAT3{ 0.0f,0.0f,0.0f }, L"Meshes/Door.ovm");
+						hatch->CreateMaterial(L"Textures/door/doorDiffuseEnemy.png", L"Textures/door/doorNormal.png");
+						m_pGameScene->AddChild(hatch);
+					}
+					break;
+				case TileTypes::PlayerSpawn:
+				{
+					auto hatch = new Hatch(currentPos, XMFLOAT3{ 0.0f,0.0f,0.0f }, L"Meshes/Door.ovm");
+					hatch->CreateMaterial(L"Textures/door/doorDiffusePlayer.png", L"Textures/door/doorNormal.png");
+					m_pGameScene->AddChild(hatch);
+				}
+				break;
 				}
 			
-				pTerrainObj->AddComponent(pTerrainModel);
-				
-
 			}
 			currentPos.x += m_TileSize;
 		}

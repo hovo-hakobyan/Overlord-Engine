@@ -43,6 +43,7 @@
     <ClCompile Include="WorldBuilder\BMPLevelParser.cpp" />
     <ClCompile Include="WorldBuilder\LevelBuilder.cpp" />
     <ClCompile Include="Materials\SimpleDiffuse.cpp" />
+    <ClCompile Include="Prefabs\Hatch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h" />
@@ -107,5 +108,6 @@
     <ClInclude Include="External\CImg\CImg.h" />
     <ClInclude Include="WorldBuilder\LevelBuilder.h" />
     <ClInclude Include="Materials\SimpleDiffuse.h" />
+    <ClInclude Include="Prefabs\Hatch.h" />
   </ItemGroup>
 </Project>

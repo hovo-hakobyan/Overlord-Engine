@@ -32,6 +32,7 @@ void BattleCityScene::Initialize()
 	m_pLevelBuilder = new LevelBuilder{this,1};
 	m_pLevelBuilder->AddLevel("Resources/Levels/Level1.bmp", 15, 15);
 	m_pLevelBuilder->BuildNextLevel();
+
 }
 
 void BattleCityScene::Update()

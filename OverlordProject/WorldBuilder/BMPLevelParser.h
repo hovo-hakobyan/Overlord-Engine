@@ -9,11 +9,14 @@ struct Tiles
 	const int grass = 21;
 	const int water = 38;
 	const int borderWall = 64;
+	const int base = 87;
+	const int playerSpawn = 100;
+	const int enemySpawn = 150;
 };
 
 enum class TileTypes
 {
-	Ground,SolidWall,BrickWall,Grass,Water,BorderWall
+	Ground,SolidWall,BrickWall,Grass,Water,BorderWall,Base,PlayerSpawn,EnemySpawn
 };
 typedef std::vector<TileTypes*> TileCollection;
 class BMPLevelParser final
