@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "TransformComponent.h"
+#include "BoxControllerComponent.h"
 
 TransformComponent::TransformComponent():
 	m_Position{ 0, 0, 0 },
@@ -27,10 +28,30 @@ bool TransformComponent::CheckIfDirty()
 
 	//RigidBody (non static), Controller or Transform changed == update required
 	m_IsDirty = m_pRigidBodyComponent != nullptr && !m_pRigidBodyComponent->IsStatic();
-	m_IsDirty = m_IsDirty || m_pControllerComponent != nullptr;
+	if (m_IsBoxController)
+	{
+		m_IsDirty = m_IsDirty || m_pBoxControllerComponent != nullptr;
+	}
+	else
+	{
+		m_IsDirty = m_IsDirty || m_pControllerComponent != nullptr;
+	}
+
 	m_IsDirty = m_IsDirty || m_IsTransformChanged != TransformChanged::NONE;
 
 	return m_IsDirty;
+}
+
+void TransformComponent::SetControllerComponent(ControllerComponent* pController)
+{
+	m_pControllerComponent = pController;
+	m_IsBoxController = false;
+}
+
+void TransformComponent::SetBoxControllerComponent(BoxControllerComponent* pController)
+{
+	m_pBoxControllerComponent = pController;
+	m_IsBoxController = true;
 }
 
 void TransformComponent::Initialize(const SceneContext& )
@@ -48,21 +69,43 @@ void TransformComponent::Update(const SceneContext& )
 
 void TransformComponent::UpdateTransforms()
 {
-	ASSERT_IF(m_pRigidBodyComponent && m_pControllerComponent, L"Single GameObject can't have a RigidBodyComponent AND ControllerComponent at the same time (remove one)")
-
-	if (m_pRigidBodyComponent && m_IsInitialized)
+	if (m_IsBoxController)
 	{
-		if (isSet(m_IsTransformChanged, TransformChanged::TRANSLATION))m_pRigidBodyComponent->Translate(m_Position);
-		else m_Position = m_pRigidBodyComponent->GetPosition();
+		ASSERT_IF(m_pRigidBodyComponent && m_pBoxControllerComponent, L"Single GameObject can't have a RigidBodyComponent AND ControllerComponent at the same time (remove one)")
 
-		if (isSet(m_IsTransformChanged, TransformChanged::ROTATION)) m_pRigidBodyComponent->Rotate(m_Rotation);
-		else m_Rotation = m_pRigidBodyComponent->GetRotation();
+			if (m_pRigidBodyComponent && m_IsInitialized)
+			{
+				if (isSet(m_IsTransformChanged, TransformChanged::TRANSLATION))m_pRigidBodyComponent->Translate(m_Position);
+				else m_Position = m_pRigidBodyComponent->GetPosition();
+
+				if (isSet(m_IsTransformChanged, TransformChanged::ROTATION)) m_pRigidBodyComponent->Rotate(m_Rotation);
+				else m_Rotation = m_pRigidBodyComponent->GetRotation();
+			}
+			else if (m_pBoxControllerComponent && m_IsInitialized)
+			{
+				if (isSet(m_IsTransformChanged, TransformChanged::TRANSLATION)) m_pControllerComponent->Translate(m_Position);
+				else m_Position = m_pBoxControllerComponent->GetPosition();
+			}
 	}
-	else if(m_pControllerComponent && m_IsInitialized)
+	else
 	{
-		if (isSet(m_IsTransformChanged, TransformChanged::TRANSLATION)) m_pControllerComponent->Translate(m_Position);
-		else m_Position = m_pControllerComponent->GetPosition();
+		ASSERT_IF(m_pRigidBodyComponent && m_pControllerComponent, L"Single GameObject can't have a RigidBodyComponent AND ControllerComponent at the same time (remove one)")
+
+			if (m_pRigidBodyComponent && m_IsInitialized)
+			{
+				if (isSet(m_IsTransformChanged, TransformChanged::TRANSLATION))m_pRigidBodyComponent->Translate(m_Position);
+				else m_Position = m_pRigidBodyComponent->GetPosition();
+
+				if (isSet(m_IsTransformChanged, TransformChanged::ROTATION)) m_pRigidBodyComponent->Rotate(m_Rotation);
+				else m_Rotation = m_pRigidBodyComponent->GetRotation();
+			}
+			else if (m_pControllerComponent && m_IsInitialized)
+			{
+				if (isSet(m_IsTransformChanged, TransformChanged::TRANSLATION)) m_pControllerComponent->Translate(m_Position);
+				else m_Position = m_pControllerComponent->GetPosition();
+			}
 	}
+	
 
 	//Calculate World Matrix
 	//**********************

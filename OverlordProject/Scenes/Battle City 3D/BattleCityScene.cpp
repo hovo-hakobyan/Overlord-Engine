@@ -16,7 +16,7 @@ BattleCityScene::~BattleCityScene()
 
 void BattleCityScene::Initialize()
 {
-
+	const auto pDefaultMaterial = PxGetPhysics().createMaterial(0.5f, 0.5f, 0.5f);
 	GameSceneExt::CreatePhysXGroundPlane(*this);
 
 	m_SceneContext.settings.drawGrid = false;
@@ -28,7 +28,10 @@ void BattleCityScene::Initialize()
 	m_pLevelBuilder->AddLevel("Resources/Levels/Level1.bmp", 15, 15);
 	m_pLevelBuilder->BuildNextLevel();
 
-	auto pPlayerTank = new PlayerTank(m_pLevelBuilder->GetPlayerStartLocation(), XMFLOAT3{0.0f,180.0f,0.0f});
+	//Tank
+	TankDesc tankDesc{ pDefaultMaterial };
+
+	auto pPlayerTank = new PlayerTank(m_pLevelBuilder->GetPlayerStartLocation(), XMFLOAT3{0.0f,180.0f,0.0f}, tankDesc);
 	AddChild(pPlayerTank);
 
 }

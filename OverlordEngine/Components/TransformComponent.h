@@ -2,6 +2,7 @@
 
 class ControllerComponent;
 class RigidBodyComponent;
+class BoxControllerComponent;
 
 class TransformComponent : public BaseComponent
 {
@@ -41,7 +42,8 @@ public:
 
 	bool IsDirty() const { return m_IsDirty; }
 	void SetRigidBodyComponent(RigidBodyComponent* pRigidBody) { m_pRigidBodyComponent = pRigidBody; }
-	void SetControllerComponent(ControllerComponent* pController) { m_pControllerComponent = pController; }
+	void SetControllerComponent(ControllerComponent* pController);
+	void SetBoxControllerComponent(BoxControllerComponent* pController);
 
 protected:
 
@@ -65,4 +67,7 @@ private:
 
 	RigidBodyComponent* m_pRigidBodyComponent{};
 	ControllerComponent* m_pControllerComponent{};
+	BoxControllerComponent* m_pBoxControllerComponent{};
+
+	bool m_IsBoxController;
 };
