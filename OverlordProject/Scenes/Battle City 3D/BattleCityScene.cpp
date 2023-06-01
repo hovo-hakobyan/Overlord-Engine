@@ -22,7 +22,7 @@ void BattleCityScene::Initialize()
 	m_SceneContext.settings.drawGrid = false;
 	m_SceneContext.settings.enableOnGUI = true;
 	
-	LockCamera();
+	//LockCamera();
 
 	m_pLevelBuilder = new LevelBuilder{this,1};
 	m_pLevelBuilder->AddLevel("Resources/Levels/Level1.bmp", 15, 15);

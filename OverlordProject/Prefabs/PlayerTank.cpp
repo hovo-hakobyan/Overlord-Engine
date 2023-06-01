@@ -6,7 +6,8 @@
 PlayerTank::PlayerTank(const XMFLOAT3& startLoc, const XMFLOAT3& startRot,const TankDesc& tankDesc):
 	m_StartLocation{startLoc},
 	m_StartRotation{startRot},
-	m_TankDesc{tankDesc}
+	m_TankDesc{tankDesc},
+	m_MoveAcceleration{tankDesc.maxMoveSpeed / tankDesc.moveAccelerationTime}
 {
 	m_TankDesc.actionId_MoveForward = MoveForward;
 	m_TankDesc.actionId_MoveBackward = MoveBackward;
@@ -19,7 +20,6 @@ void PlayerTank::Initialize(const SceneContext& sceneContext)
 {
 	//Model
 	m_pModelComponent = new ModelComponent(L"Meshes/Tank2.ovm");
-	
 	AddComponent(m_pModelComponent);
 
 	//Material
@@ -36,23 +36,24 @@ void PlayerTank::Initialize(const SceneContext& sceneContext)
 	m_pAnimator = m_pModelComponent->GetAnimator();
 
 	//Input
-	auto inputAction = InputAction(MoveLeft, InputState::down, 'A');
+	auto inputAction = InputAction(MoveLeft, InputState::down, VK_LEFT);
 	sceneContext.pInput->AddInputAction(inputAction);
 
-	inputAction = InputAction(MoveRight, InputState::down, 'D');
+	inputAction = InputAction(MoveRight, InputState::down, VK_RIGHT);
 	sceneContext.pInput->AddInputAction(inputAction);
 
-	inputAction = InputAction(MoveForward, InputState::down, 'W');
+	inputAction = InputAction(MoveForward, InputState::down, VK_UP);
 	sceneContext.pInput->AddInputAction(inputAction);
 
-	inputAction = InputAction(MoveBackward, InputState::down, 'S');
+	inputAction = InputAction(MoveBackward, InputState::down, VK_DOWN);
 	sceneContext.pInput->AddInputAction(inputAction);
 
 	inputAction = InputAction(Shoot, InputState::pressed, VK_SPACE, -1, XINPUT_GAMEPAD_A);
 	sceneContext.pInput->AddInputAction(inputAction);
 
+	//Controller
 	m_pBoxControllerComponent = AddComponent(new BoxControllerComponent(m_TankDesc.controller));
-	m_pBoxControllerComponent->Translate(XMFLOAT3{m_StartLocation.x,m_StartLocation.y + m_TankDesc.controller.halfHeight ,m_StartLocation.z});
+	m_pBoxControllerComponent->Translate(XMFLOAT3{m_StartLocation.x,m_StartLocation.y + m_TankDesc.controller.halfHeight,m_StartLocation.z});
 
 }
 
@@ -79,17 +80,24 @@ void PlayerTank::Update(const SceneContext& sceneContext)
 		move.x = -1;
 	}
 
+	
+
+	float deltaTime = sceneContext.pGameTime->GetElapsed();
+	float currentAcceleration = m_MoveAcceleration * deltaTime;
 	//prioritize moving right
 	if (fabs(move.x) > epsilon)
 	{
-	
+		m_MoveSpeed += currentAcceleration;
+		m_MoveSpeed = m_MoveSpeed >= m_TankDesc.maxMoveSpeed ? m_TankDesc.maxMoveSpeed : m_MoveSpeed;
+		XMFLOAT3 displacement = { m_MoveSpeed * move.x * deltaTime,0.0f,0.0f };
+		m_pBoxControllerComponent->Move(displacement);
 	}
 	else if (fabs(move.y) > epsilon)
 	{
-		
+		m_MoveSpeed += currentAcceleration;
+		m_MoveSpeed = m_MoveSpeed >= m_TankDesc.maxMoveSpeed ? m_TankDesc.maxMoveSpeed : m_MoveSpeed;
+		XMFLOAT3 displacement = {0.0f,0.0f, m_MoveSpeed * move.y * deltaTime };
+		m_pBoxControllerComponent->Move(displacement);
 	}
-
-	
-	
 
 }

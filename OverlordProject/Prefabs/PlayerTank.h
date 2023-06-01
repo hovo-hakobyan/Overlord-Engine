@@ -4,8 +4,8 @@ struct TankDesc
 {
 	TankDesc(
 		PxMaterial* pMaterial,
-		float halfForwardExtent = .8f,
-		float halfSideExtent = .6f,
+		float halfForwardExtent = .6f,
+		float halfSideExtent = .4f,
 		float halfHeight = .25f)
 	{
 		controller.setToDefault();
@@ -15,9 +15,9 @@ struct TankDesc
 		controller.material = pMaterial;
 	}
 
-	float maxMoveSpeed{ 15.f };
+	float maxMoveSpeed{ 5.f };
 
-	float moveAccelerationTime{ .3f };
+	float moveAccelerationTime{ 0.3f };
 
 	PxBoxControllerDesc controller{};
 
@@ -52,7 +52,9 @@ private:
 	ModelAnimator* m_pAnimator{};
 	class DiffuseMaterial_Skinned* m_pMaterial{};
 
-	float m_Speed{3};
+	float m_MoveSpeed{};
+	float m_MoveAcceleration{};
+
 	enum InputIds
 	{
 		MoveLeft,
