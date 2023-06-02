@@ -33,7 +33,7 @@ struct TankDesc
 class PlayerTank : public GameObject
 {
 public:
-	PlayerTank(const XMFLOAT3& startLoc, const XMFLOAT3& startRot,const TankDesc& tankDesc);
+	PlayerTank(const XMFLOAT3& startLoc, const XMFLOAT3& startRot,const TankDesc& tankDesc, GameScene* gameScene);
 	~PlayerTank() override = default;
 
 	PlayerTank(const PlayerTank& other) = delete;
@@ -67,6 +67,10 @@ private:
 	RigidBodyComponent* m_pRigidBody{};
 	class BoxControllerComponent* m_pBoxControllerComponent{};
 	TankDesc m_TankDesc;
+	GameScene* m_pGameScene;
+
+	float m_MaxShootCooldown{ 2.0f };
+	float m_CurrentShootCooldown{ 2.0f };
 
 };
 

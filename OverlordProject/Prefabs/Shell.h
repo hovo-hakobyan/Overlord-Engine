@@ -2,7 +2,7 @@
 class Shell final : public GameObject
 {
 public:
-	Shell(const XMFLOAT3& loc, const XMFLOAT3& rot,const XMFLOAT3& dir, GameObject* parent);
+	Shell(const XMFLOAT3& shellLoc, const XMFLOAT3& rot,const XMFLOAT3& dir, GameScene* gameScene);
 	~Shell() override = default;
 	Shell(const Shell& other) = delete;
 	Shell(Shell&& other) = delete;
@@ -15,10 +15,15 @@ private:
 	XMFLOAT3 m_Location;
 	XMFLOAT3 m_Rotation;
 	XMFLOAT3 m_Direction;
-	GameObject* m_pParent;
+	GameScene* m_pParent;
 	class DiffuseMaterial_Shadow* m_pMat{};
 
 	float m_Lifetime{ 5.0f };
 	float m_CurrentLifeTime{};
+
+	RigidBodyComponent* m_pRigidBody{};
+	GameObject* m_pOther{};
+	float m_Speed{ 50.0f };
+	bool m_IsEnabled = true;
 };
 

@@ -31,7 +31,7 @@ void BattleCityScene::Initialize()
 
 	//Tank
 	TankDesc tankDesc{ pDefaultMaterial };
-	auto pPlayerTank = new PlayerTank(m_pLevelBuilder->GetPlayerStartLocation(), XMFLOAT3{0.0f,180.0f,0.0f}, tankDesc);
+	auto pPlayerTank = new PlayerTank(m_pLevelBuilder->GetPlayerStartLocation(), XMFLOAT3{0.0f,180.0f,0.0f}, tankDesc,this);
 	AddChild(pPlayerTank);
 
 }

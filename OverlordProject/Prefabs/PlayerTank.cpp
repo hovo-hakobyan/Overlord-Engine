@@ -5,11 +5,12 @@
 #include "Prefabs/Shell.h"
 #include "Components/MuzzleComponent.h"
 
-PlayerTank::PlayerTank(const XMFLOAT3& startLoc, const XMFLOAT3& startRot,const TankDesc& tankDesc):
+PlayerTank::PlayerTank(const XMFLOAT3& startLoc, const XMFLOAT3& startRot,const TankDesc& tankDesc, GameScene* gameScene):
 	m_StartLocation{startLoc},
 	m_StartRotation{startRot},
 	m_TankDesc{tankDesc},
-	m_MoveAcceleration{tankDesc.maxMoveSpeed / tankDesc.moveAccelerationTime}
+	m_MoveAcceleration{tankDesc.maxMoveSpeed / tankDesc.moveAccelerationTime},
+	m_pGameScene{gameScene}
 {
 	m_TankDesc.actionId_MoveForward = MoveForward;
 	m_TankDesc.actionId_MoveBackward = MoveBackward;
@@ -33,7 +34,7 @@ void PlayerTank::Initialize(const SceneContext& sceneContext)
 	XMFLOAT3 tankSize{ 0.2f,0.2f,0.2f};
 	pTransform->Rotate(m_StartRotation);
 	pTransform->Scale(tankSize);
-
+	pTransform->Translate(m_StartLocation);
 
 	m_pAnimator = m_pModelComponent->GetAnimator();
 
@@ -57,6 +58,7 @@ void PlayerTank::Initialize(const SceneContext& sceneContext)
 	m_pBoxControllerComponent = AddComponent(new BoxControllerComponent(m_TankDesc.controller));
 	m_pBoxControllerComponent->Translate(XMFLOAT3{m_StartLocation.x,m_StartLocation.y + m_TankDesc.controller.halfHeight ,m_StartLocation.z});
 
+	SetTag(L"Destructible");
 }
 
 void PlayerTank::Update(const SceneContext& sceneContext)
@@ -113,18 +115,19 @@ void PlayerTank::Update(const SceneContext& sceneContext)
 		m_pBoxControllerComponent->Move(displacement);
 	}
 	
+	m_CurrentShootCooldown += deltaTime;
 	//Shooting
-	if (sceneContext.pInput->IsActionTriggered(Shoot))
+	if (sceneContext.pInput->IsActionTriggered(Shoot) && m_CurrentShootCooldown >=m_MaxShootCooldown)
 	{
-		constexpr float spawnDistance = 5.0f;
-		constexpr float spawnOffset = 0.4f;
-		auto loc = pBoxShape->getLocalPose().p;
-		loc.z -= spawnDistance;
+		constexpr float spawnDistance = 1.0f;
+		auto loc = pTransform->GetWorldPosition();
 		XMFLOAT3 dir = pTransform->GetForward();
 		dir.x *= -1;
 		dir.z *= -1;
-		auto pShell = new Shell(XMFLOAT3{loc.x + spawnOffset * dir.z,loc.y,loc.z}, XMFLOAT3{ -90.0f,0.0f,0.0f }, dir, this);
-		AddChild(pShell);
-	}
+		auto pShell = new Shell(XMFLOAT3{loc.x + spawnDistance * dir.x,loc.y,loc.z + spawnDistance * dir.z }, XMFLOAT3{ -90.0f * dir.x,-90.0f,-90.0f * dir.z }, dir, m_pGameScene);
+		m_pGameScene->AddChild(pShell);
+
+		m_CurrentShootCooldown = 0.0f;
+	}	
 	
 }

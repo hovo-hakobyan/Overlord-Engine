@@ -24,4 +24,6 @@ void BrickWall::Initialize(const SceneContext&)
 	auto pRigidBody = AddComponent(new RigidBodyComponent(true));
 	pRigidBody->AddCollider(wallGeo, *pxMat);
 	AddComponent(pModelComponent);
+
+	SetTag(L"Destructible");
 }
