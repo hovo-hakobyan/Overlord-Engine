@@ -94,7 +94,7 @@ void PongScene::Initialize()
 
 	pLeftCol->SetOnTriggerCallBack([=] (GameObject*, GameObject*, PxTriggerAction triggerAction )
 		{
-			if (triggerAction == PxTriggerAction::ENTER)
+			if (triggerAction == PxTriggerAction::ENTER) 
 			{
 				Reset();
 			}

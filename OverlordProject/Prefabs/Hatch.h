@@ -21,5 +21,7 @@ private:
 
 	ModelComponent* m_pModelComponent{};
 	class SimpleDiffuseMaterial* m_pMaterial{};
+
+
 };
 

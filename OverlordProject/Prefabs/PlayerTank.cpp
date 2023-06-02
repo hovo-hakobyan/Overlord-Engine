@@ -2,6 +2,8 @@
 #include "PlayerTank.h"
 #include "Materials/DiffuseMaterial_Skinned.h"
 #include "Components/BoxControllerComponent.h"
+#include "Prefabs/Shell.h"
+#include "Components/MuzzleComponent.h"
 
 PlayerTank::PlayerTank(const XMFLOAT3& startLoc, const XMFLOAT3& startRot,const TankDesc& tankDesc):
 	m_StartLocation{startLoc},
@@ -55,7 +57,6 @@ void PlayerTank::Initialize(const SceneContext& sceneContext)
 	m_pBoxControllerComponent = AddComponent(new BoxControllerComponent(m_TankDesc.controller));
 	m_pBoxControllerComponent->Translate(XMFLOAT3{m_StartLocation.x,m_StartLocation.y + m_TankDesc.controller.halfHeight ,m_StartLocation.z});
 
-	
 }
 
 void PlayerTank::Update(const SceneContext& sceneContext)
@@ -112,5 +113,18 @@ void PlayerTank::Update(const SceneContext& sceneContext)
 		m_pBoxControllerComponent->Move(displacement);
 	}
 	
+	//Shooting
+	if (sceneContext.pInput->IsActionTriggered(Shoot))
+	{
+		constexpr float spawnDistance = 5.0f;
+		constexpr float spawnOffset = 0.4f;
+		auto loc = pBoxShape->getLocalPose().p;
+		loc.z -= spawnDistance;
+		XMFLOAT3 dir = pTransform->GetForward();
+		dir.x *= -1;
+		dir.z *= -1;
+		auto pShell = new Shell(XMFLOAT3{loc.x + spawnOffset * dir.z,loc.y,loc.z}, XMFLOAT3{ -90.0f,0.0f,0.0f }, dir, this);
+		AddChild(pShell);
+	}
 	
 }

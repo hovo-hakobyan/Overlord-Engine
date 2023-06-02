@@ -26,8 +26,6 @@ LevelBuilder::LevelBuilder(GameScene* gameScene,float tileSize):
 	m_pSolidWallMaterial->SetDiffuseTexture(L"Textures/wall/solidWallAlbedo.tif");
 	m_pSolidWallMaterial->SetNormalMapTexture(L"Textures/wall/solidWallNormal.tif");
 
-
-	
 	m_pBorderWallMaterial = MaterialManager::Get()->CreateMaterial<SimpleDiffuseMaterial>();
 	m_pBorderWallMaterial->SetDiffuseTexture(L"Textures/wall/borderAlbedo.tif");
 	m_pBorderWallMaterial->SetNormalMapTexture(L"Textures/wall/borderNormal.tif");
@@ -93,15 +91,12 @@ void LevelBuilder::BuildNextLevel()
 				pGround->GetTransform()->Translate(currentPos);
 
 			}
-			
 
 			//Create the terrain type on top of the ground
 			
 			if (currentTileType != TileTypes::Ground)
 			{
 				ModelComponent* pTerrainModel{};
-
-				
 
 				XMFLOAT3 wallSize{ m_TileSize,1.5f,m_TileSize };
 				XMFLOAT3 borderWallSize{ m_TileSize,2.5f,m_TileSize };

@@ -93,6 +93,7 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Prefabs\Shell.cpp" />
     <ClCompile Include="Prefabs\BrickWall.cpp" />
     <ClCompile Include="Prefabs\PlayerTank.cpp" />
     <ClCompile Include="Prefabs\Hatch.cpp" />
@@ -157,6 +158,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Prefabs\Shell.h" />
     <ClInclude Include="Prefabs\BrickWall.h" />
     <ClInclude Include="External\CImgLib\CImg.h" />
     <ClInclude Include="External\CImgLib\plugins\add_fileformat.h" />

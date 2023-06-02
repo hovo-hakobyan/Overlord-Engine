@@ -55,6 +55,7 @@
     <ClCompile Include="Graphics\ShadowMapRenderer.cpp" />
     <ClCompile Include="Components\ParticleEmitterComponent.cpp" />
     <ClCompile Include="Components\BoxControllerComponent.cpp" />
+    <ClCompile Include="Components\MuzzleComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -121,5 +122,6 @@
     <ClInclude Include="Graphics\ShadowMapRenderer.h" />
     <ClInclude Include="Components\ParticleEmitterComponent.h" />
     <ClInclude Include="Components\BoxControllerComponent.h" />
+    <ClInclude Include="Components\MuzzleComponent.h" />
   </ItemGroup>
 </Project>

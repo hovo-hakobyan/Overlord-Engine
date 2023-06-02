@@ -68,6 +68,5 @@ private:
 	class BoxControllerComponent* m_pBoxControllerComponent{};
 	TankDesc m_TankDesc;
 
-
 };
 
