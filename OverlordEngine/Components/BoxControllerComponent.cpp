@@ -21,6 +21,11 @@ void BoxControllerComponent::Initialize(const SceneContext& /*sceneContext*/)
 		m_pController->getActor()->userData = static_cast<void*>(m_pController);
 		SetCollisionGroup(static_cast<CollisionGroup>(m_CollisionGroups.word0));
 		SetCollisionIgnoreGroup(static_cast<CollisionGroup>(m_CollisionGroups.word1));
+
+		auto actor = c->getActor();
+		PxShape* shapes[1];
+		actor->getShapes(shapes, 1, 0);
+		m_pShape = shapes[0];
 	}
 }
 

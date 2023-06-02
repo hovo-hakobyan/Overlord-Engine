@@ -2,9 +2,10 @@
 #include "Hatch.h"
 #include "Materials/SimpleDiffuse.h"
 
-Hatch::Hatch(const XMFLOAT3& loc, const XMFLOAT3& rot, const std::wstring& filePath):
+Hatch::Hatch(const XMFLOAT3& loc, const XMFLOAT3& rot, float scale, const std::wstring& filePath):
 	m_Location{loc},
 	m_Rotation{rot},
+	m_Scale{scale},
 	m_FilePath{filePath}
 {
 }
@@ -30,5 +31,5 @@ void Hatch::Initialize(const SceneContext& /*sceneContext*/)
 
 	pTransform->Translate(m_Location);
 	pTransform->Rotate(m_Rotation);
-	pTransform->Scale(0.5f, 0.5f, 0.2f);
+	pTransform->Scale(0.5f * m_Scale, 0.5f * m_Scale, 0.2f * m_Scale);
 }

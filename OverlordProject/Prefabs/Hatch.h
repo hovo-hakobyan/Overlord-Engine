@@ -2,7 +2,7 @@
 class Hatch final : public GameObject
 {
 public: 
-	Hatch(const XMFLOAT3& loc, const XMFLOAT3& rot, const std::wstring& filePath);
+	Hatch(const XMFLOAT3& loc, const XMFLOAT3& rot,float scale, const std::wstring& filePath);
 	~Hatch() override = default;
 	Hatch(const Hatch& other) = delete;
 	Hatch(Hatch&& other) = delete;
@@ -15,6 +15,7 @@ protected:
 private:
 	XMFLOAT3 m_Location;
 	XMFLOAT3 m_Rotation;
+	float m_Scale;
 	const std::wstring m_FilePath;
 
 

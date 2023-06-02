@@ -22,6 +22,7 @@ public:
 	XMFLOAT3 GetFootPosition() const;
 	PxControllerCollisionFlags GetCollisionFlags() const { return m_CollisionFlag; }
 	PxController* GetPxController() const { return m_pController; }
+	PxShape* GetBoxShape() const { return m_pShape; }
 
 protected:
 	void Initialize(const SceneContext& sceneContext) override;
@@ -35,6 +36,7 @@ private:
 	PxBoxControllerDesc m_ControllerDesc{};
 
 	PxController* m_pController{};
+	PxShape* m_pShape{};
 	PxControllerCollisionFlags m_CollisionFlag{};
 	PxFilterData m_CollisionGroups{ static_cast<UINT32>(CollisionGroup::Group0), 0, 0, 0 };
 

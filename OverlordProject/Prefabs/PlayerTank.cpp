@@ -53,8 +53,9 @@ void PlayerTank::Initialize(const SceneContext& sceneContext)
 
 	//Controller
 	m_pBoxControllerComponent = AddComponent(new BoxControllerComponent(m_TankDesc.controller));
-	m_pBoxControllerComponent->Translate(XMFLOAT3{m_StartLocation.x,m_StartLocation.y + m_TankDesc.controller.halfHeight,m_StartLocation.z});
+	m_pBoxControllerComponent->Translate(XMFLOAT3{m_StartLocation.x,m_StartLocation.y + m_TankDesc.controller.halfHeight ,m_StartLocation.z});
 
+	
 }
 
 void PlayerTank::Update(const SceneContext& sceneContext)
@@ -62,25 +63,35 @@ void PlayerTank::Update(const SceneContext& sceneContext)
 	constexpr float epsilon = 0.01f;
 	XMFLOAT2 move = { 0.0f,0.0f };
 
+	auto pBoxShape = m_pBoxControllerComponent->GetBoxShape();
+	auto pTransform = GetTransform();
 	if (sceneContext.pInput->IsActionTriggered(MoveForward))
 	{
 		move.y = 1;
+		pTransform->Rotate(0.0f, 180.0f, 0.0f, true);
+		pBoxShape->setLocalPose(PxTransform{ PxQuat{0.0f,PxVec3{1,0,0}} });
+
 	}
 	else if (sceneContext.pInput->IsActionTriggered(MoveBackward))
 	{
 		move.y = -1;
+		pTransform->Rotate(0.0f, 0.0f, 0.0f, true);
+		pBoxShape->setLocalPose(PxTransform{ PxQuat{3.14159f,PxVec3{1,0,0}} });
 	}
 
 	if (sceneContext.pInput->IsActionTriggered(MoveRight))
 	{
 		move.x = 1;
+		pTransform->Rotate(0.0f, 270.0f, 0.0f, true);
+		pBoxShape->setLocalPose(PxTransform{ PxQuat{1.5708f,PxVec3{1,0,0}} });
+
 	}
 	else if (sceneContext.pInput->IsActionTriggered(MoveLeft))
 	{
 		move.x = -1;
+		pTransform->Rotate(0.0f, 90.0f, 0.0f, true);
+		pBoxShape->setLocalPose(PxTransform{ PxQuat{1.5708f,PxVec3{1,0,0}} });
 	}
-
-	
 
 	float deltaTime = sceneContext.pGameTime->GetElapsed();
 	float currentAcceleration = m_MoveAcceleration * deltaTime;
@@ -91,6 +102,7 @@ void PlayerTank::Update(const SceneContext& sceneContext)
 		m_MoveSpeed = m_MoveSpeed >= m_TankDesc.maxMoveSpeed ? m_TankDesc.maxMoveSpeed : m_MoveSpeed;
 		XMFLOAT3 displacement = { m_MoveSpeed * move.x * deltaTime,0.0f,0.0f };
 		m_pBoxControllerComponent->Move(displacement);
+
 	}
 	else if (fabs(move.y) > epsilon)
 	{
@@ -99,5 +111,6 @@ void PlayerTank::Update(const SceneContext& sceneContext)
 		XMFLOAT3 displacement = {0.0f,0.0f, m_MoveSpeed * move.y * deltaTime };
 		m_pBoxControllerComponent->Move(displacement);
 	}
-
+	
+	
 }

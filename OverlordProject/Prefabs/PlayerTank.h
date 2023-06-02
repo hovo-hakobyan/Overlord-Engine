@@ -4,7 +4,7 @@ struct TankDesc
 {
 	TankDesc(
 		PxMaterial* pMaterial,
-		float halfForwardExtent = .6f,
+		float halfForwardExtent = .4f,
 		float halfSideExtent = .4f,
 		float halfHeight = .25f)
 	{
@@ -21,7 +21,7 @@ struct TankDesc
 
 	PxBoxControllerDesc controller{};
 
-	float rotationSpeed{ 60.f };
+	float rotationSpeed{ 1.047198f };
 
 	int actionId_MoveLeft{ -1 };
 	int actionId_MoveRight{ -1 };
@@ -67,5 +67,7 @@ private:
 	RigidBodyComponent* m_pRigidBody{};
 	class BoxControllerComponent* m_pBoxControllerComponent{};
 	TankDesc m_TankDesc;
+
+
 };
 
