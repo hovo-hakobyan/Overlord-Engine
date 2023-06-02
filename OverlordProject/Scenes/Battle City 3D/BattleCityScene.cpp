@@ -24,13 +24,13 @@ void BattleCityScene::Initialize()
 	
 	LockCamera();
 
+	//Level
 	m_pLevelBuilder = new LevelBuilder{this,1.2f};
 	m_pLevelBuilder->AddLevel("Resources/Levels/Level1.bmp", 15, 15);
 	m_pLevelBuilder->BuildNextLevel();
 
 	//Tank
 	TankDesc tankDesc{ pDefaultMaterial };
-
 	auto pPlayerTank = new PlayerTank(m_pLevelBuilder->GetPlayerStartLocation(), XMFLOAT3{0.0f,180.0f,0.0f}, tankDesc);
 	AddChild(pPlayerTank);
 

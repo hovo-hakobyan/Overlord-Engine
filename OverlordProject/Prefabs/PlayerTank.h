@@ -5,7 +5,7 @@ struct TankDesc
 	TankDesc(
 		PxMaterial* pMaterial,
 		float halfForwardExtent = .4f,
-		float halfSideExtent = .4f,
+		float halfSideExtent = .35f,
 		float halfHeight = .25f)
 	{
 		controller.setToDefault();

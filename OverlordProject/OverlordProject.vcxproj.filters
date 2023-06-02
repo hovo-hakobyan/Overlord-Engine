@@ -45,6 +45,7 @@
     <ClCompile Include="Materials\SimpleDiffuse.cpp" />
     <ClCompile Include="Prefabs\Hatch.cpp" />
     <ClCompile Include="Prefabs\PlayerTank.cpp" />
+    <ClCompile Include="Prefabs\BrickWall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h" />
@@ -111,5 +112,6 @@
     <ClInclude Include="Materials\SimpleDiffuse.h" />
     <ClInclude Include="Prefabs\Hatch.h" />
     <ClInclude Include="Prefabs\PlayerTank.h" />
+    <ClInclude Include="Prefabs\BrickWall.h" />
   </ItemGroup>
 </Project>

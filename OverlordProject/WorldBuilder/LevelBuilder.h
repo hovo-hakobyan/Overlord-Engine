@@ -24,7 +24,6 @@ public:
 	std::vector<XMFLOAT3> GetEnemyStartLocations() const;
 	XMFLOAT3 GetPlayerStartLocation() const;
 
-	void temp();
 private:
 	std::vector<TileCollection> m_Levels;
 	std::vector<LevelInfo*> m_LevelInfo;
@@ -38,11 +37,12 @@ private:
 	class WaterMaterial* m_pWaterMaterial{};
 	class SimpleDiffuseMaterial* m_pGroundMaterial{};
 	class SimpleDiffuseMaterial* m_pSolidWallMaterial{};
-	class SimpleDiffuseMaterial* m_pBrickWallMaterial{};
 	class SimpleDiffuseMaterial* m_pBorderWallMaterial{};
 
 	std::vector<XMFLOAT3> m_EnemySpawnLocations;
 	XMFLOAT3 m_PlayerSpawnLocation;
+
+	void BuildBrickWalls(const XMFLOAT3& currentPos);
 	
 };
 

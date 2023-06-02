@@ -6,6 +6,7 @@
 #include "Materials/WaterMaterial.h"
 #include "Materials/Shadow/DiffuseMaterial_Shadow.h"
 #include "Prefabs/Hatch.h"
+#include "Prefabs/BrickWall.h"
 
 
 
@@ -25,9 +26,7 @@ LevelBuilder::LevelBuilder(GameScene* gameScene,float tileSize):
 	m_pSolidWallMaterial->SetDiffuseTexture(L"Textures/wall/solidWallAlbedo.tif");
 	m_pSolidWallMaterial->SetNormalMapTexture(L"Textures/wall/solidWallNormal.tif");
 
-	m_pBrickWallMaterial = MaterialManager::Get()->CreateMaterial<SimpleDiffuseMaterial>();
-	m_pBrickWallMaterial->SetDiffuseTexture(L"Textures/wall/brickAlbedo.tif");
-	m_pBrickWallMaterial->SetNormalMapTexture(L"Textures/wall/brickNormal.tif");
+
 	
 	m_pBorderWallMaterial = MaterialManager::Get()->CreateMaterial<SimpleDiffuseMaterial>();
 	m_pBorderWallMaterial->SetDiffuseTexture(L"Textures/wall/borderAlbedo.tif");
@@ -127,16 +126,7 @@ void LevelBuilder::BuildNextLevel()
 					break;
 				case TileTypes::BrickWall:
 					{
-						auto pTerrainObj = new GameObject();
-						m_pGameScene->AddChild(pTerrainObj);
-						pTerrainModel = new ModelComponent(L"Meshes/SolidWall.ovm");
-						pTerrainModel->SetMaterial(m_pBrickWallMaterial);
-						pTerrainObj->GetTransform()->Translate(currentPos.x, currentPos.y + wallSize.y / 2.0f, currentPos.z);	
-						pTerrainObj->GetTransform()->Scale(m_TileSize, wallSize.y / 2.0f, m_TileSize);
-						auto pRigidBody = pTerrainObj->AddComponent(new RigidBodyComponent(true));
-						pRigidBody->AddCollider(wallGeo, *pMat);
-						pTerrainObj->AddComponent(pTerrainModel);
-						
+						BuildBrickWalls(currentPos);
 					}			
 					break;
 					case TileTypes::BorderWall:
@@ -211,8 +201,29 @@ XMFLOAT3 LevelBuilder::GetPlayerStartLocation() const
 	return m_PlayerSpawnLocation;
 }
 
-void LevelBuilder::temp()
+
+void LevelBuilder::BuildBrickWalls(const XMFLOAT3& currentPos)
 {
-	m_pBrickWallMaterial->DrawImGui();
+	constexpr int rows = 2;
+	constexpr int cols = 2;
+	float width = m_TileSize / rows;
+	
+	XMFLOAT3 pos = currentPos;
+	constexpr float wallHeight = 1.25f;
+	XMFLOAT3 size{ width, width * wallHeight * 2,width };
+
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{	
+			auto brickWall = new BrickWall(pos, size);
+			m_pGameScene->AddChild(brickWall);
+			pos.x += size.x;
+		}
+		pos.x = currentPos.x;
+		pos.z += size.z;
+	}
+
+	
 }
 
