@@ -5,9 +5,10 @@
 #include "Prefabs/Shell.h"
 #include "Components/MuzzleComponent.h"
 #include "Hatch.h"
+#include "Scenes/Battle City 3D/BattleCityScene.h"
 
-PlayerTank::PlayerTank(Hatch* pspawnHatch, const XMFLOAT3& startRot,const TankDesc& tankDesc, GameScene* gameScene):
-	BaseTank(pspawnHatch,startRot,tankDesc,gameScene)
+PlayerTank::PlayerTank(const XMFLOAT3& loc, const XMFLOAT3& startRot,const TankDesc& tankDesc, BattleCityScene* gameScene):
+	BaseTank(loc,startRot,tankDesc,gameScene)
 {
 	m_TankDesc.actionId_MoveForward = MoveForward;
 	m_TankDesc.actionId_MoveBackward = MoveBackward;
@@ -75,10 +76,18 @@ void PlayerTank::Initialize(const SceneContext& sceneContext)
 
 void PlayerTank::Update(const SceneContext& sceneContext)
 {
-	if (m_IsDead)
+	if (m_pGameScene->GetGameEnded())
 	{
 		return;
 	}
+
+	if (m_IsDead)
+	{
+		m_pBoxShape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
+		return;
+	}
+
+	
 	constexpr float epsilon = 0.01f;
 	XMFLOAT2 move = { 0.0f,0.0f };
 

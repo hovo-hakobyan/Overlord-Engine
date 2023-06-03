@@ -49,6 +49,7 @@
     <ClCompile Include="Prefabs\Shell.cpp" />
     <ClCompile Include="Prefabs\EnemyTank.cpp" />
     <ClCompile Include="Prefabs\BaseTank.cpp" />
+    <ClCompile Include="WorldBuilder\EnemySpawner.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h" />
@@ -119,5 +120,6 @@
     <ClInclude Include="Prefabs\Shell.h" />
     <ClInclude Include="Prefabs\EnemyTank.h" />
     <ClInclude Include="Prefabs\BaseTank.h" />
+    <ClInclude Include="WorldBuilder\EnemySpawner.h" />
   </ItemGroup>
 </Project>

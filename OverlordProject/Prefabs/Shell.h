@@ -1,8 +1,9 @@
 #pragma once
+class BattleCityScene;
 class Shell final : public GameObject
 {
 public:
-	Shell(const XMFLOAT3& shellLoc, const XMFLOAT3& rot,const XMFLOAT3& dir, GameScene* gameScene,const std::wstring& parentTag);
+	Shell(const XMFLOAT3& shellLoc, const XMFLOAT3& rot,const XMFLOAT3& dir, BattleCityScene* gameScene,const std::wstring& parentTag);
 	~Shell() override = default;
 	Shell(const Shell& other) = delete;
 	Shell(Shell&& other) = delete;
@@ -15,7 +16,7 @@ private:
 	XMFLOAT3 m_Location;
 	XMFLOAT3 m_Rotation;
 	XMFLOAT3 m_Direction;
-	GameScene* m_pParent;
+	BattleCityScene* m_pParent;
 	class DiffuseMaterial_Shadow* m_pMat{};
 
 	float m_Lifetime{ 5.0f };

@@ -1,5 +1,5 @@
 #pragma once
-class Hatch;
+class BattleCityScene;
 struct TankDesc
 {
 	TankDesc(
@@ -29,7 +29,7 @@ struct TankDesc
 class BaseTank : public GameObject
 {
 public:
-	BaseTank(Hatch* pSpawnHatch, const XMFLOAT3& startRot, const TankDesc& tankDesc, GameScene* gameScene);
+	BaseTank(const XMFLOAT3& loc, const XMFLOAT3& startRot, const TankDesc& tankDesc, BattleCityScene* gameScene);
 	~BaseTank() override = default;
 
 	BaseTank(const BaseTank& other) = delete;
@@ -43,7 +43,6 @@ protected:
 	virtual void Initialize(const SceneContext& /*sceneContext*/) override {};
 	virtual void Update(const SceneContext&) override {};
 
-	Hatch* m_pHatch;
 	XMFLOAT3 m_StartRotation;
 	XMFLOAT3 m_StartLocation;
 
@@ -63,7 +62,7 @@ protected:
 		Shoot
 	};
 	class BoxControllerComponent* m_pBoxControllerComponent{};
-	GameScene* m_pGameScene;
+	BattleCityScene* m_pGameScene;
 	TankDesc m_TankDesc;
 	PxShape* m_pBoxShape;
 

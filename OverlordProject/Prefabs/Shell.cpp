@@ -2,10 +2,11 @@
 #include "Shell.h"
 #include "Materials/Shadow/DiffuseMaterial_Shadow.h"
 #include "BaseTank.h"
+#include "Scenes/Battle City 3D/BattleCityScene.h"
 
 
 
-Shell::Shell(const XMFLOAT3& loc, const XMFLOAT3& rot, const XMFLOAT3& dir, GameScene* parent, const std::wstring& parentTag):
+Shell::Shell(const XMFLOAT3& loc, const XMFLOAT3& rot, const XMFLOAT3& dir, BattleCityScene* parent, const std::wstring& parentTag):
 	m_Location{loc},
 	m_Rotation{rot},
 	m_Direction{dir},
@@ -58,20 +59,27 @@ void Shell::Initialize(const SceneContext&)
 						if (tank)
 						{
 							tank->IsDead(true);
-							m_pHitObject = nullptr;
+							
 						}
+						m_pHitObject = nullptr;
 					}
 					
 				}
 				else if (other->GetTag().compare(L"Friendly") == 0)
 				{
-					m_pHitObject = other->GetParent();
-					auto tank = static_cast<BaseTank*>(m_pHitObject);
-					if (tank)
+					//to not hit self
+					if (m_ParentTag.compare(other->GetTag()) != 0)
 					{
-						tank->IsDead(true);
+						m_pHitObject = other->GetParent();
+						auto tank = static_cast<BaseTank*>(m_pHitObject);
+						if (tank)
+						{
+							tank->IsDead(true);
+							m_pParent->SetGameEnded(true);
+						}
 						m_pHitObject = nullptr;
 					}
+					
 				}
 				m_IsEnabled = false;
 			}
@@ -84,7 +92,6 @@ void Shell::Update(const SceneContext& sceneContext)
 {
 	if (!m_IsEnabled)
 	{
-
 		if (m_pHitObject)
 		{
 			m_pParent->RemoveChild(m_pHitObject, true);
@@ -100,7 +107,6 @@ void Shell::Update(const SceneContext& sceneContext)
 	if (m_CurrentLifeTime >= m_Lifetime)
 	{
 		m_pParent->RemoveChild(this, true);
-		
 	}
 	else
 	{

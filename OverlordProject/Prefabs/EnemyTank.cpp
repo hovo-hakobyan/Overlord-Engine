@@ -5,9 +5,10 @@
 #include "Components/BoxControllerComponent.h"
 #include "Hatch.h"
 #include <random>
+#include "Scenes/Battle City 3D/BattleCityScene.h"
 
-EnemyTank::EnemyTank(Hatch* pSpawnHatch, const XMFLOAT3& startRot, const TankDesc& tankDesc, GameScene* gameScene):
-	BaseTank(pSpawnHatch, startRot, tankDesc, gameScene)
+EnemyTank::EnemyTank(const XMFLOAT3& loc, const XMFLOAT3& startRot, const TankDesc& tankDesc, BattleCityScene* gameScene):
+	BaseTank(loc, startRot, tankDesc, gameScene)
 {
 }
 
@@ -57,16 +58,21 @@ void EnemyTank::Initialize(const SceneContext&)
 
 void EnemyTank::Update(const SceneContext& sceneContext)
 {
-	
+	if (m_pGameScene->GetGameEnded())
+	{
+		return;
+	}
 	if (m_IsDead)
 	{
 		//the controllers shape doesn't delete when controller is deleted
 		//so i translate it out of the view
 		m_pBoxShape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
-		m_pBoxControllerComponent->Translate(XMFLOAT3{ 0.0f,-100.0f,0.0f });
+		m_pBoxControllerComponent->Translate(XMFLOAT3{ 0.0f,m_pBoxControllerComponent->GetTransform()->GetPosition().y + 100.0f,0.0f});
 		m_pGameScene->RemoveChild(this, true);
 		return;
 	}
+	
+	
 
 	float deltaTime = sceneContext.pGameTime->GetElapsed();
 	XMFLOAT2 move = { 0.0f,0.0f };

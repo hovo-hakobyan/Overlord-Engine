@@ -12,6 +12,9 @@ public:
 	BattleCityScene& operator=(const BattleCityScene& other) = delete;
 	BattleCityScene& operator=(BattleCityScene&& other) noexcept = delete;
 
+	void SetGameEnded(bool hasEnded) { m_GameEnded = hasEnded; }
+	bool GetGameEnded() const { return m_GameEnded; }
+
 protected:
 	void Initialize() override;
 	void Update() override;
@@ -20,7 +23,10 @@ protected:
 
 private:
 	class LevelBuilder* m_pLevelBuilder{};
+	class EnemySpawner* m_pEnemySpawner{};
 
 	void LockCamera();
+
+	bool m_GameEnded{ false };
 };
 

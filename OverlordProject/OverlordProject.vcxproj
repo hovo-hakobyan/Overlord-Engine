@@ -93,6 +93,7 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="WorldBuilder\EnemySpawner.cpp" />
     <ClCompile Include="Prefabs\BaseTank.cpp" />
     <ClCompile Include="Prefabs\EnemyTank.cpp" />
     <ClCompile Include="Prefabs\Shell.cpp" />
@@ -160,6 +161,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="WorldBuilder\EnemySpawner.h" />
     <ClInclude Include="Prefabs\BaseTank.h" />
     <ClInclude Include="Prefabs\EnemyTank.h" />
     <ClInclude Include="Prefabs\Shell.h" />

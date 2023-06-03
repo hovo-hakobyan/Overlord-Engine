@@ -3,6 +3,8 @@
 #include "WorldBuilder/LevelBuilder.h"
 #include "Prefabs/PlayerTank.h"
 #include "Prefabs/EnemyTank.h"
+#include "WorldBuilder/EnemySpawner.h"
+#include "Prefabs/Hatch.h"
 
 BattleCityScene::BattleCityScene():
 	GameScene(L"Battle City")
@@ -32,14 +34,15 @@ void BattleCityScene::Initialize()
 
 	//Tank
 	TankDesc tankDesc{ pDefaultMaterial };
-	auto pPlayerTank = new PlayerTank(m_pLevelBuilder->GetPlayerStartHatch(), XMFLOAT3{0.0f,0.0f,0.0f}, tankDesc,this);
+	auto playerLoc = m_pLevelBuilder->GetPlayerStartHatch()->GetTransform()->GetPosition();
+	auto pPlayerTank = new PlayerTank(playerLoc, XMFLOAT3{0.0f,0.0f,0.0f}, tankDesc,this);
 	AddChild(pPlayerTank);
 
-	//Enemy test
-	TankDesc enemyDesc{ pDefaultMaterial };
-	auto enemyHatch = m_pLevelBuilder->GetEnemyStartHatches();
-	auto pEnemyTank = new EnemyTank(enemyHatch[1], XMFLOAT3{ 0.0f,0.0f,0.0f }, enemyDesc, this);
-	AddChild(pEnemyTank);
+	
+	auto enemyHatches = m_pLevelBuilder->GetEnemyStartHatches();
+	m_pEnemySpawner = new EnemySpawner(enemyHatches, 20,this);
+	AddChild(m_pEnemySpawner);
+
 }
 
 void BattleCityScene::Update()

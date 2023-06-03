@@ -3,7 +3,7 @@
 class EnemyTank : public BaseTank
 {
 public:
-	EnemyTank(Hatch* pSpawnHatch, const XMFLOAT3& startRot, const TankDesc& tankDesc, GameScene* gameScene);
+	EnemyTank(const XMFLOAT3& loc, const XMFLOAT3& startRot, const TankDesc& tankDesc, BattleCityScene* gameScene);
 	~EnemyTank() override = default;
 
 	EnemyTank(const EnemyTank& other) = delete;
