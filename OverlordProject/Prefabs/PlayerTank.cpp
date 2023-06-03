@@ -78,11 +78,19 @@ void PlayerTank::Update(const SceneContext& sceneContext)
 {
 	if (m_pGameScene->GetGameEnded())
 	{
+		if (m_pAnimator->IsPlaying())
+		{
+			m_pAnimator->Reset();
+		}
 		return;
 	}
 
 	if (m_IsDead)
 	{
+		if (m_pAnimator->IsPlaying())
+		{
+			m_pAnimator->Reset();
+		}
 		m_pBoxShape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
 		return;
 	}

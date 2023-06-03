@@ -94,6 +94,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Prefabs\Nest.cpp" />
+    <ClCompile Include="Materials\VertexColorMaterial.cpp" />
+    <ClCompile Include="Materials\Shadow\VertexMaterial_Shadow_Skinned.cpp" />
     <ClCompile Include="WorldBuilder\EnemySpawner.cpp" />
     <ClCompile Include="Prefabs\BaseTank.cpp" />
     <ClCompile Include="Prefabs\EnemyTank.cpp" />
@@ -163,6 +165,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Prefabs\Nest.h" />
+    <ClInclude Include="Materials\VertexColorMaterial.h" />
+    <ClInclude Include="Materials\Shadow\VertexMaterial_Shadow_Skinned.h" />
     <ClInclude Include="WorldBuilder\EnemySpawner.h" />
     <ClInclude Include="Prefabs\BaseTank.h" />
     <ClInclude Include="Prefabs\EnemyTank.h" />

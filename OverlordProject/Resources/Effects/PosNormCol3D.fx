@@ -81,17 +81,3 @@ technique11 Default
     }
 }
 
-technique11 TransparencyTech
-{
-	pass P0
-	{
-		SetRasterizerState(NoCulling);
-		SetDepthStencilState(EnableDepth, 0);
-		SetBlendState(EnableBlending, float4(0.0f, 0.0f, 0.0f, 0.0f), 0xFFFFFFFF);
-
-		SetVertexShader(CompileShader(vs_4_0, VS()));
-		SetGeometryShader(NULL);
-		SetPixelShader(CompileShader(ps_4_0, PS()));
-	}
-}
-

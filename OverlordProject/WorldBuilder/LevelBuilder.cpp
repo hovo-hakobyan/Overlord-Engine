@@ -8,10 +8,11 @@
 #include "Prefabs/Hatch.h"
 #include "Prefabs/BrickWall.h"
 #include "Prefabs/Nest.h"
+#include "Scenes/Battle City 3D/BattleCityScene.h"
 
 
 
-LevelBuilder::LevelBuilder(GameScene* gameScene,float tileSize):
+LevelBuilder::LevelBuilder(BattleCityScene* gameScene,float tileSize):
 	m_pGameScene{gameScene},
 	m_TileSize{tileSize}
 {
@@ -178,7 +179,7 @@ void LevelBuilder::BuildNextLevel()
 				}
 				break;
 				case TileTypes::Base:
-					auto nest = new Nest(currentPos);
+					auto nest = new Nest(currentPos,m_pGameScene);
 					m_pGameScene->AddChild(nest);
 					break;
 				}

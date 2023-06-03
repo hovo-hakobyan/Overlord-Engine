@@ -83,7 +83,7 @@ void Shell::Initialize(const SceneContext&)
 				}
 				else if (other->GetTag().compare(L"Nest") == 0)
 				{
-					m_pHitObject = other;
+					
 					m_pParent->SetGameEnded(true);
 				}
 				m_IsEnabled = false;

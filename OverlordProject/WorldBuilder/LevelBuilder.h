@@ -7,11 +7,11 @@ struct LevelInfo
 	uint8_t rows;
 	uint8_t cols;
 };
-
+class BattleCityScene;
 class LevelBuilder final
 {
 public:
-	LevelBuilder(GameScene* gameScene, float tileSize);
+	LevelBuilder(BattleCityScene* gameScene, float tileSize);
 	~LevelBuilder();
 	LevelBuilder(const LevelBuilder& other) = delete;
 	LevelBuilder(LevelBuilder&& other) noexcept = delete;
@@ -31,7 +31,7 @@ private:
 
 	int m_CurrentLevelIdx = -1;
 	float m_TileSize{};
-	GameScene* m_pGameScene;
+	BattleCityScene* m_pGameScene;
 
 	class GrassMaterial* m_pGrassMaterial{};
 	class WaterMaterial* m_pWaterMaterial{};
