@@ -8,4 +8,5 @@ BaseTank::BaseTank(const XMFLOAT3& startLoc, const XMFLOAT3& startRot, const Tan
 	m_MoveAcceleration{ tankDesc.maxMoveSpeed / tankDesc.moveAccelerationTime },
 	m_pGameScene{ gameScene }
 {
+	
 }

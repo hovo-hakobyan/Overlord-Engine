@@ -10,6 +10,8 @@ EnemyTank::EnemyTank(const XMFLOAT3& startLoc, const XMFLOAT3& startRot, const T
 {
 }
 
+
+
 void EnemyTank::Initialize(const SceneContext&)
 {
 	//Model
@@ -33,14 +35,37 @@ void EnemyTank::Initialize(const SceneContext&)
 	m_pBoxControllerComponent = AddComponent(new BoxControllerComponent(m_TankDesc.controller));
 	m_pBoxControllerComponent->Translate(XMFLOAT3{ m_StartLocation.x,m_StartLocation.y + m_TankDesc.controller.halfHeight ,m_StartLocation.z });
 	m_pBoxShape = m_pBoxControllerComponent->GetBoxShape();
-
-	SetTag(L"Enemy");
-
+	m_pBoxControllerComponent->SetCollisionGroup(CollisionGroup::Group7);
+	m_pBoxControllerComponent->SetCollisionIgnoreGroup(CollisionGroup::Group5);
 	m_pRigidBody= m_pBoxControllerComponent->GetBoxShape()->getActor()->is<PxRigidBody>();
+	
+	m_pColliderGameObj = new GameObject();
+	AddChild(m_pColliderGameObj);
+
+	auto pxMat = PxGetPhysics().createMaterial(1.0f, 1.0f, 0.f);
+	PxBoxGeometry Geo{0.5f,0.4f,0.5f};
+
+	m_pCollider = m_pColliderGameObj->AddComponent(new RigidBodyComponent(true));
+	m_pCollider->AddCollider(Geo, *pxMat);
+	//m_pCollider->SetCollisionIgnoreGroups(CollisionGroup::Group0);
+
+	m_pColliderGameObj->SetTag(L"Enemy");
+	m_IsDead = false;
 }
 
 void EnemyTank::Update(const SceneContext& sceneContext)
 {
+	
+	if (m_IsDead)
+	{
+		//the controllers shape doesn't delete when controller is deleted
+		//so i translate it out of the view
+		m_pBoxShape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
+		m_pBoxControllerComponent->Translate(XMFLOAT3{ 0.0f,-100.0f,0.0f });
+		m_pGameScene->RemoveChild(this, true);
+		return;
+	}
+	
 	float deltaTime = sceneContext.pGameTime->GetElapsed();
 	XMFLOAT2 move = { 0.0f,0.0f };
 	auto pTransform = GetTransform();
@@ -68,25 +93,38 @@ void EnemyTank::Update(const SceneContext& sceneContext)
 		pTransform->Rotate(0.0f, 0.0f, 0.0f, true);
 		break;
 	}
-
 	Move(move, deltaTime);
 
-	m_VelocityMagnitudeSqr = m_pRigidBody->getLinearVelocity().magnitudeSquared();
+	m_CurrentShootCooldown += deltaTime;
 
+	m_VelocityMagnitudeSqr = m_pRigidBody->getLinearVelocity().magnitudeSquared();
 	if (m_VelocityMagnitudeSqr <= m_VelocityThreshold)
 	{
 		m_TimeSinceZeroVelocity += deltaTime;
-
 		if (m_TimeSinceZeroVelocity > m_TimeThreshold)
 		{
 			ChangeDirection();
 			m_TimeSinceZeroVelocity = 0.0f;
 		}
+
+		if (m_CurrentShootCooldown >= m_ZeroVelocityShootCooldown)
+		{
+			Shoot();
+			m_CurrentShootCooldown = 0.0f;
+		}
 	}
 	else
 	{
 		m_TimeSinceZeroVelocity = 0.0f;
+
+		if (m_CurrentShootCooldown >= m_NormalShootCooldown)
+		{
+			Shoot();
+			m_CurrentShootCooldown = 0.0f;
+		}
 	}
+
+
 }
 
 void EnemyTank::Move(const XMFLOAT2& dir, float deltaTime)
@@ -96,6 +134,9 @@ void EnemyTank::Move(const XMFLOAT2& dir, float deltaTime)
 	m_MoveSpeed = m_MoveSpeed >= m_TankDesc.maxMoveSpeed ? m_TankDesc.maxMoveSpeed : m_MoveSpeed;
 	XMFLOAT3 displacement{ dir.x * m_MoveSpeed * deltaTime,0.0f,dir.y * m_MoveSpeed * deltaTime };
 	m_pBoxControllerComponent->Move(displacement);
+	auto tankPos = GetTransform()->GetPosition();
+	m_pCollider->GetTransform()->Translate(tankPos.x, tankPos.y + 0.6f, tankPos.z);
+
 }
 
 void EnemyTank::ChangeDirection()
@@ -143,6 +184,17 @@ void EnemyTank::ChangeDirection()
 			break;
 		}
 	}
+}
+
+void EnemyTank::Shoot()
+{
+	constexpr float spawnDistance = 1.0f;
+	auto loc = GetTransform()->GetWorldPosition();
+	XMFLOAT3 dir = GetTransform()->GetForward();
+	dir.x *= -1;
+	dir.z *= -1;
+	auto pShell = new Shell(XMFLOAT3{ loc.x + spawnDistance * dir.x,loc.y,loc.z + spawnDistance * dir.z }, XMFLOAT3{ -90.0f * dir.x,-90.0f,-90.0f * dir.z }, dir, m_pGameScene);
+	m_pGameScene->AddChild(pShell);
 }
 
 	

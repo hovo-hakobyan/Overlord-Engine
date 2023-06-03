@@ -15,8 +15,8 @@ protected:
 	virtual void Initialize(const SceneContext& sceneContext) override;
 	virtual void Update(const SceneContext&) override;
 private:
-	float m_MaxShootCooldown{ 2.0f };
-	float m_CurrentShootCooldown{ 2.0f };
+	float m_MaxShootCooldown{ 1.0f };
+	float m_CurrentShootCooldown{ 1.0f };
 
 };
 

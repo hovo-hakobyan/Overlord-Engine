@@ -22,7 +22,8 @@ private:
 	float m_CurrentLifeTime{};
 
 	RigidBodyComponent* m_pRigidBody{};
-	GameObject* m_pOther{};
+	GameObject* m_pHitObject{};
+
 	float m_Speed{ 50.0f };
 	bool m_IsEnabled = true;
 };

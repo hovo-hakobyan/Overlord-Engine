@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "Shell.h"
 #include "Materials/Shadow/DiffuseMaterial_Shadow.h"
+#include "BaseTank.h"
+
+
 
 Shell::Shell(const XMFLOAT3& loc, const XMFLOAT3& rot, const XMFLOAT3& dir, GameScene* parent):
 	m_Location{loc},
@@ -8,6 +11,7 @@ Shell::Shell(const XMFLOAT3& loc, const XMFLOAT3& rot, const XMFLOAT3& dir, Game
 	m_Direction{dir},
 	m_pParent{parent}
 {
+
 }
 
 void Shell::Initialize(const SceneContext&)
@@ -39,25 +43,42 @@ void Shell::Initialize(const SceneContext&)
 		{
 			if (triggerAction == PxTriggerAction::ENTER)
 			{
-				if (other->GetTag().compare(L"Destructible") == 0)
+ 				if (other->GetTag().compare(L"Destructible") == 0)
 				{
-					m_pOther = other;
+					m_pHitObject = other;
 				}
-
+				else if (other->GetTag().compare(L"Enemy") == 0)
+				{
+					std::cout << "hit tank";
+					m_pHitObject = other->GetParent();
+					auto tank = static_cast<BaseTank*>(m_pHitObject);
+					if (tank)
+					{
+						tank->IsDead(true);
+						m_pHitObject = nullptr;
+					}
+				}
+				else if (other->GetTag().compare(L"Friendly") == 0)
+				{
+					std::cout << "Game Ended" << std::endl;
+					
+				}
 				m_IsEnabled = false;
 			}
 		});
+
+	SetTag(L"Shell");
 }
 
 void Shell::Update(const SceneContext& sceneContext)
 {
 	if (!m_IsEnabled)
 	{
-		if (m_pOther)
+
+		if (m_pHitObject)
 		{
-			m_pParent->RemoveChild(m_pOther, true);
+			m_pParent->RemoveChild(m_pHitObject, true);
 		}
-	
 		m_pParent->RemoveChild(this, true);
 		return;
 	}

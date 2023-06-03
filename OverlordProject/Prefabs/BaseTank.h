@@ -35,6 +35,9 @@ public:
 	BaseTank(BaseTank&& other) = delete;
 	BaseTank& operator=(const BaseTank& other) = delete;
 	BaseTank& operator=(BaseTank&& other) = delete;
+
+	void IsDead(bool isDead) { m_IsDead = isDead; }
+
 protected:
 	virtual void Initialize(const SceneContext& /*sceneContext*/) override {};
 	virtual void Update(const SceneContext&) override {};
@@ -61,6 +64,11 @@ protected:
 	GameScene* m_pGameScene;
 	TankDesc m_TankDesc;
 	PxShape* m_pBoxShape;
+
+	RigidBodyComponent* m_pCollider{};
+	GameObject* m_pColliderGameObj{};
+	bool m_IsDead{ false };
+
 private:
 };
 

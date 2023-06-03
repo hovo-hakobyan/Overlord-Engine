@@ -54,6 +54,8 @@ void PlayerTank::Initialize(const SceneContext& sceneContext)
 	m_pBoxControllerComponent = AddComponent(new BoxControllerComponent(m_TankDesc.controller));
 	m_pBoxControllerComponent->Translate(XMFLOAT3{m_StartLocation.x,m_StartLocation.y + m_TankDesc.controller.halfHeight ,m_StartLocation.z});
 	m_pBoxShape = m_pBoxControllerComponent->GetBoxShape();
+	m_pBoxControllerComponent->SetCollisionGroup(CollisionGroup::Group5);
+	m_pBoxControllerComponent->SetCollisionIgnoreGroup(CollisionGroup::Group7);
 
 	SetTag(L"Friendly");
 }
@@ -120,7 +122,7 @@ void PlayerTank::Update(const SceneContext& sceneContext)
 		XMFLOAT3 dir = pTransform->GetForward();
 		dir.x *= -1;
 		dir.z *= -1;
-		auto pShell = new Shell(XMFLOAT3{loc.x + spawnDistance * dir.x,loc.y,loc.z + spawnDistance * dir.z }, XMFLOAT3{ -90.0f * dir.x,-90.0f,-90.0f * dir.z }, dir, m_pGameScene);
+		auto pShell = new Shell(XMFLOAT3{loc.x + spawnDistance * dir.x,loc.y ,loc.z + spawnDistance * dir.z }, XMFLOAT3{ -90.0f * dir.x,-90.0f,-90.0f * dir.z }, dir, m_pGameScene);
 		m_pGameScene->AddChild(pShell);
 
 		m_CurrentShootCooldown = 0.0f;

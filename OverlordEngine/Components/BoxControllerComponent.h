@@ -5,7 +5,7 @@ class BoxControllerComponent : public BaseComponent
 {
 public:
 	BoxControllerComponent(const PxBoxControllerDesc& controllerDesc);
-	~BoxControllerComponent() override = default;
+	virtual ~BoxControllerComponent() override = default ;
 
 	BoxControllerComponent(const BoxControllerComponent& other) = delete;
 	BoxControllerComponent(BoxControllerComponent&& other) noexcept = delete;
@@ -23,6 +23,7 @@ public:
 	PxControllerCollisionFlags GetCollisionFlags() const { return m_CollisionFlag; }
 	PxController* GetPxController() const { return m_pController; }
 	PxShape* GetBoxShape() const { return m_pShape; }
+	PxController* GetController() const { return m_pController; }
 
 protected:
 	void Initialize(const SceneContext& sceneContext) override;

@@ -24,12 +24,20 @@ private:
 	float m_VelocityMagnitudeSqr;
 	float m_TimeSinceZeroVelocity;
 
-	float m_TimeThreshold{3.0f};
+	float m_TimeThreshold{2.0f};
 	float m_VelocityThreshold{ 0.1f };
+
+	float m_ZeroVelocityShootCooldown{ 1.0f };
+	float m_NormalShootCooldown{ 2.0f };
+	float m_CurrentShootCooldown{ 0.0f };
 
 	PxRigidBody* m_pRigidBody{};
 
 	void Move(const XMFLOAT2& dir, float deltaTime);
 	void ChangeDirection();
+	void Shoot();
+
+	float m_DestructionTimer{ 1.0f };
+	float m_CurrentDestructionTimer{};
 };
 
