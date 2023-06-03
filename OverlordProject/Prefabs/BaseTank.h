@@ -1,4 +1,5 @@
 #pragma once
+class Hatch;
 struct TankDesc
 {
 	TankDesc(
@@ -28,7 +29,7 @@ struct TankDesc
 class BaseTank : public GameObject
 {
 public:
-	BaseTank(const XMFLOAT3& startLoc, const XMFLOAT3& startRot, const TankDesc& tankDesc, GameScene* gameScene);
+	BaseTank(Hatch* pSpawnHatch, const XMFLOAT3& startRot, const TankDesc& tankDesc, GameScene* gameScene);
 	~BaseTank() override = default;
 
 	BaseTank(const BaseTank& other) = delete;
@@ -42,8 +43,9 @@ protected:
 	virtual void Initialize(const SceneContext& /*sceneContext*/) override {};
 	virtual void Update(const SceneContext&) override {};
 
-	XMFLOAT3 m_StartLocation;
+	Hatch* m_pHatch;
 	XMFLOAT3 m_StartRotation;
+	XMFLOAT3 m_StartLocation;
 
 	ModelComponent* m_pModelComponent{};
 	ModelAnimator* m_pAnimator{};

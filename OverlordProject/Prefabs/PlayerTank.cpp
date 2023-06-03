@@ -4,9 +4,10 @@
 #include "Components/BoxControllerComponent.h"
 #include "Prefabs/Shell.h"
 #include "Components/MuzzleComponent.h"
+#include "Hatch.h"
 
-PlayerTank::PlayerTank(const XMFLOAT3& startLoc, const XMFLOAT3& startRot,const TankDesc& tankDesc, GameScene* gameScene):
-	BaseTank(startLoc,startRot,tankDesc,gameScene)
+PlayerTank::PlayerTank(Hatch* pspawnHatch, const XMFLOAT3& startRot,const TankDesc& tankDesc, GameScene* gameScene):
+	BaseTank(pspawnHatch,startRot,tankDesc,gameScene)
 {
 	m_TankDesc.actionId_MoveForward = MoveForward;
 	m_TankDesc.actionId_MoveBackward = MoveBackward;

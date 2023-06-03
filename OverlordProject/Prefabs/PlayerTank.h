@@ -3,7 +3,7 @@
 class PlayerTank : public BaseTank
 {
 public:
-	PlayerTank(const XMFLOAT3& startLoc, const XMFLOAT3& startRot,const TankDesc& tankDesc, GameScene* gameScene);
+	PlayerTank(Hatch* pspawnHatch, const XMFLOAT3& startRot,const TankDesc& tankDesc, GameScene* gameScene);
 	~PlayerTank() override = default;
 
 	PlayerTank(const PlayerTank& other) = delete;

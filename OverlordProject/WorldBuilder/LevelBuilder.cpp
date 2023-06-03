@@ -165,7 +165,7 @@ void LevelBuilder::BuildNextLevel()
 						auto hatch = new Hatch(currentPos, XMFLOAT3{ 0.0f,0.0f,0.0f },m_TileSize, L"Meshes/Door.ovm");
 						hatch->CreateMaterial(L"Textures/door/doorDiffuseEnemy.png", L"Textures/door/doorNormal.png");
 						m_pGameScene->AddChild(hatch);
-						m_EnemySpawnLocations.push_back(currentPos);
+						m_pEnemySpawnHatches.push_back(hatch);
 					}
 					break;
 				case TileTypes::PlayerSpawn:
@@ -173,7 +173,7 @@ void LevelBuilder::BuildNextLevel()
 					auto hatch = new Hatch(currentPos, XMFLOAT3{ 0.0f,0.0f,0.0f },m_TileSize, L"Meshes/Door.ovm");
 					hatch->CreateMaterial(L"Textures/door/doorDiffusePlayer.png", L"Textures/door/doorNormal.png");
 					m_pGameScene->AddChild(hatch);
-					m_PlayerSpawnLocation = currentPos;			
+					m_pPlayerSpawnHatch = hatch;			
 				}
 				break;
 				}
@@ -186,14 +186,14 @@ void LevelBuilder::BuildNextLevel()
 	}
 }
 
-std::vector<XMFLOAT3> LevelBuilder::GetEnemyStartLocations() const
+std::vector<Hatch*> LevelBuilder::GetEnemyStartHatches() const
 {
-	return m_EnemySpawnLocations;
+	return m_pEnemySpawnHatches;
 }
 
-XMFLOAT3 LevelBuilder::GetPlayerStartLocation() const
+Hatch* LevelBuilder::GetPlayerStartHatch() const
 {
-	return m_PlayerSpawnLocation;
+	return m_pPlayerSpawnHatch;
 }
 
 

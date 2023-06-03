@@ -3,10 +3,11 @@
 #include "Materials/Shadow/DiffuseMaterial_Shadow_Skinned.h"
 #include "Prefabs/Shell.h"
 #include "Components/BoxControllerComponent.h"
+#include "Hatch.h"
 #include <random>
 
-EnemyTank::EnemyTank(const XMFLOAT3& startLoc, const XMFLOAT3& startRot, const TankDesc& tankDesc, GameScene* gameScene):
-	BaseTank(startLoc, startRot, tankDesc, gameScene)
+EnemyTank::EnemyTank(Hatch* pSpawnHatch, const XMFLOAT3& startRot, const TankDesc& tankDesc, GameScene* gameScene):
+	BaseTank(pSpawnHatch, startRot, tankDesc, gameScene)
 {
 }
 
