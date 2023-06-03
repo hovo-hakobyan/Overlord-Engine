@@ -5,11 +5,12 @@
 
 
 
-Shell::Shell(const XMFLOAT3& loc, const XMFLOAT3& rot, const XMFLOAT3& dir, GameScene* parent):
+Shell::Shell(const XMFLOAT3& loc, const XMFLOAT3& rot, const XMFLOAT3& dir, GameScene* parent, const std::wstring& parentTag):
 	m_Location{loc},
 	m_Rotation{rot},
 	m_Direction{dir},
-	m_pParent{parent}
+	m_pParent{parent},
+	m_ParentTag{parentTag}
 {
 
 }
@@ -49,7 +50,21 @@ void Shell::Initialize(const SceneContext&)
 				}
 				else if (other->GetTag().compare(L"Enemy") == 0)
 				{
-					std::cout << "hit tank";
+					//to prevent friendly fire amongst enemies
+					if (m_ParentTag.compare(other->GetTag()) != 0)
+					{
+						m_pHitObject = other->GetParent();
+						auto tank = static_cast<BaseTank*>(m_pHitObject);
+						if (tank)
+						{
+							tank->IsDead(true);
+							m_pHitObject = nullptr;
+						}
+					}
+					
+				}
+				else if (other->GetTag().compare(L"Friendly") == 0)
+				{
 					m_pHitObject = other->GetParent();
 					auto tank = static_cast<BaseTank*>(m_pHitObject);
 					if (tank)
@@ -57,11 +72,6 @@ void Shell::Initialize(const SceneContext&)
 						tank->IsDead(true);
 						m_pHitObject = nullptr;
 					}
-				}
-				else if (other->GetTag().compare(L"Friendly") == 0)
-				{
-					std::cout << "Game Ended" << std::endl;
-					
 				}
 				m_IsEnabled = false;
 			}

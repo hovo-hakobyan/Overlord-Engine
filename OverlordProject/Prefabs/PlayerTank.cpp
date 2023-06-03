@@ -57,11 +57,27 @@ void PlayerTank::Initialize(const SceneContext& sceneContext)
 	m_pBoxControllerComponent->SetCollisionGroup(CollisionGroup::Group5);
 	m_pBoxControllerComponent->SetCollisionIgnoreGroup(CollisionGroup::Group7);
 
-	SetTag(L"Friendly");
+	m_pColliderGameObj = new GameObject();
+	AddChild(m_pColliderGameObj);
+
+	auto pxMat = PxGetPhysics().createMaterial(1.0f, 1.0f, 0.f);
+	PxBoxGeometry Geo{ 0.5f,0.3f,0.5f };
+	m_pColliderGameObj->GetTransform()->Translate(m_StartLocation.x, 1.f, m_StartLocation.z);
+
+	m_pCollider = m_pColliderGameObj->AddComponent(new RigidBodyComponent(true));
+	m_pCollider->AddCollider(Geo, *pxMat);
+
+	m_pColliderGameObj->SetTag(L"Friendly");
+	m_IsDead = false;
+
 }
 
 void PlayerTank::Update(const SceneContext& sceneContext)
 {
+	if (m_IsDead)
+	{
+		return;
+	}
 	constexpr float epsilon = 0.01f;
 	XMFLOAT2 move = { 0.0f,0.0f };
 
@@ -103,6 +119,8 @@ void PlayerTank::Update(const SceneContext& sceneContext)
 		m_MoveSpeed = m_MoveSpeed >= m_TankDesc.maxMoveSpeed ? m_TankDesc.maxMoveSpeed : m_MoveSpeed;
 		XMFLOAT3 displacement = { m_MoveSpeed * move.x * deltaTime,0.0f,0.0f };
 		m_pBoxControllerComponent->Move(displacement);
+		auto tankPos = pTransform->GetPosition();
+		m_pCollider->GetTransform()->Translate(tankPos.x,1.f, tankPos.z);
 
 	}
 	else if (fabs(move.y) > epsilon)
@@ -111,6 +129,8 @@ void PlayerTank::Update(const SceneContext& sceneContext)
 		m_MoveSpeed = m_MoveSpeed >= m_TankDesc.maxMoveSpeed ? m_TankDesc.maxMoveSpeed : m_MoveSpeed;
 		XMFLOAT3 displacement = {0.0f,0.0f, m_MoveSpeed * move.y * deltaTime };
 		m_pBoxControllerComponent->Move(displacement);
+		auto tankPos = pTransform->GetPosition();
+		m_pCollider->GetTransform()->Translate(tankPos.x, 1.f, tankPos.z);
 	}
 	
 	m_CurrentShootCooldown += deltaTime;
@@ -122,7 +142,7 @@ void PlayerTank::Update(const SceneContext& sceneContext)
 		XMFLOAT3 dir = pTransform->GetForward();
 		dir.x *= -1;
 		dir.z *= -1;
-		auto pShell = new Shell(XMFLOAT3{loc.x + spawnDistance * dir.x,loc.y ,loc.z + spawnDistance * dir.z }, XMFLOAT3{ -90.0f * dir.x,-90.0f,-90.0f * dir.z }, dir, m_pGameScene);
+		auto pShell = new Shell(XMFLOAT3{loc.x + spawnDistance * dir.x,1.0f ,loc.z + spawnDistance * dir.z }, XMFLOAT3{ -90.0f * dir.x,-90.0f,-90.0f * dir.z }, dir, m_pGameScene,m_pColliderGameObj->GetTag());
 		m_pGameScene->AddChild(pShell);
 
 		m_CurrentShootCooldown = 0.0f;

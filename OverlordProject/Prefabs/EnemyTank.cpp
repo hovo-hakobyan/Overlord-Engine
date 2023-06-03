@@ -43,11 +43,12 @@ void EnemyTank::Initialize(const SceneContext&)
 	AddChild(m_pColliderGameObj);
 
 	auto pxMat = PxGetPhysics().createMaterial(1.0f, 1.0f, 0.f);
-	PxBoxGeometry Geo{0.5f,0.4f,0.5f};
+	PxBoxGeometry Geo{0.5f,0.3f,0.5f};
+	m_pColliderGameObj->GetTransform()->Translate(m_StartLocation.x, 0.8f, m_StartLocation.z);
+
 
 	m_pCollider = m_pColliderGameObj->AddComponent(new RigidBodyComponent(true));
 	m_pCollider->AddCollider(Geo, *pxMat);
-	//m_pCollider->SetCollisionIgnoreGroups(CollisionGroup::Group0);
 
 	m_pColliderGameObj->SetTag(L"Enemy");
 	m_IsDead = false;
@@ -65,7 +66,7 @@ void EnemyTank::Update(const SceneContext& sceneContext)
 		m_pGameScene->RemoveChild(this, true);
 		return;
 	}
-	
+
 	float deltaTime = sceneContext.pGameTime->GetElapsed();
 	XMFLOAT2 move = { 0.0f,0.0f };
 	auto pTransform = GetTransform();
@@ -103,8 +104,10 @@ void EnemyTank::Update(const SceneContext& sceneContext)
 		m_TimeSinceZeroVelocity += deltaTime;
 		if (m_TimeSinceZeroVelocity > m_TimeThreshold)
 		{
+			
 			ChangeDirection();
 			m_TimeSinceZeroVelocity = 0.0f;
+			m_CurrentShootCooldown = 0.0f;
 		}
 
 		if (m_CurrentShootCooldown >= m_ZeroVelocityShootCooldown)
@@ -135,15 +138,22 @@ void EnemyTank::Move(const XMFLOAT2& dir, float deltaTime)
 	XMFLOAT3 displacement{ dir.x * m_MoveSpeed * deltaTime,0.0f,dir.y * m_MoveSpeed * deltaTime };
 	m_pBoxControllerComponent->Move(displacement);
 	auto tankPos = GetTransform()->GetPosition();
-	m_pCollider->GetTransform()->Translate(tankPos.x, tankPos.y + 0.6f, tankPos.z);
+	m_pCollider->GetTransform()->Translate(tankPos.x, 1.f, tankPos.z);
 
 }
 
 void EnemyTank::ChangeDirection()
 {
-	std::vector<Direction> directions = { Direction::Left, Direction::Right, Direction::Up, Direction::Down };
+	//Some randomess to left / right if down is not possible
+	std::deque<Direction> directions = { Direction::Left, Direction::Right};
 	std::shuffle(directions.begin(), directions.end(), std::random_device());
 	
+	//We prioritize going down
+	directions.push_front(Direction::Down);
+
+	//We only want to go up if there is nowhere else to go
+	directions.push_back(Direction::Up);
+
 	PxVec3 unitDirections[] = {
 	   PxVec3(-1.0f, 0.0f, 0.0f),  // Left
 	   PxVec3(1.0f, 0.0f, 0.0f),   // Right
@@ -153,12 +163,16 @@ void EnemyTank::ChangeDirection()
 
 	PxScene* pxScene = m_pGameScene->GetPhysxProxy()->GetPhysxScene();
 	auto tankPos = GetTransform()->GetPosition();
-	PxVec3 origin = PxVec3{ tankPos.x,tankPos.y + 0.5f,tankPos.z };
+	PxVec3 origin = PxVec3{ tankPos.x, 2.0f,tankPos.z };
 	PxRaycastBuffer hit;
 	PxReal maxDistance = 1.0f;
 
 	for (int i = 0; i < directions.size(); i++)
 	{
+		if (directions[i] == m_Direction)
+		{
+			continue;
+		}
 		PxVec3 dir;
 		switch (directions[i])
 		{
@@ -183,6 +197,7 @@ void EnemyTank::ChangeDirection()
 			m_Direction = directions[i];
 			break;
 		}
+		
 	}
 }
 
@@ -193,7 +208,7 @@ void EnemyTank::Shoot()
 	XMFLOAT3 dir = GetTransform()->GetForward();
 	dir.x *= -1;
 	dir.z *= -1;
-	auto pShell = new Shell(XMFLOAT3{ loc.x + spawnDistance * dir.x,loc.y,loc.z + spawnDistance * dir.z }, XMFLOAT3{ -90.0f * dir.x,-90.0f,-90.0f * dir.z }, dir, m_pGameScene);
+	auto pShell = new Shell(XMFLOAT3{ loc.x + spawnDistance * dir.x,1.0f,loc.z + spawnDistance * dir.z }, XMFLOAT3{ -90.0f * dir.x,-90.0f,-90.0f * dir.z }, dir, m_pGameScene,m_pColliderGameObj->GetTag());
 	m_pGameScene->AddChild(pShell);
 }
 

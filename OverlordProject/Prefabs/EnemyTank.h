@@ -37,7 +37,5 @@ private:
 	void ChangeDirection();
 	void Shoot();
 
-	float m_DestructionTimer{ 1.0f };
-	float m_CurrentDestructionTimer{};
 };
 
