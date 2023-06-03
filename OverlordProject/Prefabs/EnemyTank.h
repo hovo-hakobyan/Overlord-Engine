@@ -30,5 +30,6 @@ private:
 	PxRigidBody* m_pRigidBody{};
 
 	void Move(const XMFLOAT2& dir, float deltaTime);
+	void ChangeDirection();
 };
 

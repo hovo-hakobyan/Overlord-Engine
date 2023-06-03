@@ -3,6 +3,7 @@
 #include "Materials/Shadow/DiffuseMaterial_Shadow_Skinned.h"
 #include "Prefabs/Shell.h"
 #include "Components/BoxControllerComponent.h"
+#include <random>
 
 EnemyTank::EnemyTank(const XMFLOAT3& startLoc, const XMFLOAT3& startRot, const TankDesc& tankDesc, GameScene* gameScene):
 	BaseTank(startLoc, startRot, tankDesc, gameScene)
@@ -78,6 +79,7 @@ void EnemyTank::Update(const SceneContext& sceneContext)
 
 		if (m_TimeSinceZeroVelocity > m_TimeThreshold)
 		{
+			ChangeDirection();
 			m_TimeSinceZeroVelocity = 0.0f;
 		}
 	}
@@ -95,3 +97,54 @@ void EnemyTank::Move(const XMFLOAT2& dir, float deltaTime)
 	XMFLOAT3 displacement{ dir.x * m_MoveSpeed * deltaTime,0.0f,dir.y * m_MoveSpeed * deltaTime };
 	m_pBoxControllerComponent->Move(displacement);
 }
+
+void EnemyTank::ChangeDirection()
+{
+	std::vector<Direction> directions = { Direction::Left, Direction::Right, Direction::Up, Direction::Down };
+	std::shuffle(directions.begin(), directions.end(), std::random_device());
+	
+	PxVec3 unitDirections[] = {
+	   PxVec3(-1.0f, 0.0f, 0.0f),  // Left
+	   PxVec3(1.0f, 0.0f, 0.0f),   // Right
+	   PxVec3(0.0f, 0.0f, 1.0f),   // Forward
+	   PxVec3(0.0f, 0.0f, -1.0f)   // Backward
+	};
+
+	PxScene* pxScene = m_pGameScene->GetPhysxProxy()->GetPhysxScene();
+	auto tankPos = GetTransform()->GetPosition();
+	PxVec3 origin = PxVec3{ tankPos.x,tankPos.y + 0.5f,tankPos.z };
+	PxRaycastBuffer hit;
+	PxReal maxDistance = 1.0f;
+
+	for (int i = 0; i < directions.size(); i++)
+	{
+		PxVec3 dir;
+		switch (directions[i])
+		{
+		case Direction::Left:
+			dir = unitDirections[0];
+			break;
+		case Direction::Right:
+			dir = unitDirections[1];
+			break;
+		case Direction::Up:
+			dir = unitDirections[2];
+			break;
+		case Direction::Down:
+			dir = unitDirections[3];
+			break;
+
+		}
+
+		bool hasHit = pxScene->raycast(origin, dir, maxDistance, hit);
+		if (!hasHit) //this direction is free
+		{
+			m_Direction = directions[i];
+			break;
+		}
+	}
+}
+
+	
+	
+	
