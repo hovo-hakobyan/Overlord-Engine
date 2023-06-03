@@ -47,6 +47,8 @@
     <ClCompile Include="Prefabs\PlayerTank.cpp" />
     <ClCompile Include="Prefabs\BrickWall.cpp" />
     <ClCompile Include="Prefabs\Shell.cpp" />
+    <ClCompile Include="Prefabs\EnemyTank.cpp" />
+    <ClCompile Include="Prefabs\BaseTank.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h" />
@@ -115,5 +117,7 @@
     <ClInclude Include="Prefabs\PlayerTank.h" />
     <ClInclude Include="Prefabs\BrickWall.h" />
     <ClInclude Include="Prefabs\Shell.h" />
+    <ClInclude Include="Prefabs\EnemyTank.h" />
+    <ClInclude Include="Prefabs\BaseTank.h" />
   </ItemGroup>
 </Project>

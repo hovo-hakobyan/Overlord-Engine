@@ -1,16 +1,12 @@
 #include "stdafx.h"
 #include "PlayerTank.h"
-#include "Materials/DiffuseMaterial_Skinned.h"
+#include "Materials/Shadow/DiffuseMaterial_Shadow_Skinned.h"
 #include "Components/BoxControllerComponent.h"
 #include "Prefabs/Shell.h"
 #include "Components/MuzzleComponent.h"
 
 PlayerTank::PlayerTank(const XMFLOAT3& startLoc, const XMFLOAT3& startRot,const TankDesc& tankDesc, GameScene* gameScene):
-	m_StartLocation{startLoc},
-	m_StartRotation{startRot},
-	m_TankDesc{tankDesc},
-	m_MoveAcceleration{tankDesc.maxMoveSpeed / tankDesc.moveAccelerationTime},
-	m_pGameScene{gameScene}
+	BaseTank(startLoc,startRot,tankDesc,gameScene)
 {
 	m_TankDesc.actionId_MoveForward = MoveForward;
 	m_TankDesc.actionId_MoveBackward = MoveBackward;
@@ -26,7 +22,7 @@ void PlayerTank::Initialize(const SceneContext& sceneContext)
 	AddComponent(m_pModelComponent);
 
 	//Material
-	m_pMaterial = MaterialManager::Get()->CreateMaterial<DiffuseMaterial_Skinned>();
+	m_pMaterial = MaterialManager::Get()->CreateMaterial<DiffuseMaterial_Shadow_Skinned>();
 	m_pMaterial->SetDiffuseTexture(L"Textures/tank/tank2Diffuse.png");
 	m_pModelComponent->SetMaterial(m_pMaterial);
 
@@ -57,8 +53,9 @@ void PlayerTank::Initialize(const SceneContext& sceneContext)
 	//Controller
 	m_pBoxControllerComponent = AddComponent(new BoxControllerComponent(m_TankDesc.controller));
 	m_pBoxControllerComponent->Translate(XMFLOAT3{m_StartLocation.x,m_StartLocation.y + m_TankDesc.controller.halfHeight ,m_StartLocation.z});
+	m_pBoxShape = m_pBoxControllerComponent->GetBoxShape();
 
-	SetTag(L"Destructible");
+	SetTag(L"Friendly");
 }
 
 void PlayerTank::Update(const SceneContext& sceneContext)
@@ -66,34 +63,33 @@ void PlayerTank::Update(const SceneContext& sceneContext)
 	constexpr float epsilon = 0.01f;
 	XMFLOAT2 move = { 0.0f,0.0f };
 
-	auto pBoxShape = m_pBoxControllerComponent->GetBoxShape();
 	auto pTransform = GetTransform();
 	if (sceneContext.pInput->IsActionTriggered(MoveForward))
 	{
 		move.y = 1;
 		pTransform->Rotate(0.0f, 180.0f, 0.0f, true);
-		pBoxShape->setLocalPose(PxTransform{ PxQuat{0.0f,PxVec3{1,0,0}} });
+		m_pBoxShape->setLocalPose(PxTransform{ PxQuat{0.0f,PxVec3{1,0,0}} });
 
 	}
 	else if (sceneContext.pInput->IsActionTriggered(MoveBackward))
 	{
 		move.y = -1;
 		pTransform->Rotate(0.0f, 0.0f, 0.0f, true);
-		pBoxShape->setLocalPose(PxTransform{ PxQuat{3.14159f,PxVec3{1,0,0}} });
+		m_pBoxShape->setLocalPose(PxTransform{ PxQuat{3.14159f,PxVec3{1,0,0}} });
 	}
 
 	if (sceneContext.pInput->IsActionTriggered(MoveRight))
 	{
 		move.x = 1;
 		pTransform->Rotate(0.0f, 270.0f, 0.0f, true);
-		pBoxShape->setLocalPose(PxTransform{ PxQuat{1.5708f,PxVec3{1,0,0}} });
+		m_pBoxShape->setLocalPose(PxTransform{ PxQuat{1.5708f,PxVec3{1,0,0}} });
 
 	}
 	else if (sceneContext.pInput->IsActionTriggered(MoveLeft))
 	{
 		move.x = -1;
 		pTransform->Rotate(0.0f, 90.0f, 0.0f, true);
-		pBoxShape->setLocalPose(PxTransform{ PxQuat{1.5708f,PxVec3{1,0,0}} });
+		m_pBoxShape->setLocalPose(PxTransform{ PxQuat{1.5708f,PxVec3{1,0,0}} });
 	}
 
 	float deltaTime = sceneContext.pGameTime->GetElapsed();

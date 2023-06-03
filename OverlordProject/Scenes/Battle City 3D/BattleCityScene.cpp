@@ -2,6 +2,7 @@
 #include "BattleCityScene.h"
 #include "WorldBuilder/LevelBuilder.h"
 #include "Prefabs/PlayerTank.h"
+#include "Prefabs/EnemyTank.h"
 
 BattleCityScene::BattleCityScene():
 	GameScene(L"Battle City")
@@ -34,6 +35,11 @@ void BattleCityScene::Initialize()
 	auto pPlayerTank = new PlayerTank(m_pLevelBuilder->GetPlayerStartLocation(), XMFLOAT3{0.0f,180.0f,0.0f}, tankDesc,this);
 	AddChild(pPlayerTank);
 
+	//Enemy test
+	TankDesc enemyDesc{ pDefaultMaterial };
+	auto enemyLoc = m_pLevelBuilder->GetEnemyStartLocations();
+	auto pEnemyTank = new EnemyTank(enemyLoc[1], XMFLOAT3{ 0.0f,0.0f,0.0f }, enemyDesc, this);
+	AddChild(pEnemyTank);
 }
 
 void BattleCityScene::Update()
