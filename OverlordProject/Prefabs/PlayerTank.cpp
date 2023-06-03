@@ -156,6 +156,18 @@ void PlayerTank::Update(const SceneContext& sceneContext)
 		m_pGameScene->AddChild(pShell);
 
 		m_CurrentShootCooldown = 0.0f;
+		m_pAnimator->SetAnimation(0);
+		m_pAnimator->SetAnimationSpeed(3.0f);
+		m_pAnimator->Play();
 	}	
 	
+	if (m_pAnimator->IsPlaying())
+	{
+		m_CurrentAnimTime += deltaTime;
+		if (m_CurrentAnimTime >= m_AnimResetTime)
+		{
+			m_pAnimator->Reset();
+			m_CurrentAnimTime = 0.0f;
+		}
+	}
 }

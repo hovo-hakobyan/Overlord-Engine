@@ -7,6 +7,7 @@
 #include "Materials/Shadow/DiffuseMaterial_Shadow.h"
 #include "Prefabs/Hatch.h"
 #include "Prefabs/BrickWall.h"
+#include "Prefabs/Nest.h"
 
 
 
@@ -176,6 +177,10 @@ void LevelBuilder::BuildNextLevel()
 					m_pPlayerSpawnHatch = hatch;			
 				}
 				break;
+				case TileTypes::Base:
+					auto nest = new Nest(currentPos);
+					m_pGameScene->AddChild(nest);
+					break;
 				}
 			
 			}

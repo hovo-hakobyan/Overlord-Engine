@@ -22,7 +22,7 @@ void EnemyTank::Initialize(const SceneContext&)
 
 	//Material
 	m_pMaterial = MaterialManager::Get()->CreateMaterial<DiffuseMaterial_Shadow_Skinned>();
-	m_pMaterial->SetDiffuseTexture(L"Textures/tank/tank2Diffuse.png");
+	m_pMaterial->SetDiffuseTexture(L"Textures/tank/tank1Diffuse.png");
 	m_pModelComponent->SetMaterial(m_pMaterial);
 
 	auto pTransform = GetTransform();

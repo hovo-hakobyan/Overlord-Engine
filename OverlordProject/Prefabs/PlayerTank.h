@@ -18,5 +18,7 @@ private:
 	float m_MaxShootCooldown{ 1.0f };
 	float m_CurrentShootCooldown{ 1.0f };
 
+	float m_AnimResetTime{ .5f };
+	float m_CurrentAnimTime{};
 };
 
