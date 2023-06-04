@@ -10,6 +10,7 @@
 EnemyTank::EnemyTank(const XMFLOAT3& loc, const XMFLOAT3& startRot, const TankDesc& tankDesc, BattleCityScene* gameScene):
 	BaseTank(loc, startRot, tankDesc, gameScene)
 {
+	++EnemyCounter;
 }
 
 
@@ -69,9 +70,9 @@ void EnemyTank::Update(const SceneContext& sceneContext)
 		m_pBoxShape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
 		m_pBoxControllerComponent->Translate(XMFLOAT3{ 0.0f,m_pBoxControllerComponent->GetTransform()->GetPosition().y + 100.0f,0.0f});
 		m_pGameScene->RemoveChild(this, true);
+		--EnemyCounter;
 		return;
 	}
-	
 	
 
 	float deltaTime = sceneContext.pGameTime->GetElapsed();

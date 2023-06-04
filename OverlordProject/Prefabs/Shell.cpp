@@ -58,7 +58,7 @@ void Shell::Initialize(const SceneContext&)
 						auto tank = static_cast<BaseTank*>(m_pHitObject);
 						if (tank)
 						{
-							tank->IsDead(true);
+							tank->SetIsDead(true);
 							
 						}
 						m_pHitObject = nullptr;
@@ -74,7 +74,7 @@ void Shell::Initialize(const SceneContext&)
 						auto tank = static_cast<BaseTank*>(m_pHitObject);
 						if (tank)
 						{
-							tank->IsDead(true);
+							tank->SetIsDead(true);
 							m_pParent->SetGameState(CurrentGameState::Defeat);
 						}
 						m_pHitObject = nullptr;

@@ -17,6 +17,7 @@ EnemySpawner::EnemySpawner(std::vector<Hatch*> pHatches, int nrEnemiesToSpawn, B
 
 	std::random_device rd;
 	m_Generator.seed(rd());
+	m_pSpawnedEnemies.reserve(nrEnemiesToSpawn);
 }
 
 void EnemySpawner::Initialize(const SceneContext&)
@@ -30,6 +31,7 @@ void EnemySpawner::Update(const SceneContext& sceneContext)
 	{
 		return;
 	}
+
 	float deltaTime = sceneContext.pGameTime->GetElapsed();
 	m_CurrentSpawnCooldown += deltaTime;
 	if (m_CurrentSpawnCooldown >= m_MaxSpawnCooldown)
@@ -46,6 +48,10 @@ void EnemySpawner::Update(const SceneContext& sceneContext)
 				m_MaxSpawnCooldown -= m_CooldownDecrease;
 			}
 		}
+		else
+		{
+			CheckForVictory();
+		}
 	}
 }
 
@@ -53,12 +59,20 @@ void EnemySpawner::SpawnEnemy()
 {
 	std::uniform_int_distribution<int> distribution(0, static_cast<int>(m_SpawnLocations.size()) - 1);
 	int randomIndex = distribution(m_Generator);
-	std::cout << "Current enemy: " << m_CurrentEnemiesSpawned << " idx: " << randomIndex << std::endl;
 	auto spawnLocation = m_SpawnLocations[randomIndex];
 	
 	//Enemy test
 	TankDesc enemyDesc{ m_pPxMat };
 	auto pEnemyTank = new EnemyTank(spawnLocation, XMFLOAT3{ 0.0f,0.0f,0.0f }, enemyDesc, m_pGameScene);
 	m_pGameScene->AddChild(pEnemyTank);
+	m_pSpawnedEnemies.push_back(pEnemyTank);
 	
+}
+
+void EnemySpawner::CheckForVictory()
+{
+	if (BaseTank::EnemyCounter == 0)
+	{
+		m_pGameScene->SetGameState(CurrentGameState::Victory);
+	}
 }

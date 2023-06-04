@@ -37,7 +37,10 @@ public:
 	BaseTank& operator=(const BaseTank& other) = delete;
 	BaseTank& operator=(BaseTank&& other) = delete;
 
-	void IsDead(bool isDead) { m_IsDead = isDead; }
+	void SetIsDead(bool isDead) { m_IsDead = isDead; }
+	bool GetIsDead() const { return m_IsDead; }
+
+	static int EnemyCounter;
 
 protected:
 	virtual void Initialize(const SceneContext& /*sceneContext*/) override {};
