@@ -73,6 +73,8 @@ protected:
 	GameObject* m_pColliderGameObj{};
 	bool m_IsDead{ false };
 
+	
+	
 private:
 };
 

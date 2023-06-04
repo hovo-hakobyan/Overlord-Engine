@@ -5,6 +5,7 @@
 #include "Prefabs/EnemyTank.h"
 #include "WorldBuilder/EnemySpawner.h"
 #include "Prefabs/Hatch.h"
+#include "WorldBuilder/ShellManager.h"
 
 BattleCityScene::BattleCityScene():
 	GameScene(L"Battle City")
@@ -44,6 +45,8 @@ void BattleCityScene::Initialize()
 	m_pEnemySpawner = new EnemySpawner(enemyHatches, 20);
 	AddChild(m_pEnemySpawner);
 
+	m_pShellManager = new ShellManager();
+	AddChild(m_pShellManager);
 }
 
 void BattleCityScene::Update()

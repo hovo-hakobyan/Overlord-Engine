@@ -30,8 +30,6 @@ private:
 	std::mt19937 m_Generator{};
 	PxMaterial* m_pPxMat{};
 
-	std::vector<class EnemyTank*> m_pSpawnedEnemies{};
-
 	void CheckForVictory();
 };
 

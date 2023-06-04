@@ -6,6 +6,7 @@
 #include "Components/MuzzleComponent.h"
 #include "Hatch.h"
 #include "Scenes/Battle City 3D/BattleCityScene.h"
+#include "WorldBuilder/ShellManager.h"
 
 PlayerTank::PlayerTank(const XMFLOAT3& loc, const XMFLOAT3& startRot,const TankDesc& tankDesc):
 	BaseTank(loc,startRot,tankDesc)
@@ -16,6 +17,7 @@ PlayerTank::PlayerTank(const XMFLOAT3& loc, const XMFLOAT3& startRot,const TankD
 	m_TankDesc.actionId_MoveRight = MoveRight;
 	m_TankDesc.actionId_Shoot = Shoot;
 }
+
 
 
 void PlayerTank::Initialize(const SceneContext& sceneContext)
@@ -30,11 +32,7 @@ void PlayerTank::Initialize(const SceneContext& sceneContext)
 	m_pMaterial->SetDiffuseTexture(L"Textures/tank/tank2Diffuse.png");
 	m_pModelComponent->SetMaterial(m_pMaterial);
 
-	auto pTransform = GetTransform();
-	XMFLOAT3 tankSize{ 0.2f,0.2f,0.2f};
-	pTransform->Rotate(m_StartRotation);
-	pTransform->Scale(tankSize);
-	pTransform->Translate(m_StartLocation);
+	
 
 	m_pAnimator = m_pModelComponent->GetAnimator();
 
@@ -74,6 +72,12 @@ void PlayerTank::Initialize(const SceneContext& sceneContext)
 	m_pColliderGameObj->SetTag(L"Friendly");
 	SetTag(L"Friendly");
 	m_IsDead = false;
+
+	auto pTransform = GetTransform();
+	XMFLOAT3 tankSize{ 0.2f,0.2f,0.2f };
+	pTransform->Rotate(m_StartRotation);
+	pTransform->Scale(tankSize);
+	pTransform->Translate(m_StartLocation);
 
 }
 
@@ -172,22 +176,30 @@ void PlayerTank::Update(const SceneContext& sceneContext)
 	
 	m_CurrentShootCooldown += deltaTime;
 	//Shooting
-	if (sceneContext.pInput->IsActionTriggered(Shoot) && m_CurrentShootCooldown >=m_MaxShootCooldown)
+	if (sceneContext.pInput->IsActionTriggered(Shoot))
 	{
-		constexpr float spawnDistance = 1.0f;
-		auto loc = pTransform->GetWorldPosition();
-		XMFLOAT3 dir = pTransform->GetForward();
-		dir.x *= -1;
-		dir.z *= -1;
-		auto pShell = new Shell(XMFLOAT3{loc.x + spawnDistance * dir.x,1.0f ,loc.z + spawnDistance * dir.z }, XMFLOAT3{ -90.0f * dir.x,-90.0f,-90.0f * dir.z }, dir, this,m_pColliderGameObj->GetTag());
-		m_pGameScene->AddChild(pShell);
+		if (m_CurrentShootCooldown >= m_MaxShootCooldown)
+		{
+			constexpr float spawnDistance = 1.f;
+			auto loc = pTransform->GetPosition();
+			
+			XMFLOAT3 dir = pTransform->GetForward();
+			dir.x *= -1;
+			dir.z *= -1;
+			auto finalLoc = XMFLOAT3{ loc.x + dir.x * spawnDistance,1.0f,loc.z + dir.z * spawnDistance };
+			auto finalRot = XMFLOAT3{ 0.0f,0.0f,0.0f };
+			m_pGameScene->GetShellManager()->SpawnShell(finalLoc,finalRot, dir, m_pColliderGameObj->GetTag());
 
-		m_CurrentShootCooldown = 0.0f;
-		m_pAnimator->SetAnimation(0);
-		m_pAnimator->SetAnimationSpeed(3.0f);
-		m_pAnimator->Play();
-	}	
-	
+			m_CurrentShootCooldown = 0.0f;
+			m_pAnimator->SetAnimation(0);
+			m_pAnimator->SetAnimationSpeed(3.0f);
+			m_pAnimator->Play();
+		}
+
+		
+		
+	}
+
 	if (m_pAnimator->IsPlaying())
 	{
 		m_CurrentAnimTime += deltaTime;
@@ -197,4 +209,6 @@ void PlayerTank::Update(const SceneContext& sceneContext)
 			m_CurrentAnimTime = 0.0f;
 		}
 	}
+
+
 }

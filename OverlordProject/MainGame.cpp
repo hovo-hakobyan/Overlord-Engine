@@ -99,8 +99,8 @@ void MainGame::OnGamePreparing(GameContext& gameContext)
 	//gameContext.windowHeight=... (default is 720)
 
 	//gameContext.windowTitle = L"GP2 - Milestone 1 (2023) | (2DAE13) Doe John";
-	gameContext.windowTitle = L"GP2 - Milestone 2 (2023) | (2DAE15) Hovhannes Hakobyan";
-	//gameContext.windowTitle = L"GP2 - Exam Project (2023) | (2DAE13) Doe John";
+	//gameContext.windowTitle = L"GP2 - Milestone 2 (2023) | (2DAE15) Hovhannes Hakobyan";
+	gameContext.windowTitle = L"GP2 - Exam Project (2023) | (2DAE15) Hovhannes Hakobyan";
 }
 
 void MainGame::Initialize()

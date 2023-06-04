@@ -6,6 +6,7 @@
 #include "Hatch.h"
 #include <random>
 #include "Scenes/Battle City 3D/BattleCityScene.h"
+#include "WorldBuilder/ShellManager.h"
 
 EnemyTank::EnemyTank(const XMFLOAT3& loc, const XMFLOAT3& startRot, const TankDesc& tankDesc):
 	BaseTank(loc, startRot, tankDesc)
@@ -217,12 +218,14 @@ void EnemyTank::ChangeDirection()
 void EnemyTank::Shoot()
 {
 	constexpr float spawnDistance = 1.0f;
-	auto loc = GetTransform()->GetWorldPosition();
+	auto loc = GetTransform()->GetPosition();
 	XMFLOAT3 dir = GetTransform()->GetForward();
 	dir.x *= -1;
 	dir.z *= -1;
-	auto pShell = new Shell(XMFLOAT3{ loc.x + spawnDistance * dir.x,1.0f,loc.z + spawnDistance * dir.z }, XMFLOAT3{ -90.0f * dir.x,-90.0f,-90.0f * dir.z }, dir, this,m_pColliderGameObj->GetTag());
-	AddChild(pShell);
+	auto finalLoc = XMFLOAT3{ loc.x + dir.x * spawnDistance,1.0f,loc.z + dir.z * spawnDistance };
+	auto finalRot = XMFLOAT3{ 0.0f,0.0f,0.0f };
+	m_pGameScene->GetShellManager()->SpawnShell(finalLoc, finalRot, dir, m_pColliderGameObj->GetTag());
+	
 }
 
 	

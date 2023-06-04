@@ -16,7 +16,6 @@ EnemySpawner::EnemySpawner(std::vector<Hatch*> pHatches, int nrEnemiesToSpawn):
 
 	std::random_device rd;
 	m_Generator.seed(rd());
-	m_pSpawnedEnemies.reserve(nrEnemiesToSpawn);
 }
 
 void EnemySpawner::Initialize(const SceneContext&)
@@ -65,7 +64,6 @@ void EnemySpawner::SpawnEnemy()
 	TankDesc enemyDesc{ m_pPxMat };
 	auto pEnemyTank = new EnemyTank(spawnLocation, XMFLOAT3{ 0.0f,0.0f,0.0f }, enemyDesc);
 	m_pGameScene->AddChild(pEnemyTank);
-	m_pSpawnedEnemies.push_back(pEnemyTank);
 	
 }
 

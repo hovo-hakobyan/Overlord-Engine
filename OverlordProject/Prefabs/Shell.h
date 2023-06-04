@@ -1,10 +1,9 @@
 #pragma once
-class BaseTank;
 class BattleCityScene;
 class Shell final : public GameObject
 {
 public:
-	Shell(const XMFLOAT3& shellLoc, const XMFLOAT3& rot,const XMFLOAT3& dir, BaseTank* parent,const std::wstring& parentTag);
+	Shell(const XMFLOAT3& pos, const XMFLOAT3& rot,const std::wstring& parentTag, const XMFLOAT3& dir);
 	~Shell() override = default;
 	Shell(const Shell& other) = delete;
 	Shell(Shell&& other) = delete;
@@ -14,22 +13,35 @@ protected:
 	virtual void Initialize(const SceneContext& sceneContext) override;
 	virtual void Update(const SceneContext&) override;
 private:
-	XMFLOAT3 m_Location;
-	XMFLOAT3 m_Rotation;
 	XMFLOAT3 m_Direction;
-	BaseTank* m_pParent;
+	XMFLOAT3 m_Loc;
+	XMFLOAT3 m_Rot;
+
 	class DiffuseMaterial_Shadow* m_pMat{};
 
-	float m_Lifetime{ 5.0f };
+	float m_Lifetime{ 6.0f };
 	float m_CurrentLifeTime{};
 
 	RigidBodyComponent* m_pRigidBody{};
 	GameObject* m_pHitObject{};
 	BattleCityScene* m_pGameScene{};
+	ModelComponent* m_pModelComponent{};
 
 	float m_Speed{ 50.0f };
 	bool m_IsEnabled = true;
+	bool m_IsDead = false;
 
 	std::wstring m_ParentTag{};
+
+	ParticleEmitterComponent* m_pShotParticleEmitter{};
+	ParticleEmitterComponent* m_pExplosionEmitter{};
+
+	float m_ParticleLifeTime{ 0.2f };
+	float m_DisabledLifetime{ 0.5f };
+	float m_CurrentDisabledTime{ 0.0f };
+
+	void Disable();
+
+	bool m_ShouldDisable = true;
 };
 

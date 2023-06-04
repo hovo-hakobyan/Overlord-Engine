@@ -20,5 +20,7 @@ private:
 
 	float m_AnimResetTime{ .5f };
 	float m_CurrentAnimTime{};
+
+	
 };
 

@@ -5,6 +5,7 @@ enum class CurrentGameState
 	Gameplay, Victory, Defeat
 };
 
+class ShellManager;
 class BattleCityScene final : public GameScene
 {
 public:
@@ -19,6 +20,7 @@ public:
 	void SetGameState(const CurrentGameState& gameState) { m_GameState = gameState; }
 	const CurrentGameState& GetGameState() const { return m_GameState; }
 
+	ShellManager* GetShellManager() const { return m_pShellManager; }
 	
 protected:
 	void Initialize() override;
@@ -30,8 +32,8 @@ protected:
 private:
 	class LevelBuilder* m_pLevelBuilder{};
 	class EnemySpawner* m_pEnemySpawner{};
-
-	;
+	ShellManager* m_pShellManager{};
+	
 	CurrentGameState m_GameState{ CurrentGameState::Gameplay };
 	class PlayerTank* m_pPlayerTank{};
 
