@@ -29,7 +29,7 @@ struct TankDesc
 class BaseTank : public GameObject
 {
 public:
-	BaseTank(const XMFLOAT3& loc, const XMFLOAT3& startRot, const TankDesc& tankDesc, BattleCityScene* gameScene);
+	BaseTank(const XMFLOAT3& loc, const XMFLOAT3& startRot, const TankDesc& tankDesc);
 	~BaseTank() override = default;
 
 	BaseTank(const BaseTank& other) = delete;

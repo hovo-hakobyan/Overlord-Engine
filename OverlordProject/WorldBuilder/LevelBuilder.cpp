@@ -178,7 +178,7 @@ void LevelBuilder::BuildNextLevel()
 				}
 				break;
 				case TileTypes::Base:
-					auto nest = new Nest(currentPos,m_pGameScene);
+					auto nest = new Nest(currentPos);
 					m_pGameScene->AddChild(nest);
 					break;
 				}

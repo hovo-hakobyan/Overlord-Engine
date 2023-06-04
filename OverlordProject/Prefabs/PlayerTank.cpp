@@ -7,8 +7,8 @@
 #include "Hatch.h"
 #include "Scenes/Battle City 3D/BattleCityScene.h"
 
-PlayerTank::PlayerTank(const XMFLOAT3& loc, const XMFLOAT3& startRot,const TankDesc& tankDesc, BattleCityScene* gameScene):
-	BaseTank(loc,startRot,tankDesc,gameScene)
+PlayerTank::PlayerTank(const XMFLOAT3& loc, const XMFLOAT3& startRot,const TankDesc& tankDesc):
+	BaseTank(loc,startRot,tankDesc)
 {
 	m_TankDesc.actionId_MoveForward = MoveForward;
 	m_TankDesc.actionId_MoveBackward = MoveBackward;
@@ -20,6 +20,7 @@ PlayerTank::PlayerTank(const XMFLOAT3& loc, const XMFLOAT3& startRot,const TankD
 
 void PlayerTank::Initialize(const SceneContext& sceneContext)
 {
+	m_pGameScene = static_cast<BattleCityScene*>(GetScene());
 	//Model
 	m_pModelComponent = new ModelComponent(L"Meshes/Tank2.ovm");
 	AddComponent(m_pModelComponent);
@@ -178,7 +179,7 @@ void PlayerTank::Update(const SceneContext& sceneContext)
 		XMFLOAT3 dir = pTransform->GetForward();
 		dir.x *= -1;
 		dir.z *= -1;
-		auto pShell = new Shell(XMFLOAT3{loc.x + spawnDistance * dir.x,1.0f ,loc.z + spawnDistance * dir.z }, XMFLOAT3{ -90.0f * dir.x,-90.0f,-90.0f * dir.z }, dir, m_pGameScene,m_pColliderGameObj->GetTag());
+		auto pShell = new Shell(XMFLOAT3{loc.x + spawnDistance * dir.x,1.0f ,loc.z + spawnDistance * dir.z }, XMFLOAT3{ -90.0f * dir.x,-90.0f,-90.0f * dir.z }, dir, this,m_pColliderGameObj->GetTag());
 		m_pGameScene->AddChild(pShell);
 
 		m_CurrentShootCooldown = 0.0f;

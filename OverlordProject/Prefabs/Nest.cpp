@@ -3,15 +3,15 @@
 #include "Materials/Shadow/DiffuseMaterial_Shadow_Skinned.h"
 #include "Scenes/Battle City 3D/BattleCityScene.h"
 
-Nest::Nest(const XMFLOAT3& loc, BattleCityScene* pGameScene):
-	m_Location{loc},
-	m_pGameScene{pGameScene}
+Nest::Nest(const XMFLOAT3& loc):
+	m_Location{loc}
 {
 	
 }
 
 void Nest::Initialize(const SceneContext&)
 {
+	m_pGameScene = static_cast<BattleCityScene*>(GetScene());
 	auto pTransform = GetTransform();
 	pTransform->Translate(m_Location);
 	pTransform->Rotate(0.0f, 180.f, 0.0f);

@@ -7,8 +7,8 @@
 #include <random>
 #include "Scenes/Battle City 3D/BattleCityScene.h"
 
-EnemyTank::EnemyTank(const XMFLOAT3& loc, const XMFLOAT3& startRot, const TankDesc& tankDesc, BattleCityScene* gameScene):
-	BaseTank(loc, startRot, tankDesc, gameScene)
+EnemyTank::EnemyTank(const XMFLOAT3& loc, const XMFLOAT3& startRot, const TankDesc& tankDesc):
+	BaseTank(loc, startRot, tankDesc)
 {
 	++EnemyCounter;
 }
@@ -17,6 +17,7 @@ EnemyTank::EnemyTank(const XMFLOAT3& loc, const XMFLOAT3& startRot, const TankDe
 
 void EnemyTank::Initialize(const SceneContext&)
 {
+	m_pGameScene = static_cast<BattleCityScene*>(GetScene());
 	//Model
 	m_pModelComponent = new ModelComponent(L"Meshes/Tank2.ovm");
 	AddComponent(m_pModelComponent);
@@ -94,43 +95,29 @@ void EnemyTank::Update(const SceneContext& sceneContext)
 		break;
 	case EnemyTank::Direction::Down:
 		move.y = -1;
-		
 		break;
 	}
 	Move(move, deltaTime);
-
-	m_CurrentShootCooldown += deltaTime;
 
 	m_VelocityMagnitudeSqr = m_pRigidBody->getLinearVelocity().magnitudeSquared();
 	if (m_VelocityMagnitudeSqr <= m_VelocityThreshold)
 	{
 		m_TimeSinceZeroVelocity += deltaTime;
 		if (m_TimeSinceZeroVelocity > m_TimeThreshold)
-		{
-			
+		{	
 			ChangeDirection();
 			m_TimeSinceZeroVelocity = 0.0f;
 			m_CurrentShootCooldown = 0.0f;
 		}
-
-		if (m_CurrentShootCooldown >= m_ZeroVelocityShootCooldown)
-		{
-			Shoot();
-			m_CurrentShootCooldown = 0.0f;
-		}
+		
 	}
-	else
+
+	m_CurrentShootCooldown += deltaTime;
+	if (m_CurrentShootCooldown >= m_NormalShootCooldown)
 	{
-		m_TimeSinceZeroVelocity = 0.0f;
-
-		if (m_CurrentShootCooldown >= m_NormalShootCooldown)
-		{
-			Shoot();
-			m_CurrentShootCooldown = 0.0f;
-		}
+		Shoot();
+		m_CurrentShootCooldown = 0.0f;
 	}
-
-
 }
 
 void EnemyTank::Move(const XMFLOAT2& dir, float deltaTime)
@@ -234,8 +221,8 @@ void EnemyTank::Shoot()
 	XMFLOAT3 dir = GetTransform()->GetForward();
 	dir.x *= -1;
 	dir.z *= -1;
-	auto pShell = new Shell(XMFLOAT3{ loc.x + spawnDistance * dir.x,1.0f,loc.z + spawnDistance * dir.z }, XMFLOAT3{ -90.0f * dir.x,-90.0f,-90.0f * dir.z }, dir, m_pGameScene,m_pColliderGameObj->GetTag());
-	m_pGameScene->AddChild(pShell);
+	auto pShell = new Shell(XMFLOAT3{ loc.x + spawnDistance * dir.x,1.0f,loc.z + spawnDistance * dir.z }, XMFLOAT3{ -90.0f * dir.x,-90.0f,-90.0f * dir.z }, dir, this,m_pColliderGameObj->GetTag());
+	AddChild(pShell);
 }
 
 	

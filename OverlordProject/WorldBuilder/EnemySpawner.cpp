@@ -5,9 +5,8 @@
 #include "Scenes/Battle City 3D/BattleCityScene.h"
 
 
-EnemySpawner::EnemySpawner(std::vector<Hatch*> pHatches, int nrEnemiesToSpawn, BattleCityScene* pGameScene):
-	m_MaxEnemiesToSpawn{nrEnemiesToSpawn},
-	m_pGameScene{pGameScene}
+EnemySpawner::EnemySpawner(std::vector<Hatch*> pHatches, int nrEnemiesToSpawn):
+	m_MaxEnemiesToSpawn{nrEnemiesToSpawn}
 {
 	m_DecreaseCooldownAfterSpawns = nrEnemiesToSpawn / 5;
 	for (size_t i = 0; i < pHatches.size(); i++)
@@ -22,6 +21,7 @@ EnemySpawner::EnemySpawner(std::vector<Hatch*> pHatches, int nrEnemiesToSpawn, B
 
 void EnemySpawner::Initialize(const SceneContext&)
 {
+	m_pGameScene = static_cast<BattleCityScene*>(GetScene());
 	m_pPxMat = PxGetPhysics().createMaterial(0.5f, 0.5f, 0.5f);
 }
 
@@ -63,7 +63,7 @@ void EnemySpawner::SpawnEnemy()
 	
 	//Enemy test
 	TankDesc enemyDesc{ m_pPxMat };
-	auto pEnemyTank = new EnemyTank(spawnLocation, XMFLOAT3{ 0.0f,0.0f,0.0f }, enemyDesc, m_pGameScene);
+	auto pEnemyTank = new EnemyTank(spawnLocation, XMFLOAT3{ 0.0f,0.0f,0.0f }, enemyDesc);
 	m_pGameScene->AddChild(pEnemyTank);
 	m_pSpawnedEnemies.push_back(pEnemyTank);
 	

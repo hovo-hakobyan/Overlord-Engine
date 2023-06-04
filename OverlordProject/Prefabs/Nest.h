@@ -3,7 +3,7 @@ class BattleCityScene;
 class Nest final : public GameObject
 {
 public: 
-	Nest(const XMFLOAT3& loc, BattleCityScene* pGameScene );
+	Nest(const XMFLOAT3& loc );
 	~Nest() override = default;
 	Nest(const Nest& other) = delete;
 	Nest(Nest&& other) = delete;

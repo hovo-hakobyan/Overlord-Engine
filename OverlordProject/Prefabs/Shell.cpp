@@ -6,7 +6,7 @@
 
 
 
-Shell::Shell(const XMFLOAT3& loc, const XMFLOAT3& rot, const XMFLOAT3& dir, BattleCityScene* parent, const std::wstring& parentTag):
+Shell::Shell(const XMFLOAT3& loc, const XMFLOAT3& rot, const XMFLOAT3& dir, BaseTank* parent, const std::wstring& parentTag):
 	m_Location{loc},
 	m_Rotation{rot},
 	m_Direction{dir},
@@ -18,7 +18,7 @@ Shell::Shell(const XMFLOAT3& loc, const XMFLOAT3& rot, const XMFLOAT3& dir, Batt
 
 void Shell::Initialize(const SceneContext&)
 {
-	
+	m_pGameScene =static_cast<BattleCityScene*>(GetScene());
 	GetTransform()->Rotate(m_Rotation);
 	GetTransform()->Scale(0.1f, 0.05f, 0.1f);
 	GetTransform()->Translate(m_Location);
@@ -47,13 +47,16 @@ void Shell::Initialize(const SceneContext&)
 			{
  				if (other->GetTag().compare(L"Destructible") == 0)
 				{
+					
 					m_pHitObject = other;
 				}
 				else if (other->GetTag().compare(L"Enemy") == 0)
 				{
+					
 					//to prevent friendly fire amongst enemies
-					if (m_ParentTag.compare(other->GetTag()) != 0)
+					if (m_ParentTag.compare(L"Enemy") != 0)
 					{
+			
 						m_pHitObject = other->GetParent();
 						auto tank = static_cast<BaseTank*>(m_pHitObject);
 						if (tank)
@@ -61,22 +64,25 @@ void Shell::Initialize(const SceneContext&)
 							tank->SetIsDead(true);
 							
 						}
+
 						m_pHitObject = nullptr;
 					}
 					
 				}
 				else if (other->GetTag().compare(L"Friendly") == 0)
 				{
+		
 					//to not hit self
-					if (m_ParentTag.compare(other->GetTag()) != 0)
+					if (m_ParentTag.compare(L"Friendly") != 0)
 					{
 						m_pHitObject = other->GetParent();
 						auto tank = static_cast<BaseTank*>(m_pHitObject);
 						if (tank)
 						{
 							tank->SetIsDead(true);
-							m_pParent->SetGameState(CurrentGameState::Defeat);
+							m_pGameScene->SetGameState(CurrentGameState::Defeat);
 						}
+
 						m_pHitObject = nullptr;
 					}
 					
@@ -84,8 +90,9 @@ void Shell::Initialize(const SceneContext&)
 				else if (other->GetTag().compare(L"Nest") == 0)
 				{
 					
-					m_pParent->SetGameState(CurrentGameState::Defeat);
+					m_pGameScene->SetGameState(CurrentGameState::Defeat);
 				}
+
 				m_IsEnabled = false;
 			}
 		});
@@ -95,11 +102,13 @@ void Shell::Initialize(const SceneContext&)
 
 void Shell::Update(const SceneContext& sceneContext)
 {
+	
 	if (!m_IsEnabled)
 	{
 		if (m_pHitObject)
 		{
-			m_pParent->RemoveChild(m_pHitObject, true);
+			m_pGameScene->RemoveChild(m_pHitObject, true);
+			m_pHitObject = nullptr;
 		}
 		m_pParent->RemoveChild(this, true);
 		return;

@@ -1,9 +1,10 @@
 #pragma once
+class BaseTank;
 class BattleCityScene;
 class Shell final : public GameObject
 {
 public:
-	Shell(const XMFLOAT3& shellLoc, const XMFLOAT3& rot,const XMFLOAT3& dir, BattleCityScene* gameScene,const std::wstring& parentTag);
+	Shell(const XMFLOAT3& shellLoc, const XMFLOAT3& rot,const XMFLOAT3& dir, BaseTank* parent,const std::wstring& parentTag);
 	~Shell() override = default;
 	Shell(const Shell& other) = delete;
 	Shell(Shell&& other) = delete;
@@ -16,7 +17,7 @@ private:
 	XMFLOAT3 m_Location;
 	XMFLOAT3 m_Rotation;
 	XMFLOAT3 m_Direction;
-	BattleCityScene* m_pParent;
+	BaseTank* m_pParent;
 	class DiffuseMaterial_Shadow* m_pMat{};
 
 	float m_Lifetime{ 5.0f };
@@ -24,6 +25,7 @@ private:
 
 	RigidBodyComponent* m_pRigidBody{};
 	GameObject* m_pHitObject{};
+	BattleCityScene* m_pGameScene{};
 
 	float m_Speed{ 50.0f };
 	bool m_IsEnabled = true;

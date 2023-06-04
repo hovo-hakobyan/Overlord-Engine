@@ -5,7 +5,7 @@ class BattleCityScene;
 class EnemySpawner final : public GameObject
 {
 public:
-	EnemySpawner(std::vector<Hatch*> pHatches, int nrEnemiesToSpawn, BattleCityScene* pGameScene);
+	EnemySpawner(std::vector<Hatch*> pHatches, int nrEnemiesToSpawn);
 	~EnemySpawner() override = default;
 	EnemySpawner(const EnemySpawner& other) = delete;
 	EnemySpawner(EnemySpawner&& other) noexcept = delete;

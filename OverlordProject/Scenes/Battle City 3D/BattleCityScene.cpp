@@ -36,12 +36,12 @@ void BattleCityScene::Initialize()
 	//Tank
 	TankDesc tankDesc{ pDefaultMaterial };
 	auto playerLoc = m_pLevelBuilder->GetPlayerStartHatch()->GetTransform()->GetPosition();
-	m_pPlayerTank = new PlayerTank(playerLoc, XMFLOAT3{0.0f,0.0f,0.0f}, tankDesc,this);
+	m_pPlayerTank = new PlayerTank(playerLoc, XMFLOAT3{0.0f,0.0f,0.0f}, tankDesc);
 	AddChild(m_pPlayerTank);
 
 	
 	auto enemyHatches = m_pLevelBuilder->GetEnemyStartHatches();
-	m_pEnemySpawner = new EnemySpawner(enemyHatches, 20,this);
+	m_pEnemySpawner = new EnemySpawner(enemyHatches, 20);
 	AddChild(m_pEnemySpawner);
 
 }

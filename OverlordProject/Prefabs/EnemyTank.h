@@ -3,7 +3,7 @@
 class EnemyTank : public BaseTank
 {
 public:
-	EnemyTank(const XMFLOAT3& loc, const XMFLOAT3& startRot, const TankDesc& tankDesc, BattleCityScene* gameScene);
+	EnemyTank(const XMFLOAT3& loc, const XMFLOAT3& startRot, const TankDesc& tankDesc);
 	~EnemyTank() override = default;
 
 	EnemyTank(const EnemyTank& other) = delete;
@@ -21,8 +21,8 @@ private:
 
 	Direction m_Direction{ Direction::Down };
 
-	float m_VelocityMagnitudeSqr;
-	float m_TimeSinceZeroVelocity;
+	float m_VelocityMagnitudeSqr{0.0f};
+	float m_TimeSinceZeroVelocity{0.0f};
 
 	float m_TimeThreshold{2.0f};
 	float m_VelocityThreshold{ 0.1f };
