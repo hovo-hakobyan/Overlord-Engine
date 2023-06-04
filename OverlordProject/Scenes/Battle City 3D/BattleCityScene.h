@@ -1,6 +1,10 @@
 #pragma once
 #pragma once
-class GrassMaterial;
+enum class CurrentGameState
+{
+	Gameplay, Victory, Defeat
+};
+
 class BattleCityScene final : public GameScene
 {
 public:
@@ -12,9 +16,10 @@ public:
 	BattleCityScene& operator=(const BattleCityScene& other) = delete;
 	BattleCityScene& operator=(BattleCityScene&& other) noexcept = delete;
 
-	void SetGameEnded(bool hasEnded) { m_GameEnded = hasEnded; }
-	bool GetGameEnded() const { return m_GameEnded; }
+	void SetGameState(const CurrentGameState& gameState) { m_GameState = gameState; }
+	const CurrentGameState& GetGameState() const { return m_GameState; }
 
+	
 protected:
 	void Initialize() override;
 	void Update() override;
@@ -27,6 +32,6 @@ private:
 
 	void LockCamera();
 
-	bool m_GameEnded{ false };
+	CurrentGameState m_GameState{ CurrentGameState::Gameplay };
 };
 

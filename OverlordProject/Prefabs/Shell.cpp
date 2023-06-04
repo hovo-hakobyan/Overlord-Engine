@@ -75,7 +75,7 @@ void Shell::Initialize(const SceneContext&)
 						if (tank)
 						{
 							tank->IsDead(true);
-							m_pParent->SetGameEnded(true);
+							m_pParent->SetGameState(CurrentGameState::Defeat);
 						}
 						m_pHitObject = nullptr;
 					}
@@ -84,7 +84,7 @@ void Shell::Initialize(const SceneContext&)
 				else if (other->GetTag().compare(L"Nest") == 0)
 				{
 					
-					m_pParent->SetGameEnded(true);
+					m_pParent->SetGameState(CurrentGameState::Defeat);
 				}
 				m_IsEnabled = false;
 			}

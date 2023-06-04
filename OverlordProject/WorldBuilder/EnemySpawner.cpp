@@ -26,7 +26,7 @@ void EnemySpawner::Initialize(const SceneContext&)
 
 void EnemySpawner::Update(const SceneContext& sceneContext)
 {
-	if (m_pGameScene->GetGameEnded())
+	if (m_pGameScene->GetGameState() != CurrentGameState::Gameplay)
 	{
 		return;
 	}

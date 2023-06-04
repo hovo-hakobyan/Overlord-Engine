@@ -20,6 +20,19 @@ private:
 	class DiffuseMaterial_Shadow_Skinned* m_pMaterial{};
 	RigidBodyComponent* m_pRigidBody{};
 
+
 	BattleCityScene* m_pGameScene{};
+	bool m_FinishedFinalAnimation{ false };
+
+	//Animation timers
+	float m_SaluteTimer{ 2.2f };
+	float m_DeathTimer{ 3.7f };
+	float m_VictoryTimer{ 3.0f };
+	
+	float m_MaxAnimTimer{};
+	float m_CurrentAnimTimer{ 0.0f };
+
+
+
 };
 

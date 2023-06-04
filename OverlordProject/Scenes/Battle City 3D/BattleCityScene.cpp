@@ -40,7 +40,7 @@ void BattleCityScene::Initialize()
 
 	
 	auto enemyHatches = m_pLevelBuilder->GetEnemyStartHatches();
-	m_pEnemySpawner = new EnemySpawner(enemyHatches, 20,this);
+	m_pEnemySpawner = new EnemySpawner(enemyHatches, 5,this);
 	AddChild(m_pEnemySpawner);
 
 }

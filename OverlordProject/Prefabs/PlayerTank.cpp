@@ -70,13 +70,14 @@ void PlayerTank::Initialize(const SceneContext& sceneContext)
 	m_pCollider->AddCollider(Geo, *pxMat);
 
 	m_pColliderGameObj->SetTag(L"Friendly");
+	SetTag(L"Friendly");
 	m_IsDead = false;
 
 }
 
 void PlayerTank::Update(const SceneContext& sceneContext)
 {
-	if (m_pGameScene->GetGameEnded())
+	if (m_pGameScene->GetGameState() != CurrentGameState::Gameplay)
 	{
 		if (m_pAnimator->IsPlaying())
 		{
