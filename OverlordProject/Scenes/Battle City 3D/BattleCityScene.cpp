@@ -21,6 +21,7 @@ void BattleCityScene::Initialize()
 {
 	const auto pDefaultMaterial = PxGetPhysics().createMaterial(0.5f, 0.5f, 0.5f);
 	GameSceneExt::CreatePhysXGroundPlane(*this);
+	m_SceneContext.pLights->SetDirectionalLight(XMFLOAT3{ 6.897f,82.759f,13.793f }, XMFLOAT3{ -0.241f,-1.0f,-0.069f });
 
 	m_SceneContext.settings.drawGrid = false;
 	m_SceneContext.settings.enableOnGUI = true;
@@ -35,8 +36,8 @@ void BattleCityScene::Initialize()
 	//Tank
 	TankDesc tankDesc{ pDefaultMaterial };
 	auto playerLoc = m_pLevelBuilder->GetPlayerStartHatch()->GetTransform()->GetPosition();
-	auto pPlayerTank = new PlayerTank(playerLoc, XMFLOAT3{0.0f,0.0f,0.0f}, tankDesc,this);
-	AddChild(pPlayerTank);
+	m_pPlayerTank = new PlayerTank(playerLoc, XMFLOAT3{0.0f,0.0f,0.0f}, tankDesc,this);
+	AddChild(m_pPlayerTank);
 
 	
 	auto enemyHatches = m_pLevelBuilder->GetEnemyStartHatches();
@@ -48,6 +49,8 @@ void BattleCityScene::Initialize()
 void BattleCityScene::Update()
 {
 	
+	
+
 }
 
 void BattleCityScene::Draw()
@@ -56,7 +59,11 @@ void BattleCityScene::Draw()
 
 void BattleCityScene::OnGUI()
 {
-	//m_pLevelBuilder->temp();
+	
+}
+
+void BattleCityScene::PostDraw()
+{
 }
 
 void BattleCityScene::LockCamera()

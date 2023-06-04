@@ -20,18 +20,17 @@ LevelBuilder::LevelBuilder(BattleCityScene* gameScene,float tileSize):
 	m_pGrassMaterial = MaterialManager::Get()->CreateMaterial<GrassMaterial>();
 	m_pWaterMaterial = MaterialManager::Get()->CreateMaterial<WaterMaterial>();
 
-	m_pGroundMaterial = MaterialManager::Get()->CreateMaterial<SimpleDiffuseMaterial>();
+	m_pGroundMaterial = MaterialManager::Get()->CreateMaterial<DiffuseMaterial_Shadow>();
 	m_pGroundMaterial->SetDiffuseTexture(L"Textures/ground/soilAlbedo.tif");
-	m_pGroundMaterial->SetNormalMapTexture(L"Textures/ground/soilNormal.tif");
-
-	m_pSolidWallMaterial = MaterialManager::Get()->CreateMaterial<SimpleDiffuseMaterial>();
+	
+	m_pSolidWallMaterial = MaterialManager::Get()->CreateMaterial<DiffuseMaterial_Shadow>();
 	m_pSolidWallMaterial->SetDiffuseTexture(L"Textures/wall/solidWallAlbedo.tif");
-	m_pSolidWallMaterial->SetNormalMapTexture(L"Textures/wall/solidWallNormal.tif");
 
-	m_pBorderWallMaterial = MaterialManager::Get()->CreateMaterial<SimpleDiffuseMaterial>();
+	m_pBorderWallMaterial = MaterialManager::Get()->CreateMaterial<DiffuseMaterial_Shadow>();
 	m_pBorderWallMaterial->SetDiffuseTexture(L"Textures/wall/borderAlbedo.tif");
-	m_pBorderWallMaterial->SetNormalMapTexture(L"Textures/wall/borderNormal.tif");
 
+	m_pBrickWallMaterial = MaterialManager::Get()->CreateMaterial<DiffuseMaterial_Shadow>();
+	m_pBrickWallMaterial->SetDiffuseTexture(L"Textures/wall/brickAlbedo.tif");
 }
 
 LevelBuilder::~LevelBuilder()
@@ -217,7 +216,7 @@ void LevelBuilder::BuildBrickWalls(const XMFLOAT3& currentPos)
 	{
 		for (int j = 0; j < cols; j++)
 		{	
-			auto brickWall = new BrickWall(pos, size);
+			auto brickWall = new BrickWall(pos, size, m_pBrickWallMaterial);
 			m_pGameScene->AddChild(brickWall);
 			pos.x += size.x;
 		}

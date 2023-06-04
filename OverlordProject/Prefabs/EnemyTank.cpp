@@ -77,29 +77,24 @@ void EnemyTank::Update(const SceneContext& sceneContext)
 
 	float deltaTime = sceneContext.pGameTime->GetElapsed();
 	XMFLOAT2 move = { 0.0f,0.0f };
-	auto pTransform = GetTransform();
 
 	switch (m_Direction)
 	{
 	case EnemyTank::Direction::Left:
 		move.x = -1;
-		pTransform->Rotate(0.0f, 90.0f, 0.0f, true);
-		m_pBoxShape->setLocalPose(PxTransform{ PxQuat{1.5708f,PxVec3{1,0,0}} });
+		
 		break;
 	case EnemyTank::Direction::Right:
 		move.x = 1;
-		pTransform->Rotate(0.0f, 270.0f, 0.0f, true);
-		m_pBoxShape->setLocalPose(PxTransform{ PxQuat{1.5708f,PxVec3{1,0,0}} });
+		
 		break;
 	case EnemyTank::Direction::Up:
 		move.y = 1;
-		m_pBoxShape->setLocalPose(PxTransform{ PxQuat{0.0f,PxVec3{1,0,0}} });
-		pTransform->Rotate(0.0f, 180.0f, 0.0f, true);
+		
 		break;
 	case EnemyTank::Direction::Down:
 		move.y = -1;
-		m_pBoxShape->setLocalPose(PxTransform{ PxQuat{3.14159f,PxVec3{1,0,0}} });
-		pTransform->Rotate(0.0f, 0.0f, 0.0f, true);
+		
 		break;
 	}
 	Move(move, deltaTime);
@@ -140,6 +135,7 @@ void EnemyTank::Update(const SceneContext& sceneContext)
 
 void EnemyTank::Move(const XMFLOAT2& dir, float deltaTime)
 {
+	auto pTransform = GetTransform();
 	float currentAcceleration = m_MoveAcceleration * deltaTime;
 	m_MoveSpeed += currentAcceleration;
 	m_MoveSpeed = m_MoveSpeed >= m_TankDesc.maxMoveSpeed ? m_TankDesc.maxMoveSpeed : m_MoveSpeed;
@@ -147,6 +143,28 @@ void EnemyTank::Move(const XMFLOAT2& dir, float deltaTime)
 	m_pBoxControllerComponent->Move(displacement);
 	auto tankPos = GetTransform()->GetPosition();
 	m_pCollider->GetTransform()->Translate(tankPos.x, 1.f, tankPos.z);
+
+
+	switch (m_Direction)
+	{
+	case EnemyTank::Direction::Left:
+		pTransform->Rotate(0.0f, 90.0f, 0.0f, true);
+		m_pBoxShape->setLocalPose(PxTransform{ PxQuat{1.5708f,PxVec3{1,0,0}} });
+		break;
+	case EnemyTank::Direction::Right:
+		pTransform->Rotate(0.0f, 270.0f, 0.0f, true);
+		m_pBoxShape->setLocalPose(PxTransform{ PxQuat{1.5708f,PxVec3{1,0,0}} });
+		break;
+	case EnemyTank::Direction::Up:
+		m_pBoxShape->setLocalPose(PxTransform{ PxQuat{0.0f,PxVec3{1,0,0}} });
+		pTransform->Rotate(0.0f, 180.0f, 0.0f, true);
+		break;
+	case EnemyTank::Direction::Down:
+		m_pBoxShape->setLocalPose(PxTransform{ PxQuat{3.14159f,PxVec3{1,0,0}} });
+		pTransform->Rotate(0.0f, 0.0f, 0.0f, true);
+		break;
+
+	}
 
 }
 

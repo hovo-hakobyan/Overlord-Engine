@@ -8,6 +8,7 @@ struct LevelInfo
 	uint8_t cols;
 };
 class BattleCityScene;
+class DiffuseMaterial_Shadow;
 class LevelBuilder final
 {
 public:
@@ -24,6 +25,8 @@ public:
 	std::vector<class Hatch*> GetEnemyStartHatches() const;
 	Hatch* GetPlayerStartHatch() const;
 
+
+
 private:
 	std::vector<TileCollection> m_Levels;
 	std::vector<LevelInfo*> m_LevelInfo;
@@ -35,9 +38,10 @@ private:
 
 	class GrassMaterial* m_pGrassMaterial{};
 	class WaterMaterial* m_pWaterMaterial{};
-	class SimpleDiffuseMaterial* m_pGroundMaterial{};
-	class SimpleDiffuseMaterial* m_pSolidWallMaterial{};
-	class SimpleDiffuseMaterial* m_pBorderWallMaterial{};
+	DiffuseMaterial_Shadow* m_pGroundMaterial{};
+	DiffuseMaterial_Shadow* m_pSolidWallMaterial{};
+	DiffuseMaterial_Shadow* m_pBorderWallMaterial{};
+	DiffuseMaterial_Shadow* m_pBrickWallMaterial{};
 
 	std::vector<class Hatch*> m_pEnemySpawnHatches;
 	Hatch* m_pPlayerSpawnHatch;

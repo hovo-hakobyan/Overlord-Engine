@@ -25,13 +25,18 @@ protected:
 	void Update() override;
 	void Draw() override;
 	void OnGUI() override;
+	void PostDraw() override;
 
 private:
 	class LevelBuilder* m_pLevelBuilder{};
 	class EnemySpawner* m_pEnemySpawner{};
 
-	void LockCamera();
-
+	;
 	CurrentGameState m_GameState{ CurrentGameState::Gameplay };
+	class PlayerTank* m_pPlayerTank{};
+
+
+	
+	void LockCamera();
 };
 

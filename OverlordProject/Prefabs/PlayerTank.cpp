@@ -17,6 +17,7 @@ PlayerTank::PlayerTank(const XMFLOAT3& loc, const XMFLOAT3& startRot,const TankD
 	m_TankDesc.actionId_Shoot = Shoot;
 }
 
+
 void PlayerTank::Initialize(const SceneContext& sceneContext)
 {
 	//Model
@@ -104,29 +105,24 @@ void PlayerTank::Update(const SceneContext& sceneContext)
 	if (sceneContext.pInput->IsActionTriggered(MoveForward))
 	{
 		move.y = 1;
-		pTransform->Rotate(0.0f, 180.0f, 0.0f, true);
-		m_pBoxShape->setLocalPose(PxTransform{ PxQuat{0.0f,PxVec3{1,0,0}} });
+		
 
 	}
 	else if (sceneContext.pInput->IsActionTriggered(MoveBackward))
 	{
 		move.y = -1;
-		pTransform->Rotate(0.0f, 0.0f, 0.0f, true);
-		m_pBoxShape->setLocalPose(PxTransform{ PxQuat{3.14159f,PxVec3{1,0,0}} });
 	}
 
 	if (sceneContext.pInput->IsActionTriggered(MoveRight))
 	{
 		move.x = 1;
-		pTransform->Rotate(0.0f, 270.0f, 0.0f, true);
-		m_pBoxShape->setLocalPose(PxTransform{ PxQuat{1.5708f,PxVec3{1,0,0}} });
+		
 
 	}
 	else if (sceneContext.pInput->IsActionTriggered(MoveLeft))
 	{
 		move.x = -1;
-		pTransform->Rotate(0.0f, 90.0f, 0.0f, true);
-		m_pBoxShape->setLocalPose(PxTransform{ PxQuat{1.5708f,PxVec3{1,0,0}} });
+		
 	}
 
 	float deltaTime = sceneContext.pGameTime->GetElapsed();
@@ -141,6 +137,16 @@ void PlayerTank::Update(const SceneContext& sceneContext)
 		auto tankPos = pTransform->GetPosition();
 		m_pCollider->GetTransform()->Translate(tankPos.x,1.f, tankPos.z);
 
+		if (move.x > 0)
+		{
+			pTransform->Rotate(0.0f, 270.0f, 0.0f, true);
+			m_pBoxShape->setLocalPose(PxTransform{ PxQuat{1.5708f,PxVec3{1,0,0}} });
+		}
+		else if (move.x < 0)
+		{
+			pTransform->Rotate(0.0f, 90.0f, 0.0f, true);
+			m_pBoxShape->setLocalPose(PxTransform{ PxQuat{1.5708f,PxVec3{1,0,0}} });
+		}
 	}
 	else if (fabs(move.y) > epsilon)
 	{
@@ -150,6 +156,17 @@ void PlayerTank::Update(const SceneContext& sceneContext)
 		m_pBoxControllerComponent->Move(displacement);
 		auto tankPos = pTransform->GetPosition();
 		m_pCollider->GetTransform()->Translate(tankPos.x, 1.f, tankPos.z);
+
+		if (move.y > 0)
+		{
+			pTransform->Rotate(0.0f, 180.0f, 0.0f, true);
+			m_pBoxShape->setLocalPose(PxTransform{ PxQuat{0.0f,PxVec3{1,0,0}} });
+		}
+		else if (move.y < 0)
+		{
+			pTransform->Rotate(0.0f, 0.0f, 0.0f, true);
+			m_pBoxShape->setLocalPose(PxTransform{ PxQuat{3.14159f,PxVec3{1,0,0}} });
+		}
 	}
 	
 	m_CurrentShootCooldown += deltaTime;

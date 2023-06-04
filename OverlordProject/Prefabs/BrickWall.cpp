@@ -1,14 +1,13 @@
 #include "stdafx.h"
 #include "BrickWall.h"
-#include "Materials/SimpleDiffuse.h"
+#include "Materials/Shadow/DiffuseMaterial_Shadow.h"
 
-BrickWall::BrickWall(const XMFLOAT3& loc, const XMFLOAT3& scale):
+BrickWall::BrickWall(const XMFLOAT3& loc, const XMFLOAT3& scale, DiffuseMaterial_Shadow* pMat):
 	m_Location{loc},
-	m_Scale{scale}
+	m_Scale{scale},
+	m_pBrickWallMaterial{pMat}
 {
-	m_pBrickWallMaterial = MaterialManager::Get()->CreateMaterial<SimpleDiffuseMaterial>();
-	m_pBrickWallMaterial->SetDiffuseTexture(L"Textures/wall/brickAlbedo.tif");
-	m_pBrickWallMaterial->SetNormalMapTexture(L"Textures/wall/brickNormal.tif");
+	
 }
 
 void BrickWall::Initialize(const SceneContext&)

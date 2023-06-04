@@ -1,7 +1,7 @@
 float4x4 gWorld : WORLD;
 float4x4 gWorldViewProj : WORLDVIEWPROJECTION;
 float4x4 gWorldViewProj_Light;
-float3 gLightDirection = float3(-1.377f, -1.377f, 1.477f);
+float3 gLightDirection = float3(-0.543693f, -0.833929f, -0.0946647f);
 float gShadowMapBias = 0.01f;
 float4x4 gBones[70];
 

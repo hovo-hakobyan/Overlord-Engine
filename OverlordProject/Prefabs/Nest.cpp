@@ -15,7 +15,7 @@ void Nest::Initialize(const SceneContext&)
 	auto pTransform = GetTransform();
 	pTransform->Translate(m_Location);
 	pTransform->Rotate(0.0f, 180.f, 0.0f);
-	pTransform->Scale(0.05f, 0.05f, 0.05f);
+	pTransform->Scale(0.07f, 0.1f, 0.07f);
 
 	auto pxMat = PxGetPhysics().createMaterial(1.0f, 1.0f, 0.f);
 	m_pModelComponent = new ModelComponent(L"Meshes/king.ovm");
