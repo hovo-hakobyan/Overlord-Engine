@@ -71,6 +71,7 @@ void LevelBuilder::BuildNextLevel()
 	const int nrCols = m_LevelInfo[m_CurrentLevelIdx]->cols;
 	const int nrRows = m_LevelInfo[m_CurrentLevelIdx]->rows;
 	XMFLOAT3 currentPos{};
+	int middleIdx = nrCols * nrRows / 2;
 	auto pMat = PxGetPhysics().createMaterial(1.0f, 1.0f, 0.f);
 	for (int row = 0; row < nrRows; ++row)
 	{
@@ -78,7 +79,10 @@ void LevelBuilder::BuildNextLevel()
 		{
 			int idx = row * nrCols + col;
 			auto currentTileType = *m_Levels[m_CurrentLevelIdx][idx];
-
+			if (idx == middleIdx)
+			{
+				m_LevelCenter = currentPos;
+			}
 			//Create the ground, except if the tile is water tile, solid wall tile, border tile or spawn tile
 			if (currentTileType != TileTypes::Water && currentTileType != TileTypes::SolidWall && currentTileType != TileTypes::BorderWall
 				&& currentTileType != TileTypes::PlayerSpawn && currentTileType != TileTypes::EnemySpawn)
@@ -180,6 +184,7 @@ void LevelBuilder::BuildNextLevel()
 				case TileTypes::Base:
 					auto nest = new Nest(currentPos);
 					m_pGameScene->AddChild(nest);
+					m_NestLocation = currentPos;
 					break;
 				}
 			

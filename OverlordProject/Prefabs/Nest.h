@@ -26,7 +26,7 @@ private:
 
 	//Animation timers
 	float m_SaluteTimer{ 2.2f };
-	float m_DeathTimer{ 3.7f };
+	float m_DeathTimer{ 3.4f };
 	float m_VictoryTimer{ 3.0f };
 	
 	float m_MaxAnimTimer{};

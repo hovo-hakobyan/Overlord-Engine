@@ -54,6 +54,7 @@
     <ClCompile Include="Materials\VertexColorMaterial.cpp" />
     <ClCompile Include="Materials\Shadow\VertexMaterial_Shadow_Skinned.cpp" />
     <ClCompile Include="WorldBuilder\ShellManager.cpp" />
+    <ClCompile Include="Prefabs\ParticleAtLocation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h" />
@@ -129,5 +130,6 @@
     <ClInclude Include="Materials\VertexColorMaterial.h" />
     <ClInclude Include="Materials\Shadow\VertexMaterial_Shadow_Skinned.h" />
     <ClInclude Include="WorldBuilder\ShellManager.h" />
+    <ClInclude Include="Prefabs\ParticleAtLocation.h" />
   </ItemGroup>
 </Project>

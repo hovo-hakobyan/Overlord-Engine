@@ -1,5 +1,5 @@
 #pragma once
-#pragma once
+class ParticleAtLocation;
 enum class CurrentGameState
 {
 	Gameplay, Victory, Defeat
@@ -37,7 +37,8 @@ private:
 	CurrentGameState m_GameState{ CurrentGameState::Gameplay };
 	class PlayerTank* m_pPlayerTank{};
 
-
+	ParticleAtLocation* m_pDefeatParticle{};
+	ParticleAtLocation* m_pVictoryParticle{};
 	
 	void LockCamera();
 };

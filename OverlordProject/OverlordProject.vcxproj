@@ -93,6 +93,7 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Prefabs\ParticleAtLocation.cpp" />
     <ClCompile Include="Prefabs\Nest.cpp" />
     <ClCompile Include="Materials\VertexColorMaterial.cpp" />
     <ClCompile Include="Materials\Shadow\VertexMaterial_Shadow_Skinned.cpp" />
@@ -165,6 +166,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Prefabs\ParticleAtLocation.h" />
     <ClInclude Include="Prefabs\Nest.h" />
     <ClInclude Include="Materials\VertexColorMaterial.h" />
     <ClInclude Include="Materials\Shadow\VertexMaterial_Shadow_Skinned.h" />

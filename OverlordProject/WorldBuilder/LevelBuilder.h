@@ -24,7 +24,8 @@ public:
 
 	std::vector<class Hatch*> GetEnemyStartHatches() const;
 	Hatch* GetPlayerStartHatch() const;
-
+	const XMFLOAT3& GetNestLocation() const { return m_NestLocation; }
+	const XMFLOAT3& GetLevelCenter() const { return m_LevelCenter; }
 
 
 private:
@@ -48,5 +49,7 @@ private:
 
 	void BuildBrickWalls(const XMFLOAT3& currentPos);
 	
+	XMFLOAT3 m_NestLocation{};
+	XMFLOAT3 m_LevelCenter{};
 };
 

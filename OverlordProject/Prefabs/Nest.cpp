@@ -59,6 +59,8 @@ void Nest::Update(const SceneContext& sceneContext)
 				if (m_pAnimator->GetClipName().compare(L"Death") == 0 || m_pAnimator->GetClipName().compare(L"Victory") == 0)
 				{
 					m_FinishedFinalAnimation = true;
+					m_pAnimator->Pause();
+					return;
 				}
 
 				m_pAnimator->SetAnimation(L"Scared");
@@ -82,7 +84,6 @@ void Nest::Update(const SceneContext& sceneContext)
 			m_pAnimator->Play();
 		
 		}	
-		std::cout << "game ended " << std::endl;
 	}
 	else if (m_pGameScene->GetGameState() == CurrentGameState::Victory)
 	{
