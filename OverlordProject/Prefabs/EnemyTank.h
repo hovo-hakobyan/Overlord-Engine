@@ -24,11 +24,11 @@ private:
 	float m_VelocityMagnitudeSqr{0.0f};
 	float m_TimeSinceZeroVelocity{0.0f};
 
-	float m_TimeThreshold{2.0f};
+	float m_TimeThreshold{1.0f};
 	float m_VelocityThreshold{ 0.1f };
 
 	float m_ZeroVelocityShootCooldown{ 1.0f };
-	float m_NormalShootCooldown{ 2.0f };
+	float m_NormalShootCooldown{ 1.0f };
 	float m_CurrentShootCooldown{ 0.0f };
 
 	PxRigidBody* m_pRigidBody{};

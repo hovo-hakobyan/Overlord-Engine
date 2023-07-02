@@ -26,10 +26,11 @@ void BattleCityScene::Initialize()
 	m_SceneContext.pLights->SetDirectionalLight(XMFLOAT3{ 6.897f,82.759f,13.793f }, XMFLOAT3{ -0.241f,-1.0f,-0.069f });
 
 	m_SceneContext.settings.drawGrid = false;
-	m_SceneContext.settings.enableOnGUI = true;
-	
+	m_SceneContext.settings.drawPhysXDebug = false;
+	m_SceneContext.settings.drawUserDebug = false;
+	m_SceneContext.settings.enableOnGUI = false;
+	m_SceneContext.settings.showInfoOverlay = false;
 	LockCamera();
-
 	//Level
 	m_pLevelBuilder = new LevelBuilder{this,1.2f};
 	m_pLevelBuilder->AddLevel("Resources/Levels/Level1.bmp", 15, 15);
