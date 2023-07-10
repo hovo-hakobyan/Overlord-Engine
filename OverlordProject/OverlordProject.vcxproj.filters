@@ -55,6 +55,8 @@
     <ClCompile Include="Materials\Shadow\VertexMaterial_Shadow_Skinned.cpp" />
     <ClCompile Include="WorldBuilder\ShellManager.cpp" />
     <ClCompile Include="Prefabs\ParticleAtLocation.cpp" />
+    <ClCompile Include="Scenes\OwnTestScenes\LavaTestScene.cpp" />
+    <ClCompile Include="Materials\LavaMaterial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h" />
@@ -131,5 +133,7 @@
     <ClInclude Include="Materials\Shadow\VertexMaterial_Shadow_Skinned.h" />
     <ClInclude Include="WorldBuilder\ShellManager.h" />
     <ClInclude Include="Prefabs\ParticleAtLocation.h" />
+    <ClInclude Include="Scenes\OwnTestScenes\LavaTestScene.h" />
+    <ClInclude Include="Materials\LavaMaterial.h" />
   </ItemGroup>
 </Project>

@@ -93,6 +93,8 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Materials\LavaMaterial.cpp" />
+    <ClCompile Include="Scenes\OwnTestScenes\LavaTestScene.cpp" />
     <ClCompile Include="Prefabs\ParticleAtLocation.cpp" />
     <ClCompile Include="Prefabs\Nest.cpp" />
     <ClCompile Include="Materials\VertexColorMaterial.cpp" />
@@ -166,6 +168,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Materials\LavaMaterial.h" />
+    <ClInclude Include="Scenes\OwnTestScenes\LavaTestScene.h" />
     <ClInclude Include="Prefabs\ParticleAtLocation.h" />
     <ClInclude Include="Prefabs\Nest.h" />
     <ClInclude Include="Materials\VertexColorMaterial.h" />

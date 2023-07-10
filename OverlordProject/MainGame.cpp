@@ -15,9 +15,9 @@
  //#define MILESTONE_1
  //#define MILESTONE_2
 
-//#define OWN_SCENES
+#define OWN_SCENES
 
-#define FINAL_SCENE
+//#define FINAL_SCENE
 
 #pragma region Lab/Milestone Includes
 #ifdef W3
@@ -83,6 +83,7 @@
 #ifdef OWN_SCENES
 #include "Scenes/OwnTestScenes/GrassTestScene.h"
 #include "Scenes/OwnTestScenes/WaterTestScene.h"
+#include "Scenes/OwnTestScenes/LavaTestScene.h"
 #endif
 
 #ifdef FINAL_SCENE
@@ -168,6 +169,7 @@ void MainGame::Initialize()
 #endif
 
 #ifdef OWN_SCENES
+	SceneManager::Get()->AddGameScene(new LavaTestScene());
 	SceneManager::Get()->AddGameScene(new WaterTestScene());
 	SceneManager::Get()->AddGameScene(new GrassTestScene());
 #endif
