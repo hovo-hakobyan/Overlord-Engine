@@ -5,6 +5,7 @@
 std::map<std::string, BaseMaterial::eRootVariable> BaseMaterial::m_RootVariableSemanticLUT = {
 		{"world", eRootVariable::WORLD},
 		{"view", eRootVariable::VIEW},
+		{"projection",eRootVariable::PROJECTION},
 		{"viewinverse", eRootVariable::VIEW_INVERSE},
 		{"worldviewprojection", eRootVariable::WORLD_VIEW_PROJECTION},
 		{"time",eRootVariable::TIME},
@@ -57,6 +58,7 @@ void BaseMaterial::UpdateEffectVariables(const SceneContext& sceneContext, const
 		//Update Root Variables
 		auto world = XMLoadFloat4x4(&pModelComponent->GetTransform()->GetWorld());
 		auto view = XMLoadFloat4x4(&sceneContext.pCamera->GetView());
+		auto projection = XMLoadFloat4x4(&sceneContext.pCamera->GetProjection());
 
 		if (m_RootVariableLUT[static_cast<UINT>(eRootVariable::WORLD)])
 			m_RootVariableLUT[static_cast<UINT>(eRootVariable::WORLD)]->AsMatrix()->SetMatrix(reinterpret_cast<float*>(&world));
@@ -64,9 +66,12 @@ void BaseMaterial::UpdateEffectVariables(const SceneContext& sceneContext, const
 		if (m_RootVariableLUT[static_cast<UINT>(eRootVariable::VIEW)])
 			m_RootVariableLUT[static_cast<UINT>(eRootVariable::VIEW)]->AsMatrix()->SetMatrix(reinterpret_cast<float*>(&view));
 
+		if (m_RootVariableLUT[static_cast<UINT>(eRootVariable::PROJECTION)])
+			m_RootVariableLUT[static_cast<UINT>(eRootVariable::PROJECTION)]->AsMatrix()->SetMatrix(reinterpret_cast<float*>(&projection));
+
 		if (m_RootVariableLUT[static_cast<UINT>(eRootVariable::WORLD_VIEW_PROJECTION)])
 		{
-			const auto projection = XMLoadFloat4x4(&sceneContext.pCamera->GetProjection());
+			const auto proj = XMLoadFloat4x4(&sceneContext.pCamera->GetProjection());
 			auto wvp = world * view * projection;
 			m_RootVariableLUT[static_cast<UINT>(eRootVariable::WORLD_VIEW_PROJECTION)]->AsMatrix()->SetMatrix(reinterpret_cast<float*>(&wvp));
 		}

@@ -52,6 +52,7 @@ protected:
 	{
 		WORLD,
 		VIEW,
+		PROJECTION,
 		VIEW_INVERSE,
 		WORLD_VIEW_PROJECTION,
 		TIME,
