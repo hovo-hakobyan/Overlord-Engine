@@ -67,7 +67,7 @@ float gDistortion
 	float UIMin = 0.1f;
 	float UIMax = 10.0f;
 	float UIStep = 0.1f;
-> = 0.3f;
+> = 0.35f;
 
 float gScale
 <
@@ -220,9 +220,9 @@ float4 MainPS(VS_OUTPUT i) : SV_Target
 	
 	//Distortion textures at different scales
 	float d = gTex0.Sample(gTextureSampler,uvDistort + speedDistortCombined).r;
-	float d2 = gTex0.Sample(gTextureSampler,(i.worldPos.xz * (gScaleDist * 0.5f)) * speedDistortCombined).r;
+	float d2 = gTex0.Sample(gTextureSampler,(i.worldPos.xz * (gScaleDist * .5f)) * speedDistortCombined).r;
 	
-	float layeredDist = saturate((d + d2) * 0.5f);
+	float layeredDist = saturate((d + d2) * 0.9f);
 	
 	//main uv scaled
 	float2 uvMain = i.worldPos.xz * gScale;
@@ -237,7 +237,7 @@ float4 MainPS(VS_OUTPUT i) : SV_Target
 	
 	uvMain += speedMainCombined + (i.color.r * gVertexDistortion);
 	
-	float4 tempCol = gTex1.Sample(gTextureSampler,uvMain);
+	float4 tempCol = gTex1.Sample(gTextureSampler,uvMain)*i.color.r;
 	tempCol += layeredDist;
 	
 	color = lerp(gTintStart,gTintEnd,tempCol * gOffset) * gStrength;
