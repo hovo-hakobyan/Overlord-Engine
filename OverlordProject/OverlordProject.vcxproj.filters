@@ -57,6 +57,7 @@
     <ClCompile Include="Prefabs\ParticleAtLocation.cpp" />
     <ClCompile Include="Scenes\OwnTestScenes\LavaTestScene.cpp" />
     <ClCompile Include="Materials\LavaMaterial.cpp" />
+    <ClCompile Include="WorldBuilder\EnvironmentBuilder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h" />
@@ -135,5 +136,6 @@
     <ClInclude Include="Prefabs\ParticleAtLocation.h" />
     <ClInclude Include="Scenes\OwnTestScenes\LavaTestScene.h" />
     <ClInclude Include="Materials\LavaMaterial.h" />
+    <ClInclude Include="WorldBuilder\EnvironmentBuilder.h" />
   </ItemGroup>
 </Project>

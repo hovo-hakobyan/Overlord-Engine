@@ -93,6 +93,7 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="WorldBuilder\EnvironmentBuilder.cpp" />
     <ClCompile Include="Materials\LavaMaterial.cpp" />
     <ClCompile Include="Scenes\OwnTestScenes\LavaTestScene.cpp" />
     <ClCompile Include="Prefabs\ParticleAtLocation.cpp" />
@@ -168,6 +169,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="WorldBuilder\EnvironmentBuilder.h" />
     <ClInclude Include="Materials\LavaMaterial.h" />
     <ClInclude Include="Scenes\OwnTestScenes\LavaTestScene.h" />
     <ClInclude Include="Prefabs\ParticleAtLocation.h" />

@@ -32,6 +32,7 @@ protected:
 private:
 	class LevelBuilder* m_pLevelBuilder{};
 	class EnemySpawner* m_pEnemySpawner{};
+	class EnvironmentBuilder* m_pEnvBuilder{};
 	ShellManager* m_pShellManager{};
 	
 	CurrentGameState m_GameState{ CurrentGameState::Gameplay };

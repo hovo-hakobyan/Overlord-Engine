@@ -15,9 +15,9 @@
  //#define MILESTONE_1
  //#define MILESTONE_2
 
-#define OWN_SCENES
+//#define OWN_SCENES
 
-//#define FINAL_SCENE
+#define FINAL_SCENE
 
 #pragma region Lab/Milestone Includes
 #ifdef W3

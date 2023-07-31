@@ -7,6 +7,7 @@
 #include "Prefabs/Hatch.h"
 #include "Prefabs/ParticleAtLocation.h"
 #include "WorldBuilder/ShellManager.h"
+#include "WorldBuilder/EnvironmentBuilder.h"
 
 BattleCityScene::BattleCityScene():
 	GameScene(L"Battle City")
@@ -17,6 +18,7 @@ BattleCityScene::BattleCityScene():
 BattleCityScene::~BattleCityScene()
 {
 	SafeDelete(m_pLevelBuilder);
+	SafeDelete(m_pEnvBuilder);
 }
 
 void BattleCityScene::Initialize()
@@ -30,11 +32,16 @@ void BattleCityScene::Initialize()
 	m_SceneContext.settings.drawUserDebug = false;
 	m_SceneContext.settings.enableOnGUI = false;
 	m_SceneContext.settings.showInfoOverlay = false;
+
 	LockCamera();
+	
 	//Level
 	m_pLevelBuilder = new LevelBuilder{this,1.2f};
 	m_pLevelBuilder->AddLevel("Resources/Levels/Level1.bmp", 15, 15);
 	m_pLevelBuilder->BuildNextLevel();
+
+	m_pEnvBuilder = new EnvironmentBuilder{ this };
+	m_pEnvBuilder->BuildLavaEnv();
 
 	//Tank
 	TankDesc tankDesc{ pDefaultMaterial };
@@ -120,7 +127,7 @@ void BattleCityScene::LockCamera()
 	//Set a new fixed camera
 	auto prevCamera = m_SceneContext.pCamera;
 	const auto pFixedCamera = new FixedCamera();
-	pFixedCamera->GetTransform()->Translate(8.f, 22.f, 4.f);
+	pFixedCamera->GetTransform()->Translate(5.f, 26.f, 4.f);
 	pFixedCamera->GetTransform()->Rotate(80.0f, 0.0f, 0.0f);
 	AddChild(pFixedCamera);
 	SetActiveCamera(pFixedCamera->GetComponent<CameraComponent>());
