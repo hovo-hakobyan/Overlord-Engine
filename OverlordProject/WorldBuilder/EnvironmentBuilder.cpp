@@ -69,6 +69,6 @@ void EnvironmentBuilder::BuildLavaEnv()
 	auto pTransform =pEnv->GetTransform();
 
 	pTransform->Scale(0.08f);
-	pTransform->Rotate(90, 0, 130);
-	pTransform->Translate(-8.0f, 0.0f, 8.0f);
+	pTransform->Rotate(0, -110, 0);
+	pTransform->Translate(-8.0f, -1.0f, 8.0f);
 }
