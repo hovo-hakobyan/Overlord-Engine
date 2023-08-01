@@ -17,7 +17,7 @@ private:
 
 	ModelComponent* m_pModelComponent{};
 	ModelAnimator* m_pAnimator{};
-	class DiffuseMaterial_Shadow_Skinned* m_pMaterial{};
+	class DiffuseMaterial_Skinned* m_pMaterial{};
 	RigidBodyComponent* m_pRigidBody{};
 
 

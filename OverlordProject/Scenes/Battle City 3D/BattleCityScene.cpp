@@ -30,8 +30,9 @@ void BattleCityScene::Initialize()
 	m_SceneContext.settings.drawGrid = false;
 	m_SceneContext.settings.drawPhysXDebug = false;
 	m_SceneContext.settings.drawUserDebug = false;
-	m_SceneContext.settings.enableOnGUI = false;
-	m_SceneContext.settings.showInfoOverlay = false;
+	//m_SceneContext.settings.showInfoOverlay = false;
+
+	m_SceneContext.settings.enableOnGUI = true;
 
 	LockCamera();
 	
@@ -116,6 +117,7 @@ void BattleCityScene::Draw()
 
 void BattleCityScene::OnGUI()
 {
+	m_pEnvBuilder->test();
 }
 
 void BattleCityScene::PostDraw()

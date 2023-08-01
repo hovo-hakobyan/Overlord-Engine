@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Nest.h"
-#include "Materials/Shadow/DiffuseMaterial_Shadow_Skinned.h"
+#include "Materials/DiffuseMaterial_Skinned.h"
 #include "Scenes/Battle City 3D/BattleCityScene.h"
 
 Nest::Nest(const XMFLOAT3& loc):
@@ -21,14 +21,14 @@ void Nest::Initialize(const SceneContext&)
 	m_pModelComponent = new ModelComponent(L"Meshes/king.ovm");
 	AddComponent(m_pModelComponent);
 
-	m_pMaterial = MaterialManager::Get()->CreateMaterial<DiffuseMaterial_Shadow_Skinned>();
+	m_pMaterial = MaterialManager::Get()->CreateMaterial<DiffuseMaterial_Skinned>();
 	m_pMaterial->SetDiffuseTexture(L"Textures/King.png");
 	m_pModelComponent->SetMaterial(m_pMaterial);
 	m_pModelComponent->GetTransform()->Translate(m_Location.x, m_Location.y, m_Location.z - 0.3f);
 
 	
 	m_pAnimator = m_pModelComponent->GetAnimator();
-	m_pAnimator->SetAnimation(L"Salute");
+	m_pAnimator->SetAnimation(0);
 	m_pAnimator->Play();
 	m_MaxAnimTimer = m_SaluteTimer;
 

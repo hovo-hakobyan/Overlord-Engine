@@ -15,14 +15,14 @@ float4 gTintStart
 <
 	string UIName = "Main Tint Start";
 	string UIWidget = "Color";
-> = float4(0.5f,0.1f,0.1f,1.0f);
+> = float4(0.82f,0.19f,0.188f,1.0f);
 
 
 float4 gTintEnd
 <
 	string UIName = "Main Tint End";
 	string UIWidget = "Color";
-> = float4(0.6f,0.4f,0.1f,1.0f);
+> = float4(1.f,0.776f,0.298f,1.0f);
 
 float gOffset
 <
@@ -31,7 +31,7 @@ float gOffset
 	float UIMin = 0.1f;
 	float UIMax = 10.0f;
 	float UIStep = 0.1f;
-> = 0.7f;
+> = 0.8f;
 
 float gSpeed
 <
@@ -40,7 +40,7 @@ float gSpeed
 	float UIMin = 0.1f;
 	float UIMax = 10.0f;
 	float UIStep = 0.1f;
-> = 0.1f;
+> = 0.2f;
 
 float gVertexDistortion
 <
@@ -49,7 +49,7 @@ float gVertexDistortion
 	float UIMin = 0.1f;
 	float UIMax = 10.0f;
 	float UIStep = 0.1f;
-> = 0.2f;
+> = 0.4f;
 
 float gAmount
 <
@@ -58,7 +58,7 @@ float gAmount
 	float UIMin = 0.1f;
 	float UIMax = 10.0f;
 	float UIStep = 0.1f;
-> = 3.7f;
+> = 2.3f;
 
 float gDistortion
 <
@@ -67,7 +67,7 @@ float gDistortion
 	float UIMin = 0.1f;
 	float UIMax = 10.0f;
 	float UIStep = 0.1f;
-> = 0.35f;
+> = 2.25f;
 
 float gScale
 <
@@ -76,7 +76,7 @@ float gScale
 	float UIMin = 0.1f;
 	float UIMax = 10.0f;
 	float UIStep = 0.1f;
-> = 0.03f;
+> = 0.33f;
 
 float gStrength
 <
@@ -85,7 +85,7 @@ float gStrength
 	float UIMin = 0.1f;
 	float UIMax = 10.0f;
 	float UIStep = 0.1f;
-> = 1.4f;
+> = 1.f;
 
 float gScaleDist
 <
@@ -103,7 +103,7 @@ float gHeight
 	float UIMin = 0.1f;
 	float UIMax = 10.0f;
 	float UIStep = 0.1f;
-> = 0.1f;
+> = 3.5f;
 
 
 
@@ -132,7 +132,7 @@ float gSpeedMainX
 	float UIMin = 1.f;
 	float UIMax = 40.0f;
 	float UIStep = 0.5f;
-> = 0.05;
+> = 0.04;
 
 float gSpeedMainY
 <
@@ -141,7 +141,7 @@ float gSpeedMainY
 	float UIMin = 1.f;
 	float UIMax = 40.0f;
 	float UIStep = 0.5f;
-> = 0.07f;
+> = 0.04f;
 
 
 Texture2D gTex0

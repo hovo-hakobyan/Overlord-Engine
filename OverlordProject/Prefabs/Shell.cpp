@@ -61,12 +61,12 @@ void Shell::Initialize(const SceneContext&)
 	ParticleEmitterSettings expSettings{};
 
 	expSettings.velocity = { 0.f,0.f,0.f };
-	expSettings.minSize = 0.5f;
-	expSettings.maxSize = 1.5f;
+	expSettings.minSize = 0.4f;
+	expSettings.maxSize = 0.8f;
 	expSettings.minEnergy = .5f;
 	expSettings.maxEnergy = 1.5f;
-	expSettings.minScale = 3.f;
-	expSettings.maxScale = 4.0f;
+	expSettings.minScale = 2.f;
+	expSettings.maxScale = 3.0f;
 	expSettings.minEmitterRadius = .2f;
 	expSettings.maxEmitterRadius = .5f;
 	expSettings.color = { 1.f,1.f,1.f, .6f };

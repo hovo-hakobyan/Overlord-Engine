@@ -12,8 +12,9 @@ public:
 	EnvironmentBuilder& operator=(EnvironmentBuilder&& other) noexcept = delete;
 
 	void BuildLavaEnv();
+	void test();
 private:
 
 	BattleCityScene* m_pGameScene;
-
+	LavaMaterial* m_pLavaMat{};
 };
