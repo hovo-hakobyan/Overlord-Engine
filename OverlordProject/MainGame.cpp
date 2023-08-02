@@ -87,7 +87,9 @@
 #endif
 
 #ifdef FINAL_SCENE
+#include "Scenes/Battle City 3D/MainMenu.h"
 #include "Scenes/Battle City 3D/BattleCityScene.h"
+
 #endif // FINAL_SCENE
 
 #pragma endregion
@@ -175,6 +177,7 @@ void MainGame::Initialize()
 #endif
 
 #ifdef FINAL_SCENE
+	SceneManager::Get()->AddGameScene(new MainMenu());
 	SceneManager::Get()->AddGameScene(new BattleCityScene());
 #endif // FINAL_SCENE
 

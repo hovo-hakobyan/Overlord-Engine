@@ -58,6 +58,8 @@
     <ClCompile Include="Scenes\OwnTestScenes\LavaTestScene.cpp" />
     <ClCompile Include="Materials\LavaMaterial.cpp" />
     <ClCompile Include="WorldBuilder\EnvironmentBuilder.cpp" />
+    <ClCompile Include="Scenes\Battle City 3D\MainMenu.cpp" />
+    <ClCompile Include="Prefabs\WorldButton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h" />
@@ -137,5 +139,7 @@
     <ClInclude Include="Scenes\OwnTestScenes\LavaTestScene.h" />
     <ClInclude Include="Materials\LavaMaterial.h" />
     <ClInclude Include="WorldBuilder\EnvironmentBuilder.h" />
+    <ClInclude Include="Scenes\Battle City 3D\MainMenu.h" />
+    <ClInclude Include="Prefabs\WorldButton.h" />
   </ItemGroup>
 </Project>
