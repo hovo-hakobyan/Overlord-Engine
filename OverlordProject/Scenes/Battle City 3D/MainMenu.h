@@ -22,6 +22,11 @@ private:
 	WorldButton* m_pPlayButton{};
 	WorldButton* m_pWorldBuilderButton{};
 	WorldButton* m_pExitButton{};
+
+	class LevelBuilder* m_pLevelBuilder{};
+	class PlayerTank* m_pPlayerTank{};
+
+	void LockCamera();
 };
 
 

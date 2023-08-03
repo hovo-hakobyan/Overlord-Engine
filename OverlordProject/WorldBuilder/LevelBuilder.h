@@ -7,12 +7,13 @@ struct LevelInfo
 	uint8_t rows;
 	uint8_t cols;
 };
-class BattleCityScene;
 class DiffuseMaterial_Shadow;
+class Hatch;
 class LevelBuilder final
 {
 public:
-	LevelBuilder(BattleCityScene* gameScene, float tileSize);
+	LevelBuilder(GameScene* gameScene, float tileSize);
+
 	~LevelBuilder();
 	LevelBuilder(const LevelBuilder& other) = delete;
 	LevelBuilder(LevelBuilder&& other) noexcept = delete;
@@ -21,6 +22,8 @@ public:
 
 	void AddLevel(const std::string& filePath, uint8_t rows, uint8_t cols);
 	void BuildNextLevel();
+	void AddMainMenuLevel(const std::string& filePath, uint8_t rows, uint8_t cols);
+	void BuildMainMenu();
 
 	std::vector<class Hatch*> GetEnemyStartHatches() const;
 	Hatch* GetPlayerStartHatch() const;
@@ -33,9 +36,12 @@ private:
 	std::vector<LevelInfo*> m_LevelInfo;
 	BMPLevelParser* m_LevelParser{};
 
+	TileCollection m_MenuLevel;
+	LevelInfo* m_MenuLevelInfo;
+
 	int m_CurrentLevelIdx = -1;
 	float m_TileSize{};
-	BattleCityScene* m_pGameScene;
+	GameScene* m_pGameScene;
 
 	class GrassMaterial* m_pGrassMaterial{};
 	class WaterMaterial* m_pWaterMaterial{};

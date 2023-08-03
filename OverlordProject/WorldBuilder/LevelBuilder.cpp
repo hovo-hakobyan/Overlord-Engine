@@ -8,11 +8,9 @@
 #include "Prefabs/Hatch.h"
 #include "Prefabs/BrickWall.h"
 #include "Prefabs/Nest.h"
-#include "Scenes/Battle City 3D/BattleCityScene.h"
 
 
-
-LevelBuilder::LevelBuilder(BattleCityScene* gameScene,float tileSize):
+LevelBuilder::LevelBuilder(GameScene* gameScene,float tileSize):
 	m_pGameScene{gameScene},
 	m_TileSize{tileSize}
 {
@@ -33,23 +31,41 @@ LevelBuilder::LevelBuilder(BattleCityScene* gameScene,float tileSize):
 	m_pBrickWallMaterial->SetDiffuseTexture(L"Textures/wall/brickAlbedo.tif");
 }
 
+
 LevelBuilder::~LevelBuilder()
 {
 	SafeDelete(m_LevelParser);
 
-	for (size_t i = 0; i < m_LevelInfo.size(); ++i)
+	if (!m_LevelInfo.empty())
 	{
-		SafeDelete(m_LevelInfo[i]);
-	}
-
-	for (size_t i = 0; i < m_Levels.size(); i++)
-	{
-		TileCollection tileCol = m_Levels[i];
-		for (size_t j = 0; j < tileCol.size(); j++)
+		for (size_t i = 0; i < m_LevelInfo.size(); ++i)
 		{
-			SafeDelete(tileCol[j]);
+			SafeDelete(m_LevelInfo[i]);
 		}
 	}
+	
+	if (!m_Levels.empty())
+	{
+		for (size_t i = 0; i < m_Levels.size(); i++)
+		{
+			TileCollection tileCol = m_Levels[i];
+			for (size_t j = 0; j < tileCol.size(); j++)
+			{
+				SafeDelete(tileCol[j]);
+			}
+		}
+	}
+	
+	if (!m_MenuLevel.empty())
+	{
+		for (size_t i = 0; i < m_MenuLevel.size(); i++)
+		{
+			SafeDelete(m_MenuLevel[i]);
+		}
+
+		SafeDelete(m_MenuLevelInfo);
+	}
+
 }
 
 void LevelBuilder::AddLevel(const std::string& filePath, uint8_t rows, uint8_t cols)
@@ -57,6 +73,111 @@ void LevelBuilder::AddLevel(const std::string& filePath, uint8_t rows, uint8_t c
 	auto levelData = m_LevelParser->GetLevelData(filePath, rows, cols);
 	m_Levels.push_back(levelData );
 	m_LevelInfo.push_back(new LevelInfo{ rows,cols });
+}
+
+void LevelBuilder::AddMainMenuLevel(const std::string& filePath, uint8_t rows, uint8_t cols)
+{
+	auto levelData = m_LevelParser->GetLevelData(filePath, rows, cols);
+	m_MenuLevel = levelData;
+	m_MenuLevelInfo = new LevelInfo{ rows,cols };
+}
+
+void LevelBuilder::BuildMainMenu()
+{
+	if (m_MenuLevel.empty() || !m_MenuLevelInfo)
+	{
+		return;
+	}
+
+	const int nrCols = m_MenuLevelInfo->cols;
+	const int nrRows = m_MenuLevelInfo->rows;
+	XMFLOAT3 currentPos{};
+	int middleIdx = nrCols * nrRows / 2;
+	auto pMat = PxGetPhysics().createMaterial(1.0f, 1.0f, 0.f);
+
+	for (int row = 0; row < nrRows; ++row)
+	{
+		for (int col = 0; col < nrCols; ++col)
+		{
+			int idx = row * nrCols + col;
+			auto currentTileType = *m_MenuLevel[idx];
+			if (idx == middleIdx)
+			{
+				m_LevelCenter = currentPos;
+			}
+			//Create the ground
+			if (currentTileType != TileTypes::BorderWall && currentTileType != TileTypes::PlayerSpawn)
+			{
+				const auto pGroundModel = new ModelComponent(L"Meshes/GroundPlane.ovm");
+				pGroundModel->SetMaterial(m_pGroundMaterial);
+				auto pGround = new GameObject();
+				m_pGameScene->AddChild(pGround);
+				pGround->AddComponent(pGroundModel);
+				pGround->GetTransform()->Scale(m_TileSize);
+				pGround->GetTransform()->Translate(currentPos);
+
+			}
+
+			//Create the terrain type on top of the ground
+
+			if (currentTileType != TileTypes::Ground)
+			{
+				ModelComponent* pTerrainModel{};
+
+				XMFLOAT3 borderWallSize{ m_TileSize,2.5f,m_TileSize };
+
+				PxBoxGeometry borderWallGeo{ borderWallSize.x / 2.0f,borderWallSize.y / 2.0f ,borderWallSize.z / 2.0f };
+
+				switch (currentTileType)
+				{
+
+				break;
+				case TileTypes::BorderWall:
+				{
+					auto pTerrainObj = new GameObject();
+					m_pGameScene->AddChild(pTerrainObj);
+					pTerrainModel = new ModelComponent(L"Meshes/SolidWall.ovm");
+					pTerrainModel->SetMaterial(m_pBorderWallMaterial);
+					pTerrainObj->GetTransform()->Translate(currentPos.x, currentPos.y + borderWallSize.y / 2.0f, currentPos.z);
+					pTerrainObj->GetTransform()->Scale(m_TileSize, borderWallSize.y / 2.0f, m_TileSize);
+					auto pRigidBody = pTerrainObj->AddComponent(new RigidBodyComponent(true));
+					pRigidBody->AddCollider(borderWallGeo, *pMat);
+					pTerrainObj->AddComponent(pTerrainModel);
+				}
+				break;
+				case TileTypes::Grass:
+				{
+					auto pTerrainObj = new GameObject();
+					m_pGameScene->AddChild(pTerrainObj);
+					pTerrainModel = new ModelComponent(L"Meshes/GroundPlane.ovm");
+					pTerrainModel->SetMaterial(m_pGrassMaterial);
+					pTerrainObj->GetTransform()->Translate(currentPos.x, currentPos.y, currentPos.z);
+					pTerrainObj->GetTransform()->Scale(m_TileSize, 1.0f, m_TileSize);
+					pTerrainObj->AddComponent(pTerrainModel);
+				}
+				break;
+
+				case TileTypes::PlayerSpawn:
+				{
+					auto hatch = new Hatch(currentPos, XMFLOAT3{ 0.0f,0.0f,0.0f }, m_TileSize, L"Meshes/Door.ovm");
+					hatch->CreateMaterial(L"Textures/door/doorDiffusePlayer.png", L"Textures/door/doorNormal.png");
+					m_pGameScene->AddChild(hatch);
+					m_pPlayerSpawnHatch = hatch;
+				}
+				break;
+				case TileTypes::Base:
+					auto nest = new Nest(currentPos);
+					m_pGameScene->AddChild(nest);
+					m_NestLocation = currentPos;
+					break;
+				}
+
+			}
+			currentPos.x += m_TileSize;
+		}
+		currentPos.x = 0.0f;
+		currentPos.z += m_TileSize;
+	}
 }
 
 void LevelBuilder::BuildNextLevel()
@@ -195,6 +316,8 @@ void LevelBuilder::BuildNextLevel()
 		currentPos.z += m_TileSize;
 	}
 }
+
+
 
 std::vector<Hatch*> LevelBuilder::GetEnemyStartHatches() const
 {

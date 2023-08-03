@@ -83,24 +83,28 @@ void PlayerTank::Initialize(const SceneContext& sceneContext)
 
 void PlayerTank::Update(const SceneContext& sceneContext)
 {
-	if (m_pGameScene->GetGameState() != CurrentGameState::Gameplay)
+	if (m_TankDesc.isCombat)
 	{
-		if (m_pAnimator->IsPlaying())
+		if (m_pGameScene->GetGameState() != CurrentGameState::Gameplay)
 		{
-			m_pAnimator->Reset();
+			if (m_pAnimator->IsPlaying())
+			{
+				m_pAnimator->Reset();
+			}
+			return;
 		}
-		return;
-	}
 
-	if (m_IsDead)
-	{
-		if (m_pAnimator->IsPlaying())
+		if (m_IsDead)
 		{
-			m_pAnimator->Reset();
+			if (m_pAnimator->IsPlaying())
+			{
+				m_pAnimator->Reset();
+			}
+			m_pBoxShape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
+			return;
 		}
-		m_pBoxShape->setFlag(PxShapeFlag::eSIMULATION_SHAPE, false);
-		return;
 	}
+	
 
 	
 	constexpr float epsilon = 0.01f;

@@ -18,7 +18,7 @@ struct TankDesc
 	float maxMoveSpeed{ 5.f };
 	float moveAccelerationTime{ 0.3f };
 	PxBoxControllerDesc controller{};
-
+	bool isCombat{ true };
 
 	int actionId_MoveLeft{ -1 };
 	int actionId_MoveRight{ -1 };

@@ -18,7 +18,7 @@ void WorldButton::Initialize(const SceneContext&)
 	m_pMaterial->SetDiffuseTexture(m_Path);
 
 	auto pBorderMat = MaterialManager::Get()->CreateMaterial<DiffuseMaterial>();
-	pBorderMat->SetDiffuseTexture(L"Textures/wall/borderAlbedo.tif");
+	pBorderMat->SetDiffuseTexture(L"Textures/ground/soilAlbedo.tif");
 
 	m_pModelComp->SetMaterial(pBorderMat, 0);
 	m_pModelComp->SetMaterial(m_pMaterial,1);
@@ -30,4 +30,6 @@ void WorldButton::Initialize(const SceneContext&)
 
 	auto pRigidBody = AddComponent(new RigidBodyComponent(true));
 	pRigidBody->AddCollider(convexGeo, *pPhysicsMaterial);
+
+
 }
