@@ -60,8 +60,8 @@ void MainMenu::Initialize()
 	//Tank
 	TankDesc tankDesc{ pDefaultMaterial };
 	tankDesc.isCombat = false;
-	auto playerLoc = m_pLevelBuilder->GetPlayerStartHatch()->GetTransform()->GetPosition();
-	m_pPlayerTank = new PlayerTank(playerLoc, XMFLOAT3{ 0.0f,0.5f,0.0f }, tankDesc);
+	m_PlayerStart = m_pLevelBuilder->GetPlayerStartHatch()->GetTransform()->GetPosition();
+	m_pPlayerTank = new PlayerTank(m_PlayerStart, XMFLOAT3{ 0.0f,0.5f,0.0f }, tankDesc);
 	AddChild(m_pPlayerTank);
 	
 	//Collision
@@ -129,6 +129,7 @@ void MainMenu::Update()
 	m_CurrentButtonLoadTime -= m_SceneContext.pGameTime->GetElapsed();
 	if (m_CurrentButtonLoadTime > 0)
 	{
+		
 		return;
 	}
 
@@ -136,15 +137,19 @@ void MainMenu::Update()
 	{
 	case MainMenu::MenuActions::Play:
 		Logger::LogInfo(L"Opening Play");
+		m_pPlayerTank->Reset();
+		SceneManager::Get()->NextScene();
 		break;
 	case MainMenu::MenuActions::WorldBuilder:
 		Logger::LogInfo(L"Opening Builder");
+		m_pPlayerTank->Reset();
 		break;
 	case MainMenu::MenuActions::Exit:
 		OverlordGame::SHOULD_EXIT = true;
 		break;
 	}
-
+	m_ShouldCountDown = false;
+	m_MenuAction = MenuActions::None;
 }
 
 void MainMenu::Draw()
@@ -158,6 +163,8 @@ void MainMenu::OnGUI()
 void MainMenu::PostDraw()
 {
 }
+
+
 
 void MainMenu::LockCamera()
 {

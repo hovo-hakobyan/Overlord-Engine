@@ -11,6 +11,7 @@ public:
 	PlayerTank& operator=(const PlayerTank& other) = delete;
 	PlayerTank& operator=(PlayerTank&& other) = delete;
 
+	void Reset();
 protected:
 	virtual void Initialize(const SceneContext& sceneContext) override;
 	virtual void Update(const SceneContext&) override;

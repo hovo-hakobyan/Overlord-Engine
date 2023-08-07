@@ -20,6 +20,13 @@ PlayerTank::PlayerTank(const XMFLOAT3& loc, const XMFLOAT3& startRot,const TankD
 
 
 
+void PlayerTank::Reset()
+{
+	m_pBoxControllerComponent->Translate(XMFLOAT3{ m_StartLocation.x,m_StartLocation.y + m_TankDesc.controller.halfHeight ,m_StartLocation.z });
+	m_pColliderGameObj->GetTransform()->Translate(m_StartLocation.x, 1.f, m_StartLocation.z);
+
+}
+
 void PlayerTank::Initialize(const SceneContext& sceneContext)
 {
 	m_pGameScene = static_cast<BattleCityScene*>(GetScene());

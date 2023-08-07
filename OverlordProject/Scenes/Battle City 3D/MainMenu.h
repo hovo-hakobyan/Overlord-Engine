@@ -37,6 +37,8 @@ private:
 	float m_ButtonLoadMaxTime{ 4.0f };
 	float m_CurrentButtonLoadTime{};
 	bool m_ShouldCountDown{ false };
+
+	XMFLOAT3 m_PlayerStart{};
 };
 
 
