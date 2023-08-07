@@ -10,7 +10,6 @@ TextRenderer::~TextRenderer()
 void TextRenderer::Initialize()
 {
 	TODO_W7(L"Complete TextRenderer.fx")
-
 	//Effect
 	m_pEffect = ContentManager::Load<ID3DX11Effect>(L"Effects/TextRenderer.fx");
 	m_pTechnique = m_pEffect->GetTechniqueByIndex(0);
@@ -19,6 +18,7 @@ void TextRenderer::Initialize()
 	QUERY_EFFECT_VARIABLE_HALT(m_pEffect, m_pEVar_TransformMatrix, gTransform, Matrix);
 	QUERY_EFFECT_VARIABLE_HALT(m_pEffect, m_pEVar_TextureSize, gTextureSize, Vector);
 	QUERY_EFFECT_VARIABLE_HALT(m_pEffect, m_pEVar_TextureSRV, gSpriteTexture, ShaderResource);
+	QUERY_EFFECT_VARIABLE_HALT(m_pEffect, m_pEvar_FontSize, gFontSize, Scalar);
 
 	//Transform Matrix
 	const float scaleX = (m_GameContext.windowWidth > 0) ? 2.0f / float(m_GameContext.windowWidth) : 0;
@@ -79,6 +79,9 @@ void TextRenderer::Draw(const SceneContext& sceneContext)
 		//Set Transform
 		m_pEVar_TransformMatrix->SetMatrix(&m_Transform._11);
 
+		//Set Size
+		m_pEvar_FontSize->SetFloat(m_FontSize);
+
 		D3DX11_TECHNIQUE_DESC techDesc{};
 		m_pTechnique->GetDesc(&techDesc);
 		for(UINT i = 0; i < techDesc.Passes; ++i)
@@ -89,6 +92,11 @@ void TextRenderer::Draw(const SceneContext& sceneContext)
 	}
 
 	m_TextRenderGroups.clear();
+}
+
+void TextRenderer::SetFontSize(float size)
+{
+	m_FontSize = size;
 }
 
 void TextRenderer::UpdateBuffer()

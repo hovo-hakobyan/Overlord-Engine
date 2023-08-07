@@ -25,6 +25,8 @@ public:
 	void DrawText(SpriteFont* pFont, const std::wstring& text, const XMFLOAT2& position, const XMFLOAT4& color = XMFLOAT4{ Colors::White });
 	void Draw(const SceneContext& sceneContext);
 
+	void SetFontSize(float size);
+
 protected:
 	void Initialize() override;
 
@@ -42,6 +44,7 @@ private:
 	ID3DX11EffectMatrixVariable* m_pEVar_TransformMatrix{};
 	ID3DX11EffectVectorVariable* m_pEVar_TextureSize{};
 	ID3DX11EffectShaderResourceVariable* m_pEVar_TextureSRV{};
+	ID3DX11EffectScalarVariable* m_pEvar_FontSize{};
 
 	ID3D11InputLayout* m_pInputLayout{};
 	ID3D11Buffer* m_pVertexBuffer{};
@@ -50,4 +53,5 @@ private:
 
 	UINT m_TotalCharacters{};
 	UINT m_BufferSize{100};
+	float m_FontSize{3};
 };

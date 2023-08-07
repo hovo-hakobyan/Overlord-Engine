@@ -3,6 +3,7 @@
 float4x4 gTransform : WORLDVIEWPROJECTION;
 Texture2D gSpriteTexture;
 float2 gTextureSize;
+float gFontSize;
 
 SamplerState samPoint
 {
@@ -80,20 +81,20 @@ void MainGS(point VS_DATA vertex[1], inout TriangleStream<GS_DATA> triStream)
 	CreateVertex(triStream, pos, col, texCoord, channel);
 
 	//2. Vertex Right-Top
-	pos.x += size.x;
+    pos.x += size.x * gFontSize;
 	texCoord.x += size.x / gTextureSize.x;
 	CreateVertex(triStream, pos, col, texCoord, channel);
 
 
 	//3. Vertex Left-Bottom
-	pos.x -= size.x;
-	pos.y += size.y;
+    pos.x -= size.x * gFontSize;
+    pos.y += size.y * gFontSize;
 	texCoord.x -= size.x / gTextureSize.x;
 	texCoord.y += size.y / gTextureSize.y;
 	CreateVertex(triStream, pos, col, texCoord, channel);
 
 	//4. Vertex Right-Bottom
-	pos.x += size.x;
+    pos.x += size.x * gFontSize;
 	texCoord.x += size.x / gTextureSize.x;
 	CreateVertex(triStream, pos, col, texCoord, channel);
 }
