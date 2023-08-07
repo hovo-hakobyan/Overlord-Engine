@@ -39,6 +39,12 @@ private:
 	bool m_ShouldCountDown{ false };
 
 	XMFLOAT3 m_PlayerStart{};
+
+	//HUD
+	SpriteFont* m_pFont{};
+	std::string m_HudText{};
+	XMFLOAT2 m_HudTextPos{};
+	XMFLOAT4 m_HudTextColor{};
 };
 
 

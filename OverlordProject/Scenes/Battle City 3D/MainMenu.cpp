@@ -117,6 +117,11 @@ void MainMenu::Initialize()
 		}
 	);
 
+	//HUD
+	m_pFont = ContentManager::Load<SpriteFont>(L"SpriteFonts/Arial_32.fnt");
+	m_HudTextColor = XMFLOAT4{ Colors::Red };
+	m_HudTextPos = XMFLOAT2{ m_SceneContext.windowWidth /2.f,m_SceneContext.windowHeight / 2.0f};
+
 }
 
 void MainMenu::Update()
@@ -126,10 +131,12 @@ void MainMenu::Update()
 		return;
 	}
 
+	
 	m_CurrentButtonLoadTime -= m_SceneContext.pGameTime->GetElapsed();
 	if (m_CurrentButtonLoadTime > 0)
 	{
-		
+		m_HudText = std::format("{:.0f}", m_CurrentButtonLoadTime);
+		TextRenderer::Get()->DrawText(m_pFont, StringUtil::utf8_decode(m_HudText), m_HudTextPos, m_HudTextColor);
 		return;
 	}
 
