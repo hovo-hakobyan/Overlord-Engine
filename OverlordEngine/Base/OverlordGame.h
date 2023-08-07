@@ -22,6 +22,7 @@ public:
 	void SetRenderTarget(RenderTarget* renderTarget);
 	RenderTarget* GetRenderTarget() const;
 
+	static bool SHOULD_EXIT;
 protected:
 	virtual void OnGamePreparing(GameContext& /*gameContext*/){}
 	virtual LRESULT WindowProcedureHook(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);

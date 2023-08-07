@@ -141,9 +141,10 @@ void MainMenu::Update()
 		Logger::LogInfo(L"Opening Builder");
 		break;
 	case MainMenu::MenuActions::Exit:
-		
+		OverlordGame::SHOULD_EXIT = true;
 		break;
 	}
+
 }
 
 void MainMenu::Draw()
