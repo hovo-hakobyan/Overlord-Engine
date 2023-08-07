@@ -70,7 +70,6 @@ void Shell::Initialize(const SceneContext&)
 	expSettings.minEmitterRadius = .2f;
 	expSettings.maxEmitterRadius = .5f;
 	expSettings.color = { 1.f,1.f,1.f, .6f };
-	m_pExplosionEmitter = new ParticleEmitterComponent(L"Textures/explosion.png", expSettings, 100);
 
 	SetOnTriggerCallBack([=](GameObject*, GameObject* other, PxTriggerAction triggerAction)
 		{
@@ -94,6 +93,7 @@ void Shell::Initialize(const SceneContext&)
 							if (tank)
 							{
 								tank->SetIsDead(true);
+								m_pExplosionEmitter = new ParticleEmitterComponent(L"Textures/explosion.png", expSettings, 100);
 								AddComponent(m_pExplosionEmitter);
 							}
 
