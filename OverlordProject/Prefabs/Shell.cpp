@@ -113,6 +113,7 @@ void Shell::Initialize(const SceneContext&)
 							{
 								tank->SetIsDead(true);
 								m_pGameScene->SetGameState(CurrentGameState::Defeat);
+								m_pExplosionEmitter = new ParticleEmitterComponent(L"Textures/explosion.png", expSettings, 100);
 								AddComponent(m_pExplosionEmitter);
 							}
 
