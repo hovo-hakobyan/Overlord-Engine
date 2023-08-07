@@ -9,6 +9,7 @@ ParticleAtLocation::ParticleAtLocation(const XMFLOAT3& loc, float duration, cons
 {
 }
 
+
 void ParticleAtLocation::Play()
 {
 	if (!m_HasBeenInitialized)
@@ -23,7 +24,6 @@ void ParticleAtLocation::Play()
 void ParticleAtLocation::Initialize(const SceneContext&)
 {
 	GetTransform()->Translate(m_Location);
-	m_pComponent = new ParticleEmitterComponent(m_Path, m_Settings, 100);
 }
 
 void ParticleAtLocation::Update(const SceneContext& sceneContext)
@@ -32,6 +32,7 @@ void ParticleAtLocation::Update(const SceneContext& sceneContext)
 	{
 		if (!m_HasBeenInitialized)
 		{
+			m_pComponent = new ParticleEmitterComponent(m_Path, m_Settings, 100);
 			AddComponent(m_pComponent);
 			m_HasBeenInitialized = true;
 		}

@@ -18,7 +18,12 @@ protected:
 	void OnGUI() override;
 	void PostDraw() override;
 
-private:
+private:	
+	enum class MenuActions
+	{
+		Play,WorldBuilder,Exit, None
+	};
+
 	WorldButton* m_pPlayButton{};
 	WorldButton* m_pWorldBuilderButton{};
 	WorldButton* m_pExitButton{};
@@ -27,6 +32,11 @@ private:
 	class PlayerTank* m_pPlayerTank{};
 
 	void LockCamera();
+
+	MenuActions m_MenuAction{ MenuActions::None };
+	float m_ButtonLoadMaxTime{ 4.0f };
+	float m_CurrentButtonLoadTime{};
+	bool m_ShouldCountDown{ false };
 };
 
 

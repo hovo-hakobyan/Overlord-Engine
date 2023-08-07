@@ -29,7 +29,7 @@ void WorldButton::Initialize(const SceneContext&)
 	const auto convexGeo = PxConvexMeshGeometry{ pConvexMesh };
 
 	auto pRigidBody = AddComponent(new RigidBodyComponent(true));
-	pRigidBody->AddCollider(convexGeo, *pPhysicsMaterial);
+	pRigidBody->AddCollider(convexGeo, *pPhysicsMaterial,true);
 
 
 }

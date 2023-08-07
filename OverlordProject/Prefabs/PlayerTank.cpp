@@ -180,29 +180,33 @@ void PlayerTank::Update(const SceneContext& sceneContext)
 	
 	m_CurrentShootCooldown += deltaTime;
 	//Shooting
-	if (sceneContext.pInput->IsActionTriggered(Shoot))
+	if (m_TankDesc.isCombat)
 	{
-		if (m_CurrentShootCooldown >= m_MaxShootCooldown)
+		if (sceneContext.pInput->IsActionTriggered(Shoot))
 		{
-			constexpr float spawnDistance = 1.f;
-			auto loc = pTransform->GetPosition();
-			
-			XMFLOAT3 dir = pTransform->GetForward();
-			dir.x *= -1;
-			dir.z *= -1;
-			auto finalLoc = XMFLOAT3{ loc.x + dir.x * spawnDistance,1.0f,loc.z + dir.z * spawnDistance };
-			auto finalRot = XMFLOAT3{ 0.0f,0.0f,0.0f };
-			m_pGameScene->GetShellManager()->SpawnShell(finalLoc,finalRot, dir, m_pColliderGameObj->GetTag());
+			if (m_CurrentShootCooldown >= m_MaxShootCooldown)
+			{
+				constexpr float spawnDistance = 1.f;
+				auto loc = pTransform->GetPosition();
 
-			m_CurrentShootCooldown = 0.0f;
-			m_pAnimator->SetAnimation(0);
-			m_pAnimator->SetAnimationSpeed(3.0f);
-			m_pAnimator->Play();
+				XMFLOAT3 dir = pTransform->GetForward();
+				dir.x *= -1;
+				dir.z *= -1;
+				auto finalLoc = XMFLOAT3{ loc.x + dir.x * spawnDistance,1.0f,loc.z + dir.z * spawnDistance };
+				auto finalRot = XMFLOAT3{ 0.0f,0.0f,0.0f };
+				m_pGameScene->GetShellManager()->SpawnShell(finalLoc, finalRot, dir, m_pColliderGameObj->GetTag());
+
+				m_CurrentShootCooldown = 0.0f;
+				m_pAnimator->SetAnimation(0);
+				m_pAnimator->SetAnimationSpeed(3.0f);
+				m_pAnimator->Play();
+			}
+
+
+
 		}
-
-		
-		
 	}
+	
 
 	if (m_pAnimator->IsPlaying())
 	{

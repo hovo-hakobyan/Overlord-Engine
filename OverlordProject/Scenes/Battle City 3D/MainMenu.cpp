@@ -4,6 +4,7 @@
 #include "WorldBuilder/LevelBuilder.h"
 #include "Prefabs/Hatch.h"
 #include "Prefabs/PlayerTank.h"
+#include "Prefabs/CubePrefab.h"
 
 MainMenu::MainMenu():
 	GameScene(L"Main Menu")
@@ -39,19 +40,19 @@ void MainMenu::Initialize()
 	m_pLevelBuilder->BuildMainMenu();
 
 	auto center = m_pLevelBuilder->GetLevelCenter();
-	center.y += 0.5f;
-	center.x -= 2.0f;
+	center.y -= 0.1f;
+	center.x -= 4.5f;
 
 	auto transform = m_pPlayButton->GetTransform();
 	transform->Translate(center);
 	transform->Rotate(0, 90, 0);
 
-	center.x += 2.5f;
+	center.x += 4.5f;
 	transform = m_pWorldBuilderButton->GetTransform();
 	transform->Translate(center);
 	transform->Rotate(0, 90, 0);
 
-	center.x += 2.5f;
+	center.x += 4.5f;
 	transform = m_pExitButton->GetTransform();
 	transform->Translate(center);
 	transform->Rotate(0, 90, 0);
@@ -63,10 +64,86 @@ void MainMenu::Initialize()
 	m_pPlayerTank = new PlayerTank(playerLoc, XMFLOAT3{ 0.0f,0.5f,0.0f }, tankDesc);
 	AddChild(m_pPlayerTank);
 	
+	//Collision
+
+	m_pPlayButton->SetOnTriggerCallBack([=](GameObject*, GameObject*, PxTriggerAction triggerAction)
+		{
+			if (triggerAction == PxTriggerAction::ENTER)
+			{
+				//Logic when tank is on play button
+				m_ShouldCountDown = true;
+				m_CurrentButtonLoadTime = m_ButtonLoadMaxTime;
+				m_MenuAction = MenuActions::Play;
+			}
+			if (triggerAction == PxTriggerAction::LEAVE)
+			{
+				m_ShouldCountDown = false;
+				m_MenuAction = MenuActions::None;
+			}
+		}
+	);
+
+	m_pWorldBuilderButton->SetOnTriggerCallBack([=](GameObject*, GameObject*, PxTriggerAction triggerAction)
+		{
+			if (triggerAction == PxTriggerAction::ENTER)
+			{
+				//Logic when tank is on WorldBuilder button
+				m_ShouldCountDown = true;
+				m_CurrentButtonLoadTime = m_ButtonLoadMaxTime;
+				m_MenuAction = MenuActions::WorldBuilder;
+			}
+			if (triggerAction == PxTriggerAction::LEAVE)
+			{
+				m_ShouldCountDown = false;
+				m_MenuAction = MenuActions::None;
+			}
+		}
+	);
+
+	m_pExitButton->SetOnTriggerCallBack([=](GameObject*, GameObject*, PxTriggerAction triggerAction)
+		{
+			if (triggerAction == PxTriggerAction::ENTER)
+			{
+				//Logic when tank is on Exit button
+				m_ShouldCountDown = true;
+				m_CurrentButtonLoadTime = m_ButtonLoadMaxTime;
+				m_MenuAction = MenuActions::Exit;
+			}
+			if (triggerAction == PxTriggerAction::LEAVE)
+			{
+				m_ShouldCountDown = false;
+				m_MenuAction = MenuActions::None;
+			}
+		}
+	);
+
 }
 
 void MainMenu::Update()
 {
+	if (!m_ShouldCountDown)
+	{
+		return;
+	}
+
+	m_CurrentButtonLoadTime -= m_SceneContext.pGameTime->GetElapsed();
+	if (m_CurrentButtonLoadTime > 0)
+	{
+		return;
+	}
+
+	switch (m_MenuAction)
+	{
+	case MainMenu::MenuActions::Play:
+		Logger::LogInfo(L"Opening Play");
+		break;
+	case MainMenu::MenuActions::WorldBuilder:
+		Logger::LogInfo(L"Opening Builder");
+		break;
+	case MainMenu::MenuActions::Exit:
+		
+		break;
+	}
 }
 
 void MainMenu::Draw()
