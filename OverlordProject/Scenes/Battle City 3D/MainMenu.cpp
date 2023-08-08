@@ -127,7 +127,7 @@ void MainMenu::Initialize()
 	m_HudTextColor = XMFLOAT4{ Colors::Red };
 	m_HudTextPos = XMFLOAT2{ m_SceneContext.windowWidth /2.f,m_SceneContext.windowHeight / 2.0f};
 
-	EnvironmentBuilder::BuildMenuEnv(this);
+	EnvironmentBuilder::BuildLavaEnv(this,false);
 
 	m_SceneContext.pLights->SetDirectionalLight(XMFLOAT3{ 6.897f,82.759f,13.793f }, XMFLOAT3{ -0.241f,-1.0f,-0.069f });
 }

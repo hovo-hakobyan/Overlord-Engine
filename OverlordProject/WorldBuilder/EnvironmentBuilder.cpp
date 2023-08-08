@@ -67,7 +67,7 @@ void EnvironmentBuilder::Initialize()
 	m_IsInitialized = true;
 }
 
-void EnvironmentBuilder::BuildLavaEnv(GameScene* pScene)
+void EnvironmentBuilder::BuildLavaEnv(GameScene* pScene, bool isLavaActive)
 {
 	if (!m_IsInitialized)
 	{
@@ -85,13 +85,21 @@ void EnvironmentBuilder::BuildLavaEnv(GameScene* pScene)
 	pLavaEnvModel->SetMaterial(m_pIslandGrassMat, 1);
 	pLavaEnvModel->SetMaterial(m_pShrubberyMat, 2);
 	pLavaEnvModel->SetMaterial(m_pLavaBubble, 3);
-	pLavaEnvModel->SetMaterial(m_pLavaMat, 4);
 	pLavaEnvModel->SetMaterial(m_pPalmMat2, 5);
 	pLavaEnvModel->SetMaterial(m_pPalmMat1, 6);
 	pLavaEnvModel->SetMaterial(m_pSandMat, 7);
-	pLavaEnvModel->SetMaterial(m_pLavaMat, 8);
+	pLavaEnvModel->SetMaterial(m_pCooledLavaMat, 8);
 	pLavaEnvModel->SetMaterial(m_pVolcGrassMat, 9);
 	pLavaEnvModel->SetMaterial(m_pVolcBaseMat, 10);
+
+	if (isLavaActive)
+	{
+		pLavaEnvModel->SetMaterial(m_pLavaMat, 4);
+	}
+	else
+	{
+		pLavaEnvModel->SetMaterial(m_pCooledLavaMat, 4);
+	}
 
 	auto pTransform =pEnv->GetTransform();
 
@@ -99,38 +107,3 @@ void EnvironmentBuilder::BuildLavaEnv(GameScene* pScene)
 	pTransform->Rotate(0, -110, 0);
 	pTransform->Translate(-8.0f, -2.f, 8.0f);
 }
-
-void EnvironmentBuilder::BuildMenuEnv(GameScene* pScene)
-{
-	if (!m_IsInitialized)
-	{
-		Initialize();
-	}
-
-	auto pEnv = new GameObject();
-	pScene->AddChild(pEnv);
-	const auto pEnvModel = new ModelComponent(L"Meshes/Environment.ovm");
-	pEnv->AddComponent(pEnvModel);
-
-
-	//Setting materials
-	pEnvModel->SetMaterial(m_pPyramidMat, 0);
-	pEnvModel->SetMaterial(m_pIslandGrassMat, 1);
-	pEnvModel->SetMaterial(m_pShrubberyMat, 2);
-	pEnvModel->SetMaterial(m_pLavaBubble, 3);
-	pEnvModel->SetMaterial(m_pCooledLavaMat, 4);
-	pEnvModel->SetMaterial(m_pPalmMat2, 5);
-	pEnvModel->SetMaterial(m_pPalmMat1, 6);
-	pEnvModel->SetMaterial(m_pSandMat, 7);
-	pEnvModel->SetMaterial(m_pCooledLavaMat, 8);
-	pEnvModel->SetMaterial(m_pVolcGrassMat, 9);
-	pEnvModel->SetMaterial(m_pVolcBaseMat, 10);
-
-	auto pTransform = pEnv->GetTransform();
-
-	pTransform->Scale(0.08f);
-	pTransform->Rotate(0, -110, 0);
-	pTransform->Translate(-8.0f, -2.f, 8.0f);
-
-}
-

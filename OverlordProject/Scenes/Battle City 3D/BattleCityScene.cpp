@@ -8,6 +8,7 @@
 #include "Prefabs/ParticleAtLocation.h"
 #include "WorldBuilder/ShellManager.h"
 #include "WorldBuilder/EnvironmentBuilder.h"
+#include "Materials/LavaMaterial.h"
 
 BattleCityScene::BattleCityScene():
 	GameScene(L"Battle City")
@@ -40,7 +41,21 @@ void BattleCityScene::Initialize()
 	m_pLevelBuilder->AddLevel("Resources/Levels/Level1.bmp", 15, 15);
 	m_pLevelBuilder->BuildNextLevel();
 
-	EnvironmentBuilder::BuildLavaEnv(this);
+	EnvironmentBuilder::BuildLavaEnv(this,true);
+
+	auto lavaMat = MaterialManager::Get()->CreateMaterial<LavaMaterial>();
+
+	m_pGrowingLava = new ModelComponent(L"Meshes/GrowingLava.ovm");
+	m_pGrowingLava->SetMaterial(lavaMat);
+	auto pGround = new GameObject();
+	AddChild(pGround);
+	pGround->AddComponent(m_pGrowingLava);
+	
+	auto pTransform = m_pGrowingLava->GetTransform();
+	pTransform->Scale(0.08f);
+	pTransform->Rotate(0, -110, 0);
+	pTransform->Translate(-8.0f, -2.5f, 8.0f);
+
 
 	//Tank
 	TankDesc tankDesc{ pDefaultMaterial };
@@ -106,7 +121,23 @@ void BattleCityScene::Update()
 	default:
 		break;
 	}
+	if (m_HasLavaFinishedGrowing)
+	{
+		return;
+	}
 
+	float deltaTime = m_SceneContext.pGameTime->GetElapsed();
+	float frameGrowth = deltaTime * m_LavaGrowSpeed;
+
+	auto pTransform = m_pGrowingLava->GetTransform();
+	auto currentScale = pTransform->GetScale();
+	if (currentScale.x > 1.2f)
+	{
+		m_HasLavaFinishedGrowing = true;
+		return;
+	}
+	pTransform->Scale(currentScale.x + frameGrowth, currentScale.y, currentScale.z + frameGrowth);
+	
 }
 
 void BattleCityScene::Draw()
@@ -120,6 +151,14 @@ void BattleCityScene::OnGUI()
 
 void BattleCityScene::PostDraw()
 {
+}
+
+void BattleCityScene::OnSceneDeactivated()
+{
+	m_HasLavaFinishedGrowing = false;
+
+	auto pTransform = m_pGrowingLava->GetTransform();
+	pTransform->Scale(0.08f,pTransform->GetScale().y,0.08f);
 }
 
 void BattleCityScene::LockCamera()

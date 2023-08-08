@@ -40,7 +40,7 @@ float gSpeed
 	float UIMin = 0.1f;
 	float UIMax = 10.0f;
 	float UIStep = 0.1f;
-> = 0.2f;
+> = 0.1f;
 
 float gVertexDistortion
 <
@@ -58,7 +58,7 @@ float gAmount
 	float UIMin = 0.1f;
 	float UIMax = 10.0f;
 	float UIStep = 0.1f;
-> = 2.3f;
+> = 1.3f;
 
 float gDistortion
 <
@@ -103,7 +103,7 @@ float gHeight
 	float UIMin = 0.1f;
 	float UIMax = 10.0f;
 	float UIStep = 0.1f;
-> = 3.5f;
+> = 0.5f;
 
 
 

@@ -19,5 +19,6 @@ protected:
 
 private:
 	LavaMaterial* m_pLavaMat{};
+	ModelComponent* m_pModel{};
 };
 

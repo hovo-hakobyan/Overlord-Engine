@@ -14,8 +14,7 @@ public:
 	EnvironmentBuilder& operator=(EnvironmentBuilder&& other) noexcept = delete;
 
 	
-	static void BuildLavaEnv(GameScene* pScene);
-	static void BuildMenuEnv(GameScene* pScene);
+	static void BuildLavaEnv(GameScene* pScene, bool isLavaActive);
 
 private:
 

@@ -28,9 +28,11 @@ protected:
 	void Draw() override;
 	void OnGUI() override;
 	void PostDraw() override;
+	void OnSceneDeactivated() override;
 
 private:
 	class LevelBuilder* m_pLevelBuilder{};
+	ModelComponent* m_pGrowingLava{};
 	class EnemySpawner* m_pEnemySpawner{};
 	ShellManager* m_pShellManager{};
 	
@@ -40,6 +42,9 @@ private:
 	ParticleAtLocation* m_pDefeatParticle{};
 	ParticleAtLocation* m_pVictoryParticle{};
 	
+	const float m_LavaGrowSpeed{ 0.005f };
+	bool m_HasLavaFinishedGrowing{ false };
+
 	void LockCamera();
 };
 
