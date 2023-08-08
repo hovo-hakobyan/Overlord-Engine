@@ -18,7 +18,6 @@ BattleCityScene::BattleCityScene():
 BattleCityScene::~BattleCityScene()
 {
 	SafeDelete(m_pLevelBuilder);
-	SafeDelete(m_pEnvBuilder);
 }
 
 void BattleCityScene::Initialize()
@@ -30,7 +29,7 @@ void BattleCityScene::Initialize()
 	m_SceneContext.settings.drawGrid = false;
 	m_SceneContext.settings.drawPhysXDebug = false;
 	m_SceneContext.settings.drawUserDebug = false;
-	//m_SceneContext.settings.showInfoOverlay = false;
+	m_SceneContext.settings.showInfoOverlay = false;
 
 	m_SceneContext.settings.enableOnGUI = true;
 
@@ -41,8 +40,7 @@ void BattleCityScene::Initialize()
 	m_pLevelBuilder->AddLevel("Resources/Levels/Level1.bmp", 15, 15);
 	m_pLevelBuilder->BuildNextLevel();
 
-	m_pEnvBuilder = new EnvironmentBuilder{ this };
-	m_pEnvBuilder->BuildLavaEnv();
+	EnvironmentBuilder::BuildLavaEnv(this);
 
 	//Tank
 	TankDesc tankDesc{ pDefaultMaterial };
@@ -117,7 +115,7 @@ void BattleCityScene::Draw()
 
 void BattleCityScene::OnGUI()
 {
-	m_pEnvBuilder->test();
+	
 }
 
 void BattleCityScene::PostDraw()

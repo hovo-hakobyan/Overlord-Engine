@@ -5,6 +5,7 @@
 #include "Prefabs/Hatch.h"
 #include "Prefabs/PlayerTank.h"
 #include "Prefabs/CubePrefab.h"
+#include "WorldBuilder/EnvironmentBuilder.h"
 
 MainMenu::MainMenu():
 	GameScene(L"Main Menu")
@@ -18,6 +19,10 @@ MainMenu::~MainMenu()
 
 void MainMenu::Initialize()
 {
+	m_SceneContext.settings.drawGrid = false;
+	m_SceneContext.settings.drawPhysXDebug = false;
+	m_SceneContext.settings.drawUserDebug = false;
+	m_SceneContext.settings.showInfoOverlay = false;
 
 	const auto pDefaultMaterial = PxGetPhysics().createMaterial(0.5f, 0.5f, 0.5f);
 	GameSceneExt::CreatePhysXGroundPlane(*this);
@@ -122,6 +127,7 @@ void MainMenu::Initialize()
 	m_HudTextColor = XMFLOAT4{ Colors::Red };
 	m_HudTextPos = XMFLOAT2{ m_SceneContext.windowWidth /2.f,m_SceneContext.windowHeight / 2.0f};
 
+	
 }
 
 void MainMenu::Update()
