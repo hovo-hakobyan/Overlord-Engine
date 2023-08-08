@@ -2,6 +2,7 @@
 class LavaMaterial;
 class DiffuseMaterial_Shadow;
 class DiffuseMaterial;
+class SimpleDiffuseMaterial;
 class EnvironmentBuilder final
 {
 public:
@@ -14,6 +15,7 @@ public:
 
 	
 	static void BuildLavaEnv(GameScene* pScene);
+	static void BuildMenuEnv(GameScene* pScene);
 
 private:
 
@@ -27,6 +29,7 @@ private:
 	static DiffuseMaterial* m_pSandMat;
 	static DiffuseMaterial_Shadow* m_pVolcGrassMat;
 	static DiffuseMaterial_Shadow* m_pVolcBaseMat;
+	static SimpleDiffuseMaterial* m_pCooledLavaMat;
 
 	static bool m_IsInitialized;
 

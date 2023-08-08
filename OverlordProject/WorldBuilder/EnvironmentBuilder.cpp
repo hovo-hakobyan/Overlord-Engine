@@ -4,6 +4,7 @@
 #include "Scenes/Battle City 3D/BattleCityScene.h"
 #include "Materials/Shadow/DiffuseMaterial_Shadow.h"
 #include "Materials/DiffuseMaterial.h"
+#include "Materials/SimpleDiffuse.h"
 
 bool EnvironmentBuilder::m_IsInitialized = false;
 LavaMaterial* EnvironmentBuilder::m_pLavaMat = nullptr;
@@ -16,6 +17,7 @@ DiffuseMaterial_Shadow* EnvironmentBuilder::m_pPalmMat2 = nullptr;
 DiffuseMaterial_Shadow* EnvironmentBuilder::m_pVolcBaseMat = nullptr;
 DiffuseMaterial_Shadow* EnvironmentBuilder::m_pVolcGrassMat = nullptr;
 DiffuseMaterial* EnvironmentBuilder::m_pSandMat = nullptr;
+SimpleDiffuseMaterial* EnvironmentBuilder::m_pCooledLavaMat = nullptr;
 
 EnvironmentBuilder::EnvironmentBuilder()
 {
@@ -59,6 +61,9 @@ void EnvironmentBuilder::Initialize()
 	m_pVolcBaseMat = MaterialManager::Get()->CreateMaterial<DiffuseMaterial_Shadow>();
 	m_pVolcBaseMat->SetDiffuseTexture(L"Textures/Environment/Volcano_Base.png");
 
+	m_pCooledLavaMat = MaterialManager::Get()->CreateMaterial<SimpleDiffuseMaterial>();
+	m_pCooledLavaMat->SetNormalMapTexture(L"Textures/Environment/CooledLavaNormal.tif");
+	m_pCooledLavaMat->SetDiffuseTexture(L"Textures/Environment/CooledLavaAlbedo.tif");
 	m_IsInitialized = true;
 }
 
@@ -93,5 +98,39 @@ void EnvironmentBuilder::BuildLavaEnv(GameScene* pScene)
 	pTransform->Scale(0.08f);
 	pTransform->Rotate(0, -110, 0);
 	pTransform->Translate(-8.0f, -2.f, 8.0f);
+}
+
+void EnvironmentBuilder::BuildMenuEnv(GameScene* pScene)
+{
+	if (!m_IsInitialized)
+	{
+		Initialize();
+	}
+
+	auto pEnv = new GameObject();
+	pScene->AddChild(pEnv);
+	const auto pEnvModel = new ModelComponent(L"Meshes/Environment.ovm");
+	pEnv->AddComponent(pEnvModel);
+
+
+	//Setting materials
+	pEnvModel->SetMaterial(m_pPyramidMat, 0);
+	pEnvModel->SetMaterial(m_pIslandGrassMat, 1);
+	pEnvModel->SetMaterial(m_pShrubberyMat, 2);
+	pEnvModel->SetMaterial(m_pLavaBubble, 3);
+	pEnvModel->SetMaterial(m_pCooledLavaMat, 4);
+	pEnvModel->SetMaterial(m_pPalmMat2, 5);
+	pEnvModel->SetMaterial(m_pPalmMat1, 6);
+	pEnvModel->SetMaterial(m_pSandMat, 7);
+	pEnvModel->SetMaterial(m_pCooledLavaMat, 8);
+	pEnvModel->SetMaterial(m_pVolcGrassMat, 9);
+	pEnvModel->SetMaterial(m_pVolcBaseMat, 10);
+
+	auto pTransform = pEnv->GetTransform();
+
+	pTransform->Scale(0.08f);
+	pTransform->Rotate(0, -110, 0);
+	pTransform->Translate(-8.0f, -2.f, 8.0f);
+
 }
 
