@@ -15,7 +15,6 @@ public:
 
 	
 	static void BuildLavaEnv(GameScene* pScene, bool isLavaActive);
-
 private:
 
 	static LavaMaterial* m_pLavaMat;

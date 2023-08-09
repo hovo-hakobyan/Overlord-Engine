@@ -38,7 +38,7 @@ void BattleCityScene::Initialize()
 	
 	//Level
 	m_pLevelBuilder = new LevelBuilder{this,1.2f};
-	m_pLevelBuilder->AddLevel("Resources/Levels/Level1.bmp", 15, 15);
+	m_pLevelBuilder->AddLevel("Resources/Levels/Gameplay/Level1.bmp", 15, 15);
 	m_pLevelBuilder->BuildNextLevel();
 
 	EnvironmentBuilder::BuildLavaEnv(this,true);
@@ -52,7 +52,7 @@ void BattleCityScene::Initialize()
 	pGround->AddComponent(m_pGrowingLava);
 	
 	auto pTransform = m_pGrowingLava->GetTransform();
-	pTransform->Scale(0.08f);
+	pTransform->Scale(0.15f);
 	pTransform->Rotate(0, -110, 0);
 	pTransform->Translate(-8.0f, -2.5f, 8.0f);
 

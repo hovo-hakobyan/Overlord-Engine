@@ -41,7 +41,7 @@ void MainMenu::Initialize()
 
 	//Level
 	m_pLevelBuilder = new LevelBuilder{ this,1.2f };
-	m_pLevelBuilder->AddMainMenuLevel("Resources/Levels/MainMenu.bmp", 15, 15);
+	m_pLevelBuilder->AddMainMenuLevel("Resources/Levels/Menu/MainMenu.bmp", 15, 15);
 	m_pLevelBuilder->BuildMainMenu();
 
 	auto center = m_pLevelBuilder->GetLevelCenter();
@@ -153,7 +153,7 @@ void MainMenu::Update()
 	case MainMenu::MenuActions::Play:
 		Logger::LogInfo(L"Opening Play");
 		m_pPlayerTank->Reset();
-		SceneManager::Get()->NextScene();
+		SceneManager::Get()->SetActiveGameScene(L"LevelSelectScene");
 		break;
 	case MainMenu::MenuActions::WorldBuilder:
 		Logger::LogInfo(L"Opening Builder");

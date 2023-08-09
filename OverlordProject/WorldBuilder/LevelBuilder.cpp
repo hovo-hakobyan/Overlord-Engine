@@ -9,7 +9,7 @@
 #include "Prefabs/BrickWall.h"
 #include "Prefabs/Nest.h"
 
-
+DiffuseMaterial* LevelBuilder::m_pSandboxMat{ nullptr };
 LevelBuilder::LevelBuilder(GameScene* gameScene,float tileSize):
 	m_pGameScene{gameScene},
 	m_TileSize{tileSize}
@@ -327,6 +327,34 @@ std::vector<Hatch*> LevelBuilder::GetEnemyStartHatches() const
 Hatch* LevelBuilder::GetPlayerStartHatch() const
 {
 	return m_pPlayerSpawnHatch;
+}
+
+void LevelBuilder::BuildSandbox(GameScene* pGameScene, uint32_t rows, uint32_t cols,float tileSize)
+{
+	if (!m_pSandboxMat)
+	{
+		m_pSandboxMat = MaterialManager::Get()->CreateMaterial<DiffuseMaterial>();
+		m_pSandboxMat->SetDiffuseTexture(L"Textures/ground/soilAlbedo.tif");
+	}
+	XMFLOAT3 currentPos{};
+
+	for (uint32_t row = 0; row < rows; ++row)
+	{
+		for (uint32_t col = 0; col < cols; ++col)
+		{
+			const auto pGroundModel = new ModelComponent(L"Meshes/GroundPlane.ovm");
+			pGroundModel->SetMaterial(m_pSandboxMat);
+			auto pGround = new GameObject();
+			pGameScene->AddChild(pGround);
+			pGround->AddComponent(pGroundModel);
+			pGround->GetTransform()->Scale(tileSize);
+			pGround->GetTransform()->Translate(currentPos);
+
+			currentPos.x += tileSize;
+		}
+		currentPos.x = 0.0f;
+		currentPos.z += tileSize;
+	}
 }
 
 

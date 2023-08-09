@@ -89,6 +89,7 @@
 #ifdef FINAL_SCENE
 #include "Scenes/Battle City 3D/MainMenu.h"
 #include "Scenes/Battle City 3D/BattleCityScene.h"
+#include "Scenes/Battle City 3D/LevelSelectScene.h"
 
 #endif // FINAL_SCENE
 
@@ -178,6 +179,7 @@ void MainGame::Initialize()
 
 #ifdef FINAL_SCENE
 	SceneManager::Get()->AddGameScene(new MainMenu());
+	SceneManager::Get()->AddGameScene(new LevelSelectScene());
 	SceneManager::Get()->AddGameScene(new BattleCityScene());
 #endif // FINAL_SCENE
 

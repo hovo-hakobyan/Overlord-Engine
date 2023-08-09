@@ -8,6 +8,7 @@ struct LevelInfo
 	uint8_t cols;
 };
 class DiffuseMaterial_Shadow;
+class DiffuseMaterial;
 class Hatch;
 class LevelBuilder final
 {
@@ -30,7 +31,7 @@ public:
 	const XMFLOAT3& GetNestLocation() const { return m_NestLocation; }
 	const XMFLOAT3& GetLevelCenter() const { return m_LevelCenter; }
 
-
+	static void BuildSandbox(GameScene* pGameScene, uint32_t rows, uint32_t cols,float tileSize);
 private:
 	std::vector<TileCollection> m_Levels;
 	std::vector<LevelInfo*> m_LevelInfo;
@@ -49,6 +50,7 @@ private:
 	DiffuseMaterial_Shadow* m_pSolidWallMaterial{};
 	DiffuseMaterial_Shadow* m_pBorderWallMaterial{};
 	DiffuseMaterial_Shadow* m_pBrickWallMaterial{};
+	static DiffuseMaterial* m_pSandboxMat;
 
 	std::vector<class Hatch*> m_pEnemySpawnHatches;
 	Hatch* m_pPlayerSpawnHatch;
