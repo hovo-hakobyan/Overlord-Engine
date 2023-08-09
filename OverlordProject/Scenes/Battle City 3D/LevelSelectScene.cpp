@@ -3,6 +3,7 @@
 #include "WorldBuilder/LevelBuilder.h"
 #include "Prefabs/PlayerTank.h"
 #include "Prefabs/WorldButton.h"
+#include "Misc/LevelExtractor.h"
 
 LevelSelectScene::LevelSelectScene():
 	GameScene{L"LevelSelectScene"}
@@ -38,6 +39,7 @@ void LevelSelectScene::Initialize()
 	//Level
 	LevelBuilder::BuildSandbox(this, 10, 15, 3);
 	
+	LevelExtractor::ReadAndUpdateLevelsFromFile();
 }
 
 void LevelSelectScene::Update()
