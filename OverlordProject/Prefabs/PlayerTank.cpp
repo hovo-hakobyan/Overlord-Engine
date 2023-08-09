@@ -6,7 +6,7 @@
 #include "Components/MuzzleComponent.h"
 #include "Hatch.h"
 #include "Scenes/Battle City 3D/BattleCityScene.h"
-#include "WorldBuilder/ShellManager.h"
+#include "Misc/ShellManager.h"
 
 PlayerTank::PlayerTank(const XMFLOAT3& loc, const XMFLOAT3& startRot,const TankDesc& tankDesc):
 	BaseTank(loc,startRot,tankDesc)

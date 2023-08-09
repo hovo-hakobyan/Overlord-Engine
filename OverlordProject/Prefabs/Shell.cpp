@@ -3,7 +3,7 @@
 #include "Materials/Shadow/DiffuseMaterial_Shadow.h"
 #include "BaseTank.h"
 #include "Scenes/Battle City 3D/BattleCityScene.h"
-#include "WorldBuilder/ShellManager.h"
+#include "Misc/ShellManager.h"
 
 
 Shell::Shell(const XMFLOAT3& pos, const XMFLOAT3& rot, const std::wstring& parentTag, const XMFLOAT3& dir):

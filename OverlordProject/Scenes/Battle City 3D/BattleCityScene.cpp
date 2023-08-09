@@ -3,10 +3,10 @@
 #include "WorldBuilder/LevelBuilder.h"
 #include "Prefabs/PlayerTank.h"
 #include "Prefabs/EnemyTank.h"
-#include "WorldBuilder/EnemySpawner.h"
+#include "Misc/EnemySpawner.h"
 #include "Prefabs/Hatch.h"
 #include "Prefabs/ParticleAtLocation.h"
-#include "WorldBuilder/ShellManager.h"
+#include "Misc/ShellManager.h"
 #include "WorldBuilder/EnvironmentBuilder.h"
 #include "Materials/LavaMaterial.h"
 

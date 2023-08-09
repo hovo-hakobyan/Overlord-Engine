@@ -2,6 +2,7 @@
 #include "LevelSelectScene.h"
 #include "WorldBuilder/LevelBuilder.h"
 #include "Prefabs/PlayerTank.h"
+#include "Prefabs/WorldButton.h"
 
 LevelSelectScene::LevelSelectScene():
 	GameScene{L"LevelSelectScene"}
@@ -25,7 +26,7 @@ void LevelSelectScene::Initialize()
 	m_SceneContext.pLights->SetDirectionalLight(XMFLOAT3{ 6.897f,82.759f,13.793f }, XMFLOAT3{ -0.241f,-1.0f,-0.069f });
 
 
-	LockCamera();
+	//LockCamera();
 
 	//Tank
 	TankDesc tankDesc{ pDefaultMaterial };
@@ -36,6 +37,7 @@ void LevelSelectScene::Initialize()
 
 	//Level
 	LevelBuilder::BuildSandbox(this, 10, 15, 3);
+	
 }
 
 void LevelSelectScene::Update()

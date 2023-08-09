@@ -102,8 +102,8 @@
     <ClCompile Include="Prefabs\Nest.cpp" />
     <ClCompile Include="Materials\VertexColorMaterial.cpp" />
     <ClCompile Include="Materials\Shadow\VertexMaterial_Shadow_Skinned.cpp" />
-    <ClCompile Include="WorldBuilder\ShellManager.cpp" />
-    <ClCompile Include="WorldBuilder\EnemySpawner.cpp" />
+    <ClCompile Include="Misc\ShellManager.cpp" />
+    <ClCompile Include="Misc\EnemySpawner.cpp" />
     <ClCompile Include="Prefabs\BaseTank.cpp" />
     <ClCompile Include="Prefabs\EnemyTank.cpp" />
     <ClCompile Include="Prefabs\Shell.cpp" />
@@ -181,8 +181,8 @@
     <ClInclude Include="Prefabs\Nest.h" />
     <ClInclude Include="Materials\VertexColorMaterial.h" />
     <ClInclude Include="Materials\Shadow\VertexMaterial_Shadow_Skinned.h" />
-    <ClInclude Include="WorldBuilder\ShellManager.h" />
-    <ClInclude Include="WorldBuilder\EnemySpawner.h" />
+    <ClInclude Include="Misc\ShellManager.h" />
+    <ClInclude Include="Misc\EnemySpawner.h" />
     <ClInclude Include="Prefabs\BaseTank.h" />
     <ClInclude Include="Prefabs\EnemyTank.h" />
     <ClInclude Include="Prefabs\Shell.h" />

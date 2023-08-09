@@ -6,7 +6,7 @@
 #include "Hatch.h"
 #include <random>
 #include "Scenes/Battle City 3D/BattleCityScene.h"
-#include "WorldBuilder/ShellManager.h"
+#include "Misc/ShellManager.h"
 
 EnemyTank::EnemyTank(const XMFLOAT3& loc, const XMFLOAT3& startRot, const TankDesc& tankDesc):
 	BaseTank(loc, startRot, tankDesc)
