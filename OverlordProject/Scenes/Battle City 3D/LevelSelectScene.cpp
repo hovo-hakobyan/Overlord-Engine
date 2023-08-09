@@ -27,7 +27,7 @@ void LevelSelectScene::Initialize()
 	m_SceneContext.pLights->SetDirectionalLight(XMFLOAT3{ 6.897f,82.759f,13.793f }, XMFLOAT3{ -0.241f,-1.0f,-0.069f });
 
 
-	//LockCamera();
+	LockCamera();
 
 	//Tank
 	TankDesc tankDesc{ pDefaultMaterial };
@@ -40,10 +40,73 @@ void LevelSelectScene::Initialize()
 	LevelBuilder::BuildSandbox(this, 10, 15, 3);
 	
 	LevelExtractor::ReadAndUpdateLevelsFromFile();
+	const auto& paths = LevelExtractor::GetAllLevelsPath();
+
+	//Buttons
+	XMFLOAT3 startPos{ 5.f,0.f,18.f };
+	const float gap{ 5.0f };
+	for (size_t i = 0; i < paths.size(); i++)
+	{
+		if (i % 7 == 0 && i != 0)
+		{
+			startPos.z -= gap;
+			startPos.x = 5.0f;
+		}
+
+		auto button = new WorldButton(paths[i]);
+		AddChild(button);
+
+		auto pTransform = button->GetTransform();
+		pTransform->Translate(startPos);
+		pTransform->Scale(2.0f, 1.0f, 2.0f);
+
+		startPos.x += gap;
+
+		button->SetOnTriggerCallBack([=](GameObject*, GameObject*, PxTriggerAction triggerAction)
+			{
+				if (triggerAction == PxTriggerAction::ENTER)
+				{
+					//Logic when tank is on play button
+					m_ShouldCountDown = true;
+					m_CurrentButtonLoadTime = m_ButtonLoadMaxTime;
+					m_SelectedLevelIdx = static_cast<int>(i);
+				}
+				if (triggerAction == PxTriggerAction::LEAVE)
+				{
+					m_SelectedLevelIdx = -1;
+					m_ShouldCountDown = false;
+				}
+			}
+		);
+
+		
+	}
+
+	//HUD
+	m_pFont = ContentManager::Load<SpriteFont>(L"SpriteFonts/Arial_32.fnt");
+	m_HudTextColor = XMFLOAT4{ Colors::Red };
+	m_HudTextPos = XMFLOAT2{ m_SceneContext.windowWidth / 2.f,m_SceneContext.windowHeight / 2.0f };
 }
 
 void LevelSelectScene::Update()
 {
+	if (!m_ShouldCountDown)
+	{
+		return;
+	}
+
+	m_CurrentButtonLoadTime -= m_SceneContext.pGameTime->GetElapsed();
+	if (m_CurrentButtonLoadTime > 0)
+	{
+		m_HudText = std::format("{:.0f}", m_CurrentButtonLoadTime);
+		TextRenderer::Get()->DrawText(m_pFont, StringUtil::utf8_decode(m_HudText), m_HudTextPos, m_HudTextColor);
+		return;
+	}
+
+	LevelExtractor::SELECTED_LEVEL_IDX = m_SelectedLevelIdx;
+	m_ShouldCountDown = false;
+	SceneManager::Get()->SetActiveGameScene(L"BattleCity");
+	m_pPlayerTank->Reset();
 }
 void LevelSelectScene::LockCamera()
 {

@@ -11,7 +11,7 @@
 #include "Materials/LavaMaterial.h"
 
 BattleCityScene::BattleCityScene():
-	GameScene(L"Battle City")
+	GameScene(L"BattleCity")
 {
 
 }
