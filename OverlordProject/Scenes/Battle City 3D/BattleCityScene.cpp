@@ -38,7 +38,7 @@ void BattleCityScene::Initialize()
 	
 	//Level
 	m_pLevelBuilder = new LevelBuilder{this,1.2f};
-	m_pLevelBuilder->AddLevel("Resources/Levels/Gameplay/Level1.bmp", 15, 15);
+	m_pLevelBuilder->AddLevel("Resources/Levels/Gameplay/Level2.bmp", 15, 15);
 	m_pLevelBuilder->BuildNextLevel();
 
 	EnvironmentBuilder::BuildLavaEnv(this,true);
