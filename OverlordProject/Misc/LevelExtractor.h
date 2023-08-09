@@ -10,11 +10,11 @@ public:
 	LevelExtractor& operator=(LevelExtractor&& other) noexcept = delete;
 
 	static void ReadAndUpdateLevelsFromFile();
-	static std::vector<std::wstring> GetAllLevelsPath();
+	static std::vector<std::string> GetAllLevelsPath();
+	static std::string GetLevelPath(int levelIdx);
 
-	static int SELECTED_LEVEL_IDX;
 private:
-	static std::vector<std::wstring> m_AllLevelsPath;
+	static std::vector<std::string> m_AllLevelsPath;
 	static int m_MaxLevelNum;
 };
 

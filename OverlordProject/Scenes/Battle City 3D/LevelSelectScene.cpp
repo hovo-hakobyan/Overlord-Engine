@@ -4,6 +4,8 @@
 #include "Prefabs/PlayerTank.h"
 #include "Prefabs/WorldButton.h"
 #include "Misc/LevelExtractor.h"
+#include "Scenes/Battle City 3D/BattleCityScene.h"
+
 
 LevelSelectScene::LevelSelectScene():
 	GameScene{L"LevelSelectScene"}
@@ -103,10 +105,14 @@ void LevelSelectScene::Update()
 		return;
 	}
 
-	LevelExtractor::SELECTED_LEVEL_IDX = m_SelectedLevelIdx;
 	m_ShouldCountDown = false;
+	SceneManager::Get()->AddGameScene(new BattleCityScene(LevelExtractor::GetLevelPath(m_SelectedLevelIdx)));
 	SceneManager::Get()->SetActiveGameScene(L"BattleCity");
 	m_pPlayerTank->Reset();
+}
+void LevelSelectScene::OnSceneActivated()
+{
+
 }
 void LevelSelectScene::LockCamera()
 {

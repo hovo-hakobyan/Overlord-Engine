@@ -1,8 +1,10 @@
 #include "stdafx.h"
 #include "WorldButton.h"
 #include "Materials/DiffuseMaterial.h"
+#include <codecvt>
+#include <locale>
 
-WorldButton::WorldButton(const std::wstring& texturePath):
+WorldButton::WorldButton(const std::string& texturePath):
 	m_Path{texturePath}
 {
 }
@@ -15,7 +17,12 @@ void WorldButton::Initialize(const SceneContext&)
 	m_pModelComp = new ModelComponent(L"Meshes/Button.ovm");
 
 	m_pMaterial = MaterialManager::Get()->CreateMaterial<DiffuseMaterial>();
-	m_pMaterial->SetDiffuseTexture(m_Path);
+
+	int bufferSize = MultiByteToWideChar(CP_UTF8, 0, m_Path.c_str(), -1, nullptr, 0);
+	std::wstring wideStr(bufferSize, L'\0');
+	MultiByteToWideChar(CP_UTF8, 0, m_Path.c_str(), -1, &wideStr[0], bufferSize);
+
+	m_pMaterial->SetDiffuseTexture(wideStr);
 
 	auto pBorderMat = MaterialManager::Get()->CreateMaterial<DiffuseMaterial>();
 	pBorderMat->SetDiffuseTexture(L"Textures/ground/soilAlbedo.tif");

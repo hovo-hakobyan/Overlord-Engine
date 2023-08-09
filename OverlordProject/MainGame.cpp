@@ -180,7 +180,6 @@ void MainGame::Initialize()
 #ifdef FINAL_SCENE
 	SceneManager::Get()->AddGameScene(new MainMenu());
 	SceneManager::Get()->AddGameScene(new LevelSelectScene());
-	SceneManager::Get()->AddGameScene(new BattleCityScene());
 #endif // FINAL_SCENE
 
 }

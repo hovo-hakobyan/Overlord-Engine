@@ -2,8 +2,8 @@
 #include "LevelExtractor.h"
 
 
-std::vector<std::wstring> LevelExtractor::m_AllLevelsPath(20);
-int LevelExtractor::SELECTED_LEVEL_IDX{ 0 };
+std::vector<std::string> LevelExtractor::m_AllLevelsPath(20);
+
 int LevelExtractor::m_MaxLevelNum{ 28 };
 LevelExtractor::LevelExtractor()
 {
@@ -19,11 +19,11 @@ void LevelExtractor::ReadAndUpdateLevelsFromFile()
 		{
 			if (entry.is_regular_file() && entry.path().extension() == ".bmp")
 			{
-				std::wstring newPath = entry.path().c_str();
-				std::wstring searchTerm = L"Resources/";
+				std::string newPath = entry.path().string();
+				std::string searchTerm = "Resources/";
 
 				size_t pos = newPath.find(searchTerm);
-				if (pos != std::wstring::npos)
+				if (pos != std::string::npos)
 				{
 					newPath.erase(pos, searchTerm.length());
 				}
@@ -43,8 +43,20 @@ void LevelExtractor::ReadAndUpdateLevelsFromFile()
 	}
 }
 
-std::vector<std::wstring> LevelExtractor::GetAllLevelsPath()
+std::vector<std::string> LevelExtractor::GetAllLevelsPath()
 {
 	return m_AllLevelsPath;
+}
+
+std::string LevelExtractor::GetLevelPath(int levelIdx)
+{
+	if (m_AllLevelsPath.size() ==0 || levelIdx > m_AllLevelsPath.size() -1)
+	{
+		return "";
+	}
+
+	
+	
+	return m_AllLevelsPath[levelIdx];
 }
 

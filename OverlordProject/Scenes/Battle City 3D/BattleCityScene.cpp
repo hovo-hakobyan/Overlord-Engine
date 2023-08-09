@@ -10,10 +10,11 @@
 #include "WorldBuilder/EnvironmentBuilder.h"
 #include "Materials/LavaMaterial.h"
 
-BattleCityScene::BattleCityScene():
-	GameScene(L"BattleCity")
+BattleCityScene::BattleCityScene(const std::string& path):
+	GameScene(L"BattleCity"),
+	m_LevelPath{path}
 {
-
+	m_LevelPath.insert(0, "Resources/");
 }
 
 BattleCityScene::~BattleCityScene()
@@ -38,7 +39,7 @@ void BattleCityScene::Initialize()
 	
 	//Level
 	m_pLevelBuilder = new LevelBuilder{this,1.2f};
-	m_pLevelBuilder->AddLevel("Resources/Levels/Gameplay/Level2.bmp", 15, 15);
+	m_pLevelBuilder->AddLevel(m_LevelPath, 15, 15);
 	m_pLevelBuilder->BuildNextLevel();
 
 	EnvironmentBuilder::BuildLavaEnv(this,true);
@@ -159,6 +160,8 @@ void BattleCityScene::OnSceneDeactivated()
 
 	auto pTransform = m_pGrowingLava->GetTransform();
 	pTransform->Scale(0.08f,pTransform->GetScale().y,0.08f);
+
+	SceneManager::Get()->RemoveGameScene(this,true);
 }
 
 void BattleCityScene::LockCamera()

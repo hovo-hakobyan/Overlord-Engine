@@ -29,14 +29,14 @@ void MainMenu::Initialize()
 
 	LockCamera();
 
-	m_pPlayButton = new WorldButton(L"Textures/Menu/play.png");
+	m_pPlayButton = new WorldButton("Textures/Menu/play.png");
 	AddChild(m_pPlayButton);
 
 
-	m_pWorldBuilderButton = new WorldButton(L"Textures/Menu/LevelBuilder.png");
+	m_pWorldBuilderButton = new WorldButton("Textures/Menu/LevelBuilder.png");
 	AddChild(m_pWorldBuilderButton);
 
-	m_pExitButton = new WorldButton(L"Textures/Menu/exit.png");
+	m_pExitButton = new WorldButton("Textures/Menu/exit.png");
 	AddChild(m_pExitButton);
 
 	//Level

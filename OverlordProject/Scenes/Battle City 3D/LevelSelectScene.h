@@ -13,6 +13,7 @@ public:
 protected:
 	void Initialize() override;
 	void Update() override;
+	void OnSceneActivated() override;
 
 private:
 	class PlayerTank* m_pPlayerTank{};
@@ -29,5 +30,7 @@ private:
 	std::string m_HudText{};
 	XMFLOAT2 m_HudTextPos{};
 	XMFLOAT4 m_HudTextColor{};
+
+
 };
 

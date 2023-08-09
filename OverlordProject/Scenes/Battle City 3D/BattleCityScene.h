@@ -9,7 +9,7 @@ class ShellManager;
 class BattleCityScene final : public GameScene
 {
 public:
-	BattleCityScene();
+	BattleCityScene(const std::string& path);
 	~BattleCityScene() override;
 
 	BattleCityScene(const BattleCityScene& other) = delete;
@@ -44,6 +44,8 @@ private:
 	
 	const float m_LavaGrowSpeed{ 0.005f };
 	bool m_HasLavaFinishedGrowing{ false };
+
+	std::string m_LevelPath{};
 
 	void LockCamera();
 };

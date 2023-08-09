@@ -3,7 +3,7 @@ class DiffuseMaterial;
 class WorldButton final : public GameObject
 {
 public: 
-	WorldButton( const std::wstring& texturePath);
+	WorldButton( const std::string& texturePath);
 	~WorldButton() override = default;
 	WorldButton(const WorldButton& other) = delete;
 	WorldButton(WorldButton&& other) = delete;
@@ -14,6 +14,6 @@ protected:
 private:
 	ModelComponent* m_pModelComp;
 	DiffuseMaterial* m_pMaterial;
-	const std::wstring m_Path;
+	const std::string m_Path;
 };
 
