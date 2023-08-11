@@ -45,6 +45,30 @@ void LevelSelectScene::Initialize()
 	const auto& paths = LevelExtractor::GetAllLevelsPath();
 
 	//Buttons
+
+	m_pReturnButton = new WorldButton("Textures/Menu/return.png");
+	AddChild(m_pReturnButton);
+
+	m_pReturnButton->SetOnTriggerCallBack([=](GameObject*, GameObject*, PxTriggerAction triggerAction)
+		{
+			if (triggerAction == PxTriggerAction::ENTER)
+			{
+				//Logic when tank is on play button
+				m_ShouldCountDown = true;
+				m_CurrentButtonLoadTime = m_ButtonLoadMaxTime;
+				m_ShouldReturn = true;
+			}
+			if (triggerAction == PxTriggerAction::LEAVE)
+			{
+				m_ShouldCountDown = false;
+				m_ShouldReturn = false;
+			}
+		}
+	);
+
+	auto returnTransform = m_pReturnButton->GetTransform();
+	returnTransform->Translate(XMFLOAT3{ 35.f,0.f,3.f });
+
 	XMFLOAT3 startPos{ 5.f,0.f,18.f };
 	const float gap{ 5.0f };
 	for (size_t i = 0; i < paths.size(); i++)
@@ -107,9 +131,19 @@ void LevelSelectScene::Update()
 	}
 
 	m_ShouldCountDown = false;
-	SceneManager::Get()->AddGameScene(new BattleCityScene(LevelExtractor::GetLevelPath(m_SelectedLevelIdx)));
-	SceneManager::Get()->SetActiveGameScene(L"BattleCity");
 	m_pPlayerTank->Reset();
+	if (m_ShouldReturn)
+	{
+		SceneManager::Get()->SetActiveGameScene(L"MainMenu");
+	}
+	else
+	{
+		SceneManager::Get()->AddGameScene(new BattleCityScene(LevelExtractor::GetLevelPath(m_SelectedLevelIdx)));
+		SceneManager::Get()->SetActiveGameScene(L"BattleCity");
+	}
+	
+	
+
 }
 void LevelSelectScene::OnSceneActivated()
 {

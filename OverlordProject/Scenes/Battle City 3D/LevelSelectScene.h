@@ -1,4 +1,5 @@
 #pragma once
+class WorldButton;
 class LevelSelectScene : public GameScene
 {
 public:
@@ -24,6 +25,7 @@ private:
 	float m_CurrentButtonLoadTime{};
 	bool m_ShouldCountDown{ false };
 	int m_SelectedLevelIdx{-1};
+	bool m_ShouldReturn{false};
 
 	//HUD
 	SpriteFont* m_pFont{};
@@ -31,6 +33,6 @@ private:
 	XMFLOAT2 m_HudTextPos{};
 	XMFLOAT4 m_HudTextColor{};
 
-
+	WorldButton* m_pReturnButton{};
 };
 
