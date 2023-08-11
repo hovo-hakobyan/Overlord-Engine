@@ -94,8 +94,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Misc\LevelExtractor.cpp" />
+    <ClCompile Include="Misc\PauseMenu.cpp" />
     <ClCompile Include="Scenes\Battle City 3D\LevelSelectScene.cpp" />
     <ClCompile Include="Scenes\Battle City 3D\MainMenu.cpp" />
+    <ClCompile Include="Prefabs\ScreenButton.cpp" />
     <ClCompile Include="WorldBuilder\EnvironmentBuilder.cpp" />
     <ClCompile Include="Materials\LavaMaterial.cpp" />
     <ClCompile Include="Scenes\OwnTestScenes\LavaTestScene.cpp" />
@@ -174,8 +176,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Misc\LevelExtractor.h" />
+    <ClInclude Include="Misc\PauseMenu.h" />
     <ClInclude Include="Scenes\Battle City 3D\LevelSelectScene.h" />
     <ClInclude Include="Scenes\Battle City 3D\MainMenu.h" />
+    <ClInclude Include="Prefabs\ScreenButton.h" />
     <ClInclude Include="WorldBuilder\EnvironmentBuilder.h" />
     <ClInclude Include="Materials\LavaMaterial.h" />
     <ClInclude Include="Scenes\OwnTestScenes\LavaTestScene.h" />

@@ -1,5 +1,6 @@
 #pragma once
 class ParticleAtLocation;
+class PauseMenu;
 enum class CurrentGameState
 {
 	Gameplay, Victory, Defeat
@@ -54,6 +55,8 @@ private:
 	std::string m_LevelPath{};
 
 	bool m_IsPaused{false};
+	PauseMenu* m_pPauseMenu{};
+
 	void LockCamera();
 };
 

@@ -9,6 +9,7 @@
 #include "Misc/ShellManager.h"
 #include "WorldBuilder/EnvironmentBuilder.h"
 #include "Materials/LavaMaterial.h"
+#include "Misc/PauseMenu.h"
 
 BattleCityScene::BattleCityScene(const std::string& path):
 	GameScene(L"BattleCity"),
@@ -113,6 +114,10 @@ void BattleCityScene::Initialize()
 	//input
 	auto inputAction = InputAction(InputIds::Pause, InputState::pressed, VK_ESCAPE);
 	m_SceneContext.pInput->AddInputAction(inputAction);
+
+	//Pause menu
+	m_pPauseMenu = new PauseMenu();
+	AddChild(m_pPauseMenu);
 }
 
 void BattleCityScene::Update()
@@ -121,6 +126,16 @@ void BattleCityScene::Update()
 	if (input->IsActionTriggered(InputIds::Pause))
 	{
 		m_IsPaused = !m_IsPaused;
+
+		if (m_IsPaused)
+		{
+			m_pPauseMenu->Show();
+			
+		}
+		else
+		{
+			m_pPauseMenu->Hide();
+		}
 	}
 
 	if (m_IsPaused)

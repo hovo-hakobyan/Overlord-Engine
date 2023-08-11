@@ -62,6 +62,8 @@
     <ClCompile Include="Prefabs\WorldButton.cpp" />
     <ClCompile Include="Scenes\Battle City 3D\LevelSelectScene.cpp" />
     <ClCompile Include="Misc\LevelExtractor.cpp" />
+    <ClCompile Include="Prefabs\ScreenButton.cpp" />
+    <ClCompile Include="Misc\PauseMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h" />
@@ -145,5 +147,7 @@
     <ClInclude Include="Prefabs\WorldButton.h" />
     <ClInclude Include="Scenes\Battle City 3D\LevelSelectScene.h" />
     <ClInclude Include="Misc\LevelExtractor.h" />
+    <ClInclude Include="Prefabs\ScreenButton.h" />
+    <ClInclude Include="Misc\PauseMenu.h" />
   </ItemGroup>
 </Project>
