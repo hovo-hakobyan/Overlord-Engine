@@ -22,6 +22,11 @@ BattleCityScene::~BattleCityScene()
 	SafeDelete(m_pLevelBuilder);
 }
 
+bool BattleCityScene::IsGamePaused() const
+{
+	return m_IsPaused;
+}
+
 void BattleCityScene::Initialize()
 {
 	const auto pDefaultMaterial = PxGetPhysics().createMaterial(0.5f, 0.5f, 0.5f);
@@ -104,11 +109,25 @@ void BattleCityScene::Initialize()
 	loc = m_pLevelBuilder->GetLevelCenter();
 	m_pVictoryParticle = new ParticleAtLocation{ XMFLOAT3{loc.x,loc.y + 3.0f,loc.z},100.0f,settings,L"Textures/fireworks.png" };
 	AddChild(m_pVictoryParticle);
+
+	//input
+	auto inputAction = InputAction(InputIds::Pause, InputState::pressed, VK_ESCAPE);
+	m_SceneContext.pInput->AddInputAction(inputAction);
 }
 
 void BattleCityScene::Update()
 {
-	
+	const auto input = m_SceneContext.pInput;
+	if (input->IsActionTriggered(InputIds::Pause))
+	{
+		m_IsPaused = !m_IsPaused;
+	}
+
+	if (m_IsPaused)
+	{
+		return;
+	}
+
 	switch (m_GameState)
 	{
 	case CurrentGameState::Gameplay:

@@ -61,6 +61,11 @@ void EnemyTank::Initialize(const SceneContext&)
 
 void EnemyTank::Update(const SceneContext& sceneContext)
 {
+	if (m_pGameScene->IsGamePaused())
+	{
+		return;
+	}
+
 	if (m_pGameScene->GetGameState() != CurrentGameState::Gameplay)
 	{
 		return;

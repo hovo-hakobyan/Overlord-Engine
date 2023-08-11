@@ -21,6 +21,8 @@ public:
 	const CurrentGameState& GetGameState() const { return m_GameState; }
 
 	ShellManager* GetShellManager() const { return m_pShellManager; }
+
+	bool IsGamePaused() const;
 	
 protected:
 	void Initialize() override;
@@ -31,6 +33,10 @@ protected:
 	void OnSceneDeactivated() override;
 
 private:
+	enum InputIds
+	{
+		Pause=5
+	};
 	class LevelBuilder* m_pLevelBuilder{};
 	ModelComponent* m_pGrowingLava{};
 	class EnemySpawner* m_pEnemySpawner{};
@@ -47,6 +53,7 @@ private:
 
 	std::string m_LevelPath{};
 
+	bool m_IsPaused{false};
 	void LockCamera();
 };
 

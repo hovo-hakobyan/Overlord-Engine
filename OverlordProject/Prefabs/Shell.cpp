@@ -141,6 +141,7 @@ void Shell::Initialize(const SceneContext&)
 
 void Shell::Update(const SceneContext& sceneContext)
 {
+	
 	float deltaTime = sceneContext.pGameTime->GetElapsed();
 	if (!m_IsEnabled)
 	{

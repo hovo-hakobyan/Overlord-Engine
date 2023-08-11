@@ -90,8 +90,14 @@ void PlayerTank::Initialize(const SceneContext& sceneContext)
 
 void PlayerTank::Update(const SceneContext& sceneContext)
 {
+
 	if (m_TankDesc.isCombat)
 	{
+		if (m_pGameScene->IsGamePaused())
+		{
+			return;
+		}
+
 		if (m_pGameScene->GetGameState() != CurrentGameState::Gameplay)
 		{
 			if (m_pAnimator->IsPlaying())
