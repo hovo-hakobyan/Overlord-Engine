@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "PauseMenu.h"
 #include "Prefabs/ScreenButton.h"
+#include "Scenes/Battle City 3D/BattleCityScene.h"
+#include "LevelExtractor.h"
 
 PauseMenu::PauseMenu()
 {
@@ -12,6 +14,9 @@ void PauseMenu::Hide()
 	m_pExit->Hide();
 	m_pMainMenu->Hide();
 	m_pRestart->Hide();
+	m_pExit->Deselect();
+	m_pRestart->Deselect();
+	m_pMainMenu->Deselect();
 }
 
 void PauseMenu::Show()
@@ -22,6 +27,8 @@ void PauseMenu::Show()
 		m_pMainMenu->Show();
 		m_pRestart->Show();
 		m_IsHidden = false;
+
+		m_pMainMenu->Select();
 	}
 	
 }
@@ -31,20 +38,117 @@ void PauseMenu::Initialize(const SceneContext& sceneContext)
 	XMFLOAT2 dim{ 0.1f,0.1f };
 	const float gap{ 80.0f };
 	XMFLOAT2 loc{ sceneContext.windowWidth / 2 - dim.x / 2.f,sceneContext.windowHeight / 2.f - 100.f };
-	m_pRestart = new ScreenButton(loc, dim);
+
+	m_pMainMenu = new ScreenButton(loc, dim, "Main Menu");
+	AddChild(m_pMainMenu);
+
+	loc.y += gap;
+	m_pRestart = new ScreenButton(loc, dim,"Restart");
 	AddChild(m_pRestart);
 
 	loc.y += gap;
-	m_pExit = new ScreenButton(loc, dim);
+	m_pExit = new ScreenButton(loc, dim,"Exit");
 	AddChild(m_pExit);
 
-	loc.y += gap;
-	m_pMainMenu = new ScreenButton(loc, dim);
-	AddChild(m_pMainMenu);
+	
+	
 
 	Hide();
+
+	//Input
+	auto input = sceneContext.pInput;
+
+	input->AddInputAction(InputAction{ InputIds::Down,InputState::pressed,VK_DOWN });
+	input->AddInputAction(InputAction{ InputIds::Select,InputState::pressed,VK_RETURN });
+	input->AddInputAction(InputAction{ InputIds::Up,InputState::pressed,VK_UP });
 }
 
-void PauseMenu::Update(const SceneContext&)
+void PauseMenu::Update(const SceneContext& sceneContext)
 {
+	if (m_IsHidden)
+	{
+		return;
+	}
+
+	UpdateButtonNavigation(sceneContext);
+
+	
+}
+
+void PauseMenu::UpdateButtonNavigation(const SceneContext& sceneContext)
+{
+	const auto input = sceneContext.pInput;
+	if (input->IsActionTriggered(InputIds::Down))
+	{
+		SelectNextButton();
+	}
+
+	if (input->IsActionTriggered(InputIds::Up))
+	{
+		SelectPreviousButton();
+	}
+
+	if (input->IsActionTriggered(InputIds::Select))
+	{
+		TriggerButton();
+	}
+
+}
+
+void PauseMenu::SelectPreviousButton()
+{
+	if (m_pRestart->IsSelected())
+	{
+		m_pRestart->Deselect();
+		m_pMainMenu->Select();
+		return;
+	}
+
+	if (m_pExit->IsSelected())
+	{
+		m_pExit->Deselect();
+		m_pRestart->Select();
+		return;
+	}
+}
+
+void PauseMenu::SelectNextButton()
+{
+	if (m_pMainMenu->IsSelected())
+	{
+		m_pMainMenu->Deselect();
+		m_pRestart->Select();
+		return;
+	}
+
+	if (m_pRestart->IsSelected())
+	{
+		m_pRestart->Deselect();
+		m_pExit->Select();
+		return;
+	}
+
+}
+
+void PauseMenu::TriggerButton()
+{
+	if (m_pMainMenu->IsSelected())
+	{
+		SceneManager::Get()->SetActiveGameScene(L"MainMenu");
+		return;
+	}
+	
+	if (m_pRestart->IsSelected())
+	{
+		
+		SceneManager::Get()->AddGameScene(new BattleCityScene(LevelExtractor::GetLevelPath(LevelExtractor::GetSelectedLevelIdx())));
+		SceneManager::Get()->NextScene();
+		return;
+	}
+
+	if (m_pExit->IsSelected())
+	{
+		OverlordGame::SHOULD_EXIT = true;
+		return;
+	}
 }

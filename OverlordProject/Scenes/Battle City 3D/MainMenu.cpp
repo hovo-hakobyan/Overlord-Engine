@@ -8,7 +8,7 @@
 #include "WorldBuilder/EnvironmentBuilder.h"
 
 MainMenu::MainMenu():
-	GameScene(L"Main Menu")
+	GameScene(L"MainMenu")
 {
 }
 

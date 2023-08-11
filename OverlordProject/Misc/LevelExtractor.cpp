@@ -5,6 +5,7 @@
 std::vector<std::string> LevelExtractor::m_AllLevelsPath(20);
 
 int LevelExtractor::m_MaxLevelNum{ 28 };
+int LevelExtractor::m_SelectedLevelIdx{ -1 };
 LevelExtractor::LevelExtractor()
 {
 }
@@ -58,5 +59,15 @@ std::string LevelExtractor::GetLevelPath(int levelIdx)
 	
 	
 	return m_AllLevelsPath[levelIdx];
+}
+
+int LevelExtractor::GetSelectedLevelIdx()
+{
+	return m_SelectedLevelIdx;
+}
+
+void LevelExtractor::SetSelectedLevelIdx(int idx)
+{
+	m_SelectedLevelIdx = idx;
 }
 

@@ -72,6 +72,7 @@ void LevelSelectScene::Initialize()
 					m_ShouldCountDown = true;
 					m_CurrentButtonLoadTime = m_ButtonLoadMaxTime;
 					m_SelectedLevelIdx = static_cast<int>(i);
+					LevelExtractor::SetSelectedLevelIdx(m_SelectedLevelIdx);
 				}
 				if (triggerAction == PxTriggerAction::LEAVE)
 				{

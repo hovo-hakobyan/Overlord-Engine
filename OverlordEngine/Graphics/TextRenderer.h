@@ -53,5 +53,5 @@ private:
 
 	UINT m_TotalCharacters{};
 	UINT m_BufferSize{100};
-	float m_FontSize{3};
+	float m_FontSize{1};
 };

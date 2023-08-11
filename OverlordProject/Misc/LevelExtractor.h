@@ -12,9 +12,11 @@ public:
 	static void ReadAndUpdateLevelsFromFile();
 	static std::vector<std::string> GetAllLevelsPath();
 	static std::string GetLevelPath(int levelIdx);
-
+	static int GetSelectedLevelIdx();
+	static void SetSelectedLevelIdx(int idx);
 private:
 	static std::vector<std::string> m_AllLevelsPath;
 	static int m_MaxLevelNum;
+	static int m_SelectedLevelIdx;
 };
 

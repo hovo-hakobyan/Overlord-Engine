@@ -16,9 +16,21 @@ protected:
 	virtual void Initialize(const SceneContext&) override;
 	virtual void Update(const SceneContext&) override ;
 private:
+	enum InputIds
+	{
+		Up = 6,
+		Down = 7,
+		Select = 8
+	};
+
 	ScreenButton* m_pRestart{};
 	ScreenButton* m_pMainMenu{};
 	ScreenButton* m_pExit{};
 
 	bool m_IsHidden{};
+
+	void UpdateButtonNavigation(const SceneContext& sceneContext);
+	void SelectPreviousButton();
+	void SelectNextButton();
+	void TriggerButton();
 };
