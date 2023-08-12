@@ -1,6 +1,6 @@
 #pragma once
-class ParticleAtLocation;
 class PauseMenu;
+class EndScreen;
 enum class CurrentGameState
 {
 	Gameplay, Victory, Defeat
@@ -46,8 +46,7 @@ private:
 	CurrentGameState m_GameState{ CurrentGameState::Gameplay };
 	class PlayerTank* m_pPlayerTank{};
 
-	ParticleAtLocation* m_pDefeatParticle{};
-	ParticleAtLocation* m_pVictoryParticle{};
+	EndScreen* m_pEndScreen{};
 	
 	const float m_LavaGrowSpeed{ 0.005f };
 	bool m_HasLavaFinishedGrowing{ false };

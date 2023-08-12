@@ -5,11 +5,11 @@
 #include "Prefabs/EnemyTank.h"
 #include "Misc/EnemySpawner.h"
 #include "Prefabs/Hatch.h"
-#include "Prefabs/ParticleAtLocation.h"
 #include "Misc/ShellManager.h"
 #include "WorldBuilder/EnvironmentBuilder.h"
 #include "Materials/LavaMaterial.h"
 #include "Misc/PauseMenu.h"
+#include "Misc/EndScreen.h"
 
 BattleCityScene::BattleCityScene(const std::string& path):
 	GameScene(L"BattleCity"),
@@ -78,39 +78,6 @@ void BattleCityScene::Initialize()
 	m_pShellManager = new ShellManager();
 	AddChild(m_pShellManager);
 
-
-	ParticleEmitterSettings settings{};
-
-	settings.velocity = { 0.f,0.f,0.f };
-	settings.minSize = 0.1f;
-	settings.maxSize = 2.2f;
-	settings.minEnergy = 0.1f;
-	settings.maxEnergy = 2.5f;
-	settings.minScale = 1.2f;
-	settings.maxScale = 2.0f;
-	settings.minEmitterRadius = 0.5f;
-	settings.maxEmitterRadius = 1.5f;
-	settings.color = { 1.f,1.f,1.f, .6f };
-
-	auto loc = m_pLevelBuilder->GetNestLocation();
-	m_pDefeatParticle = new ParticleAtLocation{XMFLOAT3{loc.x,loc.y + 3.0f,loc.z},4.0f,settings,L"Textures/explosion.png"};
-	AddChild(m_pDefeatParticle);
-
-
-	settings.minSize = 1.f;
-	settings.maxSize = 4.f;
-	settings.minEnergy = 0.5f;
-	settings.maxEnergy = 5.f;
-	settings.minScale = 0.5f;
-	settings.maxScale = 1.f;
-	settings.minEmitterRadius = 0.5f;
-	settings.maxEmitterRadius = 4.f;
-	settings.color = { 1.f,1.f,1.f, .6f };
-
-	loc = m_pLevelBuilder->GetLevelCenter();
-	m_pVictoryParticle = new ParticleAtLocation{ XMFLOAT3{loc.x,loc.y + 3.0f,loc.z},100.0f,settings,L"Textures/fireworks.png" };
-	AddChild(m_pVictoryParticle);
-
 	//input
 	auto inputAction = InputAction(InputIds::Pause, InputState::pressed, VK_ESCAPE);
 	m_SceneContext.pInput->AddInputAction(inputAction);
@@ -118,6 +85,9 @@ void BattleCityScene::Initialize()
 	//Pause menu
 	m_pPauseMenu = new PauseMenu();
 	AddChild(m_pPauseMenu);
+
+	m_pEndScreen = new EndScreen();
+	AddChild(m_pEndScreen);
 }
 
 void BattleCityScene::Update()
@@ -148,10 +118,10 @@ void BattleCityScene::Update()
 	case CurrentGameState::Gameplay:
 		break;
 	case CurrentGameState::Victory:
-		m_pVictoryParticle->Play();
+		m_pEndScreen->ShowVictory();
 		break;
 	case CurrentGameState::Defeat:
-		m_pDefeatParticle->Play();
+		m_pEndScreen->ShowDefeat();
 		break;
 	default:
 		break;

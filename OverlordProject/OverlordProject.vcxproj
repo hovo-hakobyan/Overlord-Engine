@@ -93,6 +93,7 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Misc\EndScreen.cpp" />
     <ClCompile Include="Misc\LevelExtractor.cpp" />
     <ClCompile Include="Misc\PauseMenu.cpp" />
     <ClCompile Include="Scenes\Battle City 3D\LevelSelectScene.cpp" />
@@ -175,6 +176,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Misc\EndScreen.h" />
     <ClInclude Include="Misc\LevelExtractor.h" />
     <ClInclude Include="Misc\PauseMenu.h" />
     <ClInclude Include="Scenes\Battle City 3D\LevelSelectScene.h" />

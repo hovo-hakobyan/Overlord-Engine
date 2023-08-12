@@ -64,6 +64,7 @@
     <ClCompile Include="Misc\LevelExtractor.cpp" />
     <ClCompile Include="Prefabs\ScreenButton.cpp" />
     <ClCompile Include="Misc\PauseMenu.cpp" />
+    <ClCompile Include="Misc\EndScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h" />
@@ -149,5 +150,6 @@
     <ClInclude Include="Misc\LevelExtractor.h" />
     <ClInclude Include="Prefabs\ScreenButton.h" />
     <ClInclude Include="Misc\PauseMenu.h" />
+    <ClInclude Include="Misc\EndScreen.h" />
   </ItemGroup>
 </Project>
