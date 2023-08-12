@@ -122,6 +122,7 @@ void MainMenu::Initialize()
 		}
 	);
 
+
 	//HUD
 	m_pFont = ContentManager::Load<SpriteFont>(L"SpriteFonts/Arial_32.fnt");
 	m_HudTextColor = XMFLOAT4{ Colors::Red };
@@ -130,7 +131,13 @@ void MainMenu::Initialize()
 	EnvironmentBuilder::BuildLavaEnv(this,false);
 
 	m_SceneContext.pLights->SetDirectionalLight(XMFLOAT3{ 6.897f,82.759f,13.793f }, XMFLOAT3{ -0.241f,-1.0f,-0.069f });
+
+
+	
+	
+	
 }
+
 
 void MainMenu::Update()
 {
@@ -163,6 +170,7 @@ void MainMenu::Update()
 		OverlordGame::SHOULD_EXIT = true;
 		break;
 	}
+	m_CurrentButtonLoadTime = m_ButtonLoadMaxTime;
 	m_ShouldCountDown = false;
 	m_MenuAction = MenuActions::None;
 }

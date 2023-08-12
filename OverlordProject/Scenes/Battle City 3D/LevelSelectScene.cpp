@@ -113,34 +113,77 @@ void LevelSelectScene::Initialize()
 	m_pFont = ContentManager::Load<SpriteFont>(L"SpriteFonts/Arial_32.fnt");
 	m_HudTextColor = XMFLOAT4{ Colors::Red };
 	m_HudTextPos = XMFLOAT2{ m_SceneContext.windowWidth / 2.f,m_SceneContext.windowHeight / 2.0f };
+
+	//controls
+	m_pControlsSprite = new GameObject();
+	AddChild(m_pControlsSprite);
+
+	
 }
 
 void LevelSelectScene::Update()
 {
-	if (!m_ShouldCountDown)
+	float deltaTime = m_SceneContext.pGameTime->GetElapsed();
+	if (m_ShouldCountDown)
 	{
-		return;
-	}
+		m_CurrentButtonLoadTime -= deltaTime;
+		if (m_CurrentButtonLoadTime > 0)
+		{
+			m_HudText = std::format("{:.0f}", m_CurrentButtonLoadTime);
+			TextRenderer::Get()->DrawText(m_pFont, StringUtil::utf8_decode(m_HudText), m_HudTextPos, m_HudTextColor);
+			return;
+		}
 
-	m_CurrentButtonLoadTime -= m_SceneContext.pGameTime->GetElapsed();
-	if (m_CurrentButtonLoadTime > 0)
-	{
-		m_HudText = std::format("{:.0f}", m_CurrentButtonLoadTime);
-		TextRenderer::Get()->DrawText(m_pFont, StringUtil::utf8_decode(m_HudText), m_HudTextPos, m_HudTextColor);
-		return;
+		m_ShouldCountDown = false;
+	
+		if (m_ShouldReturn)
+		{
+			SceneManager::Get()->SetActiveGameScene(L"MainMenu");
+			m_pPlayerTank->Reset();
+		}
+		else
+		{
+			m_ShouldShowKeys = true;
+			
+		}
+		m_CurrentButtonLoadTime = m_ButtonLoadMaxTime;
 	}
+	else if (m_ShouldShowKeys)
+	{
+		m_ControlsScreenCurrentTime += deltaTime;
+		if (m_ControlsScreenCurrentTime > m_ControlsScreenMaxTime)
+		{
+			m_ShouldLoadLevel = true;
+			m_ShouldShowKeys = false;
+			return;
+		}
 
-	m_ShouldCountDown = false;
-	m_pPlayerTank->Reset();
-	if (m_ShouldReturn)
-	{
-		SceneManager::Get()->SetActiveGameScene(L"MainMenu");
+		if (!m_AreKeysShowing)
+		{
+			m_pControlsSpriteComp = m_pControlsSprite->AddComponent(new SpriteComponent(L"Textures/Menu/controls.png"));
+			m_pControlsSprite->GetTransform()->Translate(0, 0, 0.9f);
+			m_AreKeysShowing = true;
+		}
+		
 	}
-	else
+	else if(m_ShouldLoadLevel)
 	{
+		if (m_AreKeysShowing)
+		{
+			m_pControlsSprite->RemoveComponent(m_pControlsSpriteComp, true);
+			m_AreKeysShowing = false;
+		}
+
 		SceneManager::Get()->AddGameScene(new BattleCityScene(LevelExtractor::GetLevelPath(m_SelectedLevelIdx)));
 		SceneManager::Get()->SetActiveGameScene(L"BattleCity");
+		m_pPlayerTank->Reset();
+		m_ShouldLoadLevel = false;
+		m_ControlsScreenCurrentTime = 0.0f;
 	}
+
+	
+
+	
 	
 	
 

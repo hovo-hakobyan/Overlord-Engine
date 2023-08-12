@@ -34,7 +34,7 @@ private:
 	void LockCamera();
 
 	MenuActions m_MenuAction{ MenuActions::None };
-	float m_ButtonLoadMaxTime{ 4.0f };
+	float m_ButtonLoadMaxTime{ 3.0f };
 	float m_CurrentButtonLoadTime{};
 	bool m_ShouldCountDown{ false };
 
@@ -45,6 +45,8 @@ private:
 	std::string m_HudText{};
 	XMFLOAT2 m_HudTextPos{};
 	XMFLOAT4 m_HudTextColor{};
+
+	
 };
 
 
