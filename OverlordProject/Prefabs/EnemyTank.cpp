@@ -11,7 +11,7 @@
 EnemyTank::EnemyTank(const XMFLOAT3& loc, const XMFLOAT3& startRot, const TankDesc& tankDesc):
 	BaseTank(loc, startRot, tankDesc)
 {
-	++EnemyCounter;
+
 }
 
 

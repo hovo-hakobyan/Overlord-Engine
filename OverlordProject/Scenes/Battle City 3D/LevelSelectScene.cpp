@@ -174,7 +174,7 @@ void LevelSelectScene::Update()
 			m_AreKeysShowing = false;
 		}
 
-		SceneManager::Get()->AddGameScene(new BattleCityScene(LevelExtractor::GetLevelPath(m_SelectedLevelIdx)));
+		SceneManager::Get()->AddGameScene(new BattleCityScene(LevelExtractor::GetLevelPath(LevelExtractor::GetSelectedLevelIdx())));
 		SceneManager::Get()->SetActiveGameScene(L"BattleCity");
 		m_pPlayerTank->Reset();
 		m_ShouldLoadLevel = false;

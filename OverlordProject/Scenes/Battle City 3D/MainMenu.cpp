@@ -131,10 +131,6 @@ void MainMenu::Initialize()
 	EnvironmentBuilder::BuildLavaEnv(this,false);
 
 	m_SceneContext.pLights->SetDirectionalLight(XMFLOAT3{ 6.897f,82.759f,13.793f }, XMFLOAT3{ -0.241f,-1.0f,-0.069f });
-
-
-	
-	
 	
 }
 

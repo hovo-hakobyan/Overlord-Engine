@@ -24,3 +24,4 @@
 
 <a href="https://www.flaticon.com/free-icons/joystick" title="joystick icons">Joystick icons created by Good Ware - Flaticon</a>
 
+<a href="https://www.flaticon.com/free-icons/tank" title="tank icons">Tank icons created by Smashicons - Flaticon</a>

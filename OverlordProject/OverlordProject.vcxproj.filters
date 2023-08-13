@@ -65,6 +65,8 @@
     <ClCompile Include="Prefabs\ScreenButton.cpp" />
     <ClCompile Include="Misc\PauseMenu.cpp" />
     <ClCompile Include="Misc\EndScreen.cpp" />
+    <ClCompile Include="Prefabs\TankIcon.cpp" />
+    <ClCompile Include="Misc\hud.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h" />
@@ -151,5 +153,7 @@
     <ClInclude Include="Prefabs\ScreenButton.h" />
     <ClInclude Include="Misc\PauseMenu.h" />
     <ClInclude Include="Misc\EndScreen.h" />
+    <ClInclude Include="Prefabs\TankIcon.h" />
+    <ClInclude Include="Misc\hud.h" />
   </ItemGroup>
 </Project>

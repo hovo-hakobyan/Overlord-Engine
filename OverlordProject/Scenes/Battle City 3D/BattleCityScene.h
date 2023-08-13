@@ -1,6 +1,7 @@
 #pragma once
 class PauseMenu;
 class EndScreen;
+class Hud;
 enum class CurrentGameState
 {
 	Gameplay, Victory, Defeat
@@ -55,6 +56,8 @@ private:
 
 	bool m_IsPaused{false};
 	PauseMenu* m_pPauseMenu{};
+
+	Hud* m_pHud{};
 
 	void LockCamera();
 };

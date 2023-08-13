@@ -10,6 +10,8 @@
 #include "Materials/LavaMaterial.h"
 #include "Misc/PauseMenu.h"
 #include "Misc/EndScreen.h"
+#include "Misc/hud.h"
+#include "Prefabs/TankIcon.h"
 
 BattleCityScene::BattleCityScene(const std::string& path):
 	GameScene(L"BattleCity"),
@@ -89,6 +91,10 @@ void BattleCityScene::Initialize()
 
 	m_pEndScreen = new EndScreen();
 	AddChild(m_pEndScreen);
+
+	//Hud
+	m_pHud = new Hud();
+	AddChild(m_pHud);
 
 }
 
@@ -175,7 +181,7 @@ void BattleCityScene::LockCamera()
 	//Set a new fixed camera
 	auto prevCamera = m_SceneContext.pCamera;
 	const auto pFixedCamera = new FixedCamera();
-	pFixedCamera->GetTransform()->Translate(5.f, 26.f, 4.f);
+	pFixedCamera->GetTransform()->Translate(6.f, 26.f, 4.f);
 	pFixedCamera->GetTransform()->Rotate(80.0f, 0.0f, 0.0f);
 	AddChild(pFixedCamera);
 	SetActiveCamera(pFixedCamera->GetComponent<CameraComponent>());
