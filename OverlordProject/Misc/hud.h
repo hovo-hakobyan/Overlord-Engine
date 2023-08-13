@@ -18,6 +18,8 @@ protected:
 	virtual void Update(const SceneContext&) override;
 private:
 	SpriteComponent* m_pBackground{};
-	std::vector<TankIcon*> m_pIcons{ 20 };
+	std::deque<TankIcon*> m_pIcons{ 20 };
+
+	int m_CurrentIcons{20};
 };
 

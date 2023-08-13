@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "hud.h"
 #include "Prefabs/TankIcon.h"
+#include "Prefabs/BaseTank.h"
 
 Hud::Hud()
 {
@@ -54,4 +55,20 @@ void Hud::Initialize(const SceneContext& sceneContext)
 
 void Hud::Update(const SceneContext&)
 {
+	auto currentEnemies = BaseTank::EnemyCounter;
+	if (currentEnemies == m_CurrentIcons)
+	{
+		return;
+	}
+	else
+	{
+		if (m_pIcons.empty())
+		{
+			return;
+		}
+		RemoveChild(m_pIcons[m_CurrentIcons - 1], true);
+		m_pIcons.pop_back();
+		m_CurrentIcons = currentEnemies;
+		
+	}
 }
