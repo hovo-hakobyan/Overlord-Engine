@@ -21,5 +21,10 @@ private:
 	std::deque<TankIcon*> m_pIcons{ 20 };
 
 	int m_CurrentIcons{20};
+
+	SpriteFont* m_pFont{};
+	std::string m_Text{};
+	XMFLOAT2 m_TextPos{};
+	XMFLOAT4 m_TextColor{};
 };
 

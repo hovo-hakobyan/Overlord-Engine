@@ -11,7 +11,7 @@
 #include "Misc/PauseMenu.h"
 #include "Misc/EndScreen.h"
 #include "Misc/hud.h"
-#include "Prefabs/TankIcon.h"
+
 
 BattleCityScene::BattleCityScene(const std::string& path):
 	GameScene(L"BattleCity"),

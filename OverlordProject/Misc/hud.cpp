@@ -2,6 +2,7 @@
 #include "hud.h"
 #include "Prefabs/TankIcon.h"
 #include "Prefabs/BaseTank.h"
+#include "Misc/LevelExtractor.h"
 
 Hud::Hud()
 {
@@ -51,10 +52,17 @@ void Hud::Initialize(const SceneContext& sceneContext)
 
 	Show();
 	
+	//text
+	m_pFont = ContentManager::Load<SpriteFont>(L"SpriteFonts/Arial_32.fnt");
+	m_TextColor = XMFLOAT4{ 0.51f,0.09f,0.04f,1.0f };
+	m_TextPos = XMFLOAT2{sceneContext.windowWidth - 140.f, 25.0f };
+	m_Text = LevelExtractor::GetSelectedLevelName();
 }
 
 void Hud::Update(const SceneContext&)
 {
+	TextRenderer::Get()->DrawText(m_pFont, StringUtil::utf8_decode(m_Text), m_TextPos, m_TextColor);
+
 	auto currentEnemies = BaseTank::EnemyCounter;
 	if (currentEnemies == m_CurrentIcons)
 	{
