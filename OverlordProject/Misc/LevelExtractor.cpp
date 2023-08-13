@@ -71,3 +71,18 @@ void LevelExtractor::SetSelectedLevelIdx(int idx)
 	m_SelectedLevelIdx = idx;
 }
 
+std::string LevelExtractor::GetSelectedLevelName()
+{
+	if (m_SelectedLevelIdx == -1)
+	{
+		return "";
+	}
+	const auto& str = m_AllLevelsPath[m_SelectedLevelIdx];
+	size_t lastSlashPos = str.find_last_of('/');
+	std::string fileName = str.substr(lastSlashPos + 1);
+	size_t lastDotPos = fileName.find_last_of('.');
+	std::string levelName = fileName.substr(0, lastDotPos);
+
+	return levelName;
+}
+

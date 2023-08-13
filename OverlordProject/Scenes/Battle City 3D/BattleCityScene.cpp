@@ -51,6 +51,7 @@ void BattleCityScene::Initialize()
 	EnvironmentBuilder::BuildLavaEnv(this,true);
 
 	auto lavaMat = MaterialManager::Get()->CreateMaterial<LavaMaterial>();
+	
 
 	m_pGrowingLava = new ModelComponent(L"Meshes/GrowingLava.ovm");
 	m_pGrowingLava->SetMaterial(lavaMat);
@@ -88,6 +89,7 @@ void BattleCityScene::Initialize()
 
 	m_pEndScreen = new EndScreen();
 	AddChild(m_pEndScreen);
+
 }
 
 void BattleCityScene::Update()

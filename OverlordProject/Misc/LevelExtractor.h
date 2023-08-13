@@ -14,6 +14,7 @@ public:
 	static std::string GetLevelPath(int levelIdx);
 	static int GetSelectedLevelIdx();
 	static void SetSelectedLevelIdx(int idx);
+	static std::string GetSelectedLevelName();
 private:
 	static std::vector<std::string> m_AllLevelsPath;
 	static int m_MaxLevelNum;
