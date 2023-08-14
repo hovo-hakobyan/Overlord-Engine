@@ -27,5 +27,8 @@ private:
 
 	float m_MaxTime{4.0f};
 	float m_CurrentTime{};
+
+	FMOD::Sound* m_pEndSound{};
+	FMOD::Channel* m_pChannel{ nullptr };
 };
 

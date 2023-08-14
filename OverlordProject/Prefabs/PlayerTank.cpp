@@ -86,6 +86,12 @@ void PlayerTank::Initialize(const SceneContext& sceneContext)
 	pTransform->Scale(tankSize);
 	pTransform->Translate(m_StartLocation);
 
+	//Sound
+	const auto pSoundManager = SoundManager::Get()->GetSystem();
+	pSoundManager->createStream("Resources/Sounds/Shooting.wav", FMOD_DEFAULT, nullptr, &m_pShootingSound);
+	pSoundManager->createStream("Resources/Sounds/TankMoving.wav", FMOD_2D | FMOD_LOOP_NORMAL, nullptr, &m_pShootingSound);
+	m_pShootingChannel->setVolume(1.f);
+	m_pMovingChannel->setVolume(1.f);
 }
 
 void PlayerTank::Update(const SceneContext& sceneContext)
@@ -147,6 +153,16 @@ void PlayerTank::Update(const SceneContext& sceneContext)
 		
 	}
 
+	if (move.x != 0 || move.y !=0)
+	{
+		if (!m_IsPlayingMovingSound)
+		{
+			SoundManager::Get()->GetSystem()->playSound(m_pMovingSound, nullptr, false, &m_pMovingChannel);
+			m_IsPlayingMovingSound = true;
+		}
+		
+	}
+
 	float deltaTime = sceneContext.pGameTime->GetElapsed();
 	float currentAcceleration = m_MoveAcceleration * deltaTime;
 	//prioritize moving right
@@ -169,6 +185,8 @@ void PlayerTank::Update(const SceneContext& sceneContext)
 			pTransform->Rotate(0.0f, 90.0f, 0.0f, true);
 			m_pBoxShape->setLocalPose(PxTransform{ PxQuat{1.5708f,PxVec3{1,0,0}} });
 		}
+
+		
 	}
 	else if (fabs(move.y) > epsilon)
 	{
@@ -189,6 +207,11 @@ void PlayerTank::Update(const SceneContext& sceneContext)
 			pTransform->Rotate(0.0f, 0.0f, 0.0f, true);
 			m_pBoxShape->setLocalPose(PxTransform{ PxQuat{3.14159f,PxVec3{1,0,0}} });
 		}
+	}
+	else
+	{
+		m_IsPlayingMovingSound = false;
+		SoundManager::Get()->GetSystem()->playSound(m_pMovingSound, nullptr, true, &m_pMovingChannel);
 	}
 	
 	m_CurrentShootCooldown += deltaTime;
@@ -213,6 +236,7 @@ void PlayerTank::Update(const SceneContext& sceneContext)
 				m_pAnimator->SetAnimation(0);
 				m_pAnimator->SetAnimationSpeed(3.0f);
 				m_pAnimator->Play();
+				SoundManager::Get()->GetSystem()->playSound(m_pShootingSound, nullptr, false, &m_pShootingChannel);
 			}
 
 

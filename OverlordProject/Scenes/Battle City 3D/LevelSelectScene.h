@@ -43,5 +43,8 @@ private:
 
 	GameObject* m_pControlsSprite{};
 	SpriteComponent* m_pControlsSpriteComp{};
+
+	FMOD::Sound* m_pIntroSound{};
+	FMOD::Channel* m_pChannel{ nullptr };
 };
 

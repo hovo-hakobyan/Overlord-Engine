@@ -43,5 +43,12 @@ private:
 	void Disable();
 
 	bool m_ShouldDisable = true;
+
+	FMOD::Sound* m_pBrickSound{};
+	FMOD::Sound* m_pEnemyDeathSound{};
+	FMOD::Sound* m_pFriendlyDeathSound{};
+	FMOD::Channel* m_pChannelBrick{nullptr};
+	FMOD::Channel* m_pChannelEnemyDeath{ nullptr };
+	FMOD::Channel* m_pChannelFriendlyDeath{ nullptr };
 };
 

@@ -71,6 +71,15 @@ void Shell::Initialize(const SceneContext&)
 	expSettings.maxEmitterRadius = .5f;
 	expSettings.color = { 1.f,1.f,1.f, .6f };
 
+	//Sound
+	const auto pSoundManager = SoundManager::Get()->GetSystem();
+	pSoundManager->createStream("Resources/Sounds/BrickWallDestruction.wav", FMOD_DEFAULT, nullptr, &m_pBrickSound);
+	pSoundManager->createStream("Resources/Sounds/EnemyDeath.wav", FMOD_DEFAULT, nullptr, &m_pEnemyDeathSound);
+	pSoundManager->createStream("Resources/Sounds/FriendlyDeath.wav", FMOD_DEFAULT, nullptr, &m_pFriendlyDeathSound);
+	m_pChannelBrick->setVolume(1.f);
+	m_pChannelEnemyDeath->setVolume(1.f);
+	m_pChannelFriendlyDeath->setVolume(1.f);
+
 	SetOnTriggerCallBack([=](GameObject*, GameObject* other, PxTriggerAction triggerAction)
 		{
 			if (triggerAction == PxTriggerAction::ENTER)
@@ -80,6 +89,11 @@ void Shell::Initialize(const SceneContext&)
 					if (other->GetTag().compare(L"Destructible") == 0)
 					{
 						m_pHitObject = other;
+						if (m_ParentTag.compare(L"Friendly") == 0)
+						{
+							SoundManager::Get()->GetSystem()->playSound(m_pBrickSound, nullptr, false, &m_pChannelBrick);
+						}
+						
 					}
 					else if (other->GetTag().compare(L"Enemy") == 0)
 					{
@@ -95,6 +109,7 @@ void Shell::Initialize(const SceneContext&)
 								tank->SetIsDead(true);
 								m_pExplosionEmitter = new ParticleEmitterComponent(L"Textures/explosion.png", expSettings, 100);
 								AddComponent(m_pExplosionEmitter);
+								SoundManager::Get()->GetSystem()->playSound(m_pEnemyDeathSound, nullptr, false, &m_pChannelEnemyDeath);
 							}
 
 							m_pHitObject = nullptr;
@@ -115,6 +130,7 @@ void Shell::Initialize(const SceneContext&)
 								m_pGameScene->SetGameState(CurrentGameState::Defeat);
 								m_pExplosionEmitter = new ParticleEmitterComponent(L"Textures/explosion.png", expSettings, 100);
 								AddComponent(m_pExplosionEmitter);
+								SoundManager::Get()->GetSystem()->playSound(m_pFriendlyDeathSound, nullptr, false, &m_pChannelFriendlyDeath);
 							}
 
 							m_pHitObject = nullptr;
@@ -123,7 +139,7 @@ void Shell::Initialize(const SceneContext&)
 					}
 					else if (other->GetTag().compare(L"Nest") == 0)
 					{
-
+						SoundManager::Get()->GetSystem()->playSound(m_pFriendlyDeathSound, nullptr, false, &m_pChannelFriendlyDeath);
 						m_pGameScene->SetGameState(CurrentGameState::Defeat);
 					}
 					m_IsEnabled = false;

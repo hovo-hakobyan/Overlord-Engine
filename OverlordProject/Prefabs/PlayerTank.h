@@ -22,6 +22,12 @@ private:
 	float m_AnimResetTime{ .5f };
 	float m_CurrentAnimTime{};
 
-	
+	FMOD::Sound* m_pShootingSound{};
+	FMOD::Channel* m_pShootingChannel{ nullptr };
+
+	FMOD::Sound* m_pMovingSound{};
+	FMOD::Channel* m_pMovingChannel{ nullptr };
+
+	bool m_IsPlayingMovingSound{};
 };
 

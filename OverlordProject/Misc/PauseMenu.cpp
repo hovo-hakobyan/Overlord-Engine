@@ -17,6 +17,7 @@ void PauseMenu::Hide()
 	m_pExit->Deselect();
 	m_pRestart->Deselect();
 	m_pMainMenu->Deselect();
+	
 }
 
 void PauseMenu::Show()
@@ -29,6 +30,7 @@ void PauseMenu::Show()
 		m_IsHidden = false;
 
 		m_pMainMenu->Select();
+		SoundManager::Get()->GetSystem()->playSound(m_pMenuOpenSound, nullptr, false, &m_pChannelOpen);
 	}
 	
 }
@@ -50,8 +52,6 @@ void PauseMenu::Initialize(const SceneContext& sceneContext)
 	m_pExit = new ScreenButton(loc, dim,"Exit");
 	AddChild(m_pExit);
 
-	
-	
 
 	Hide();
 
@@ -61,6 +61,13 @@ void PauseMenu::Initialize(const SceneContext& sceneContext)
 	input->AddInputAction(InputAction{ InputIds::Down,InputState::pressed,VK_DOWN });
 	input->AddInputAction(InputAction{ InputIds::Select,InputState::pressed,VK_RETURN });
 	input->AddInputAction(InputAction{ InputIds::Up,InputState::pressed,VK_UP });
+
+	// Sound
+	const auto pSoundManager = SoundManager::Get()->GetSystem();
+	pSoundManager->createStream("Resources/Sounds/ButtonHover.wav", FMOD_DEFAULT, nullptr, &m_pButtonSound);
+	pSoundManager->createStream("Resources/Sounds/MenuOpen.wav", FMOD_DEFAULT, nullptr, &m_pMenuOpenSound);
+	m_pChannelHover->setVolume(1.f);
+	m_pChannelOpen->setVolume(1.f);
 }
 
 void PauseMenu::Update(const SceneContext& sceneContext)
@@ -78,14 +85,17 @@ void PauseMenu::Update(const SceneContext& sceneContext)
 void PauseMenu::UpdateButtonNavigation(const SceneContext& sceneContext)
 {
 	const auto input = sceneContext.pInput;
+	const auto soundSystem = SoundManager::Get()->GetSystem();
 	if (input->IsActionTriggered(InputIds::Down))
 	{
 		SelectNextButton();
+		soundSystem->playSound(m_pButtonSound, nullptr, false, &m_pChannelHover);
 	}
 
 	if (input->IsActionTriggered(InputIds::Up))
 	{
 		SelectPreviousButton();
+		soundSystem->playSound(m_pButtonSound, nullptr, false, &m_pChannelHover);
 	}
 
 	if (input->IsActionTriggered(InputIds::Select))

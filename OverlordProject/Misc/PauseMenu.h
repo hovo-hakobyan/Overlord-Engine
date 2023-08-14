@@ -33,4 +33,10 @@ private:
 	void SelectPreviousButton();
 	void SelectNextButton();
 	void TriggerButton();
+
+	FMOD::Sound* m_pButtonSound{};
+	FMOD::Channel* m_pChannelHover{ nullptr };
+
+	FMOD::Sound* m_pMenuOpenSound{};
+	FMOD::Channel* m_pChannelOpen{ nullptr };
 };

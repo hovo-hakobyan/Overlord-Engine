@@ -118,7 +118,10 @@ void LevelSelectScene::Initialize()
 	m_pControlsSprite = new GameObject();
 	AddChild(m_pControlsSprite);
 
-	
+	//Sound
+	const auto pSoundManager = SoundManager::Get()->GetSystem();
+	pSoundManager->createStream("Resources/Sounds/Intro.mp3", FMOD_DEFAULT, nullptr, &m_pIntroSound);
+	m_pChannel->setVolume(1.f);
 }
 
 void LevelSelectScene::Update()
@@ -163,6 +166,7 @@ void LevelSelectScene::Update()
 			m_pControlsSpriteComp = m_pControlsSprite->AddComponent(new SpriteComponent(L"Textures/Menu/controls.png"));
 			m_pControlsSprite->GetTransform()->Translate(0, 0, 0.9f);
 			m_AreKeysShowing = true;
+			SoundManager::Get()->GetSystem()->playSound(m_pIntroSound, nullptr, false, &m_pChannel);
 		}
 		
 	}
