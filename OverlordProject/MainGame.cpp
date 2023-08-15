@@ -194,42 +194,42 @@ LRESULT MainGame::WindowProcedureHook(HWND /*hWnd*/, UINT message, WPARAM wParam
 		if ((lParam & 0x80000000) != 0x80000000)
 			return -1;
 
-		//[F1] Toggle Scene Info Overlay
-		if(wParam == VK_F1)
-		{
-			const auto pScene = SceneManager::Get()->GetActiveScene();
-			pScene->GetSceneSettings().Toggle_ShowInfoOverlay();
-		}
+		////[F1] Toggle Scene Info Overlay
+		//if(wParam == VK_F1)
+		//{
+		//	const auto pScene = SceneManager::Get()->GetActiveScene();
+		//	pScene->GetSceneSettings().Toggle_ShowInfoOverlay();
+		//}
 
-		//[F2] Toggle Debug Renderer (Global)
-		if (wParam == VK_F2)
-		{
-			DebugRenderer::ToggleDebugRenderer();
-			return 0;
+		////[F2] Toggle Debug Renderer (Global)
+		//if (wParam == VK_F2)
+		//{
+		//	DebugRenderer::ToggleDebugRenderer();
+		//	return 0;
 
-		}
+		//}
 
-		//[F3] Previous Scene
-		if (wParam == VK_F3)
-		{
-			SceneManager::Get()->PreviousScene();
-			return 0;
+		////[F3] Previous Scene
+		//if (wParam == VK_F3)
+		//{
+		//	SceneManager::Get()->PreviousScene();
+		//	return 0;
 
-		}
+		//}
 
-		//[F4] Next Scene
-		if (wParam == VK_F4)
-		{
-			SceneManager::Get()->NextScene();
-			return 0;
-		}
+		////[F4] Next Scene
+		//if (wParam == VK_F4)
+		//{
+		//	SceneManager::Get()->NextScene();
+		//	return 0;
+		//}
 
-		//[F5] If PhysX Framestepping is enables > Next Frame	
-		if (wParam == VK_F6)
-		{
-			const auto pScene = SceneManager::Get()->GetActiveScene();
-			pScene->GetPhysxProxy()->NextPhysXFrame();
-		}
+		////[F5] If PhysX Framestepping is enables > Next Frame	
+		//if (wParam == VK_F6)
+		//{
+		//	const auto pScene = SceneManager::Get()->GetActiveScene();
+		//	pScene->GetPhysxProxy()->NextPhysXFrame();
+		//}
 	}
 	
 
