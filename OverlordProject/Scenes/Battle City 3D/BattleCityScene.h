@@ -8,6 +8,7 @@ enum class CurrentGameState
 };
 
 class ShellManager;
+class PostVignette;
 class BattleCityScene final : public GameScene
 {
 public:
@@ -63,5 +64,7 @@ private:
 
 	FMOD::Sound* m_pAmbient{};
 	FMOD::Channel* m_pChannel{ nullptr };
+
+	PostVignette* m_pPostVignette{};
 };
 

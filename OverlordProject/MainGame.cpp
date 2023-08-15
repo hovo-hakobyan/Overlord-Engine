@@ -84,6 +84,7 @@
 #include "Scenes/OwnTestScenes/GrassTestScene.h"
 #include "Scenes/OwnTestScenes/WaterTestScene.h"
 #include "Scenes/OwnTestScenes/LavaTestScene.h"
+#include "Scenes/OwnTestScenes/VignetteTestScene.h"
 #endif
 
 #ifdef FINAL_SCENE
@@ -172,6 +173,7 @@ void MainGame::Initialize()
 #endif
 
 #ifdef OWN_SCENES
+	SceneManager::Get()->AddGameScene(new VignetteTestScene());
 	SceneManager::Get()->AddGameScene(new LavaTestScene());
 	SceneManager::Get()->AddGameScene(new WaterTestScene());
 	SceneManager::Get()->AddGameScene(new GrassTestScene());

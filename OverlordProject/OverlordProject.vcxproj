@@ -97,10 +97,12 @@
     <ClCompile Include="Misc\EndScreen.cpp" />
     <ClCompile Include="Misc\LevelExtractor.cpp" />
     <ClCompile Include="Misc\PauseMenu.cpp" />
+    <ClCompile Include="Materials\Post\PostVignette.cpp" />
     <ClCompile Include="Scenes\Battle City 3D\LevelSelectScene.cpp" />
     <ClCompile Include="Scenes\Battle City 3D\MainMenu.cpp" />
     <ClCompile Include="Prefabs\ScreenButton.cpp" />
     <ClCompile Include="Prefabs\TankIcon.cpp" />
+    <ClCompile Include="Scenes\OwnTestScenes\VignetteTestScene.cpp" />
     <ClCompile Include="WorldBuilder\EnvironmentBuilder.cpp" />
     <ClCompile Include="Materials\LavaMaterial.cpp" />
     <ClCompile Include="Scenes\OwnTestScenes\LavaTestScene.cpp" />
@@ -182,10 +184,12 @@
     <ClInclude Include="Misc\EndScreen.h" />
     <ClInclude Include="Misc\LevelExtractor.h" />
     <ClInclude Include="Misc\PauseMenu.h" />
+    <ClInclude Include="Materials\Post\PostVignette.h" />
     <ClInclude Include="Scenes\Battle City 3D\LevelSelectScene.h" />
     <ClInclude Include="Scenes\Battle City 3D\MainMenu.h" />
     <ClInclude Include="Prefabs\ScreenButton.h" />
     <ClInclude Include="Prefabs\TankIcon.h" />
+    <ClInclude Include="Scenes\OwnTestScenes\VignetteTestScene.h" />
     <ClInclude Include="WorldBuilder\EnvironmentBuilder.h" />
     <ClInclude Include="Materials\LavaMaterial.h" />
     <ClInclude Include="Scenes\OwnTestScenes\LavaTestScene.h" />

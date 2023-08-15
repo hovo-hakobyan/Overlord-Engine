@@ -11,6 +11,7 @@
 #include "Misc/PauseMenu.h"
 #include "Misc/EndScreen.h"
 #include "Misc/hud.h"
+#include "Materials/Post/PostVignette.h"
 
 
 BattleCityScene::BattleCityScene(const std::string& path):
@@ -92,15 +93,22 @@ void BattleCityScene::Initialize()
 	m_pEndScreen = new EndScreen();
 	AddChild(m_pEndScreen);
 
-	//Hud
-	m_pHud = new Hud();
-	AddChild(m_pHud);
+	
 
 	//Sound
 	const auto pSoundManager = SoundManager::Get()->GetSystem();
 	pSoundManager->createStream("Resources/Sounds/TankIdle.wav", FMOD_2D | FMOD_LOOP_NORMAL, nullptr, &m_pAmbient);
-	m_pChannel->setVolume(0.4f);
+	m_pChannel->setVolume(0.2f);
 	pSoundManager->playSound(m_pAmbient, nullptr, false, &m_pChannel);
+
+	
+	//Post processing
+	m_pPostVignette = MaterialManager::Get()->CreateMaterial<PostVignette>();
+	AddPostProcessingEffect(m_pPostVignette);
+
+	//Hud
+	m_pHud = new Hud();
+	AddChild(m_pHud);
 }
 
 void BattleCityScene::Update()

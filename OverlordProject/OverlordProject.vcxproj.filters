@@ -67,6 +67,8 @@
     <ClCompile Include="Misc\EndScreen.cpp" />
     <ClCompile Include="Prefabs\TankIcon.cpp" />
     <ClCompile Include="Misc\hud.cpp" />
+    <ClCompile Include="Scenes\OwnTestScenes\VignetteTestScene.cpp" />
+    <ClCompile Include="Materials\Post\PostVignette.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h" />
@@ -155,5 +157,7 @@
     <ClInclude Include="Misc\EndScreen.h" />
     <ClInclude Include="Prefabs\TankIcon.h" />
     <ClInclude Include="Misc\hud.h" />
+    <ClInclude Include="Scenes\OwnTestScenes\VignetteTestScene.h" />
+    <ClInclude Include="Materials\Post\PostVignette.h" />
   </ItemGroup>
 </Project>

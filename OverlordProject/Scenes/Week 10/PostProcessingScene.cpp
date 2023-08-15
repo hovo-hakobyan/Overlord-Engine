@@ -76,4 +76,5 @@ void PostProcessingScene::OnGUI()
 	isEnabled = m_pPostBlur->IsEnabled();
 	ImGui::Checkbox("Blur PP", &isEnabled);
 	m_pPostBlur->SetIsEnabled(isEnabled);
+	
 }
