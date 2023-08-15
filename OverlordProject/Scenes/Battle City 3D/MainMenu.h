@@ -1,6 +1,7 @@
 #pragma once
 class WorldButton;
 class DiffuseMaterial;
+class FlagDAE;
 class MainMenu final : public GameScene
 {
 public:
@@ -51,6 +52,8 @@ private:
 	ModelComponent* m_pCreditsModel;
 	DiffuseMaterial* m_pCreditsMat;
 
+	FlagDAE* m_pDAEFlag{};
+	FlagDAE* m_pDAEFlag1{};
 };
 
 

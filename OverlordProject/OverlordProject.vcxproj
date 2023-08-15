@@ -93,6 +93,7 @@
     <PostBuildEvent />
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Prefabs\FlagDAE.cpp" />
     <ClCompile Include="Misc\hud.cpp" />
     <ClCompile Include="Misc\EndScreen.cpp" />
     <ClCompile Include="Misc\LevelExtractor.cpp" />
@@ -180,6 +181,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Prefabs\FlagDAE.h" />
     <ClInclude Include="Misc\hud.h" />
     <ClInclude Include="Misc\EndScreen.h" />
     <ClInclude Include="Misc\LevelExtractor.h" />

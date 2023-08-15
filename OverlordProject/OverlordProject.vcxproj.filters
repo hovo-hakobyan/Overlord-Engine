@@ -69,6 +69,7 @@
     <ClCompile Include="Misc\hud.cpp" />
     <ClCompile Include="Scenes\OwnTestScenes\VignetteTestScene.cpp" />
     <ClCompile Include="Materials\Post\PostVignette.cpp" />
+    <ClCompile Include="Prefabs\FlagDAE.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainGame.h" />
@@ -159,5 +160,6 @@
     <ClInclude Include="Misc\hud.h" />
     <ClInclude Include="Scenes\OwnTestScenes\VignetteTestScene.h" />
     <ClInclude Include="Materials\Post\PostVignette.h" />
+    <ClInclude Include="Prefabs\FlagDAE.h" />
   </ItemGroup>
 </Project>

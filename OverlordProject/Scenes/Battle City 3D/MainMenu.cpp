@@ -7,6 +7,7 @@
 #include "Prefabs/CubePrefab.h"
 #include "WorldBuilder/EnvironmentBuilder.h"
 #include "Materials/DiffuseMaterial.h"
+#include "Prefabs/FlagDAE.h"
 
 MainMenu::MainMenu():
 	GameScene(L"MainMenu")
@@ -28,7 +29,7 @@ void MainMenu::Initialize()
 	const auto pDefaultMaterial = PxGetPhysics().createMaterial(0.5f, 0.5f, 0.5f);
 	GameSceneExt::CreatePhysXGroundPlane(*this);
 
-	//LockCamera();
+	LockCamera();
 
 	m_pPlayButton = new WorldButton("Textures/Menu/play.png");
 	AddChild(m_pPlayButton);
@@ -122,7 +123,13 @@ void MainMenu::Initialize()
 	pCreditsTransfer->Scale(0.05f);
 	pCreditsTransfer->Translate(center.x-2.f, center.y, center.z + 5.0f);
 
+	m_pDAEFlag = new FlagDAE{};
+	AddChild(m_pDAEFlag);
+	m_pDAEFlag->GetTransform()->Translate(center.x + 2.0f, center.y, center.z + 7.8f);
 
+	m_pDAEFlag1 = new FlagDAE{};
+	AddChild(m_pDAEFlag1);
+	m_pDAEFlag1->GetTransform()->Translate(center.x - 5.0f, center.y, center.z + 7.8f);
 }
 
 
