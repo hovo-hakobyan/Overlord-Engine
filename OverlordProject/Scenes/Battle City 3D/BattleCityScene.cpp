@@ -113,6 +113,7 @@ void BattleCityScene::Initialize()
 
 void BattleCityScene::Update()
 {
+
 	const auto input = m_SceneContext.pInput;
 	if (input->IsActionTriggered(InputIds::Pause))
 	{
