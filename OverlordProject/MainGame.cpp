@@ -186,7 +186,7 @@ void MainGame::Initialize()
 
 }
 
-LRESULT MainGame::WindowProcedureHook(HWND /*hWnd*/, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT MainGame::WindowProcedureHook(HWND /*hWnd*/, UINT message, WPARAM, LPARAM lParam)
 {
 
 	if(message == WM_KEYUP)
