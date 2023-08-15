@@ -76,7 +76,7 @@ void Shell::Initialize(const SceneContext&)
 	pSoundManager->createStream("Resources/Sounds/BrickWallDestruction.wav", FMOD_DEFAULT, nullptr, &m_pBrickSound);
 	pSoundManager->createStream("Resources/Sounds/EnemyDeath.wav", FMOD_DEFAULT, nullptr, &m_pEnemyDeathSound);
 	pSoundManager->createStream("Resources/Sounds/FriendlyDeath.wav", FMOD_DEFAULT, nullptr, &m_pFriendlyDeathSound);
-	m_pChannelBrick->setVolume(1.f);
+	m_pChannelBrick->setVolume(2.f);
 	m_pChannelEnemyDeath->setVolume(1.f);
 	m_pChannelFriendlyDeath->setVolume(1.f);
 

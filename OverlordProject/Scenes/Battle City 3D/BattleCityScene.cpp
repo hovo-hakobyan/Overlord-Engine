@@ -96,6 +96,11 @@ void BattleCityScene::Initialize()
 	m_pHud = new Hud();
 	AddChild(m_pHud);
 
+	//Sound
+	const auto pSoundManager = SoundManager::Get()->GetSystem();
+	pSoundManager->createStream("Resources/Sounds/TankIdle.wav", FMOD_2D | FMOD_LOOP_NORMAL, nullptr, &m_pAmbient);
+	m_pChannel->setVolume(0.4f);
+	pSoundManager->playSound(m_pAmbient, nullptr, false, &m_pChannel);
 }
 
 void BattleCityScene::Update()
@@ -108,11 +113,13 @@ void BattleCityScene::Update()
 		if (m_IsPaused)
 		{
 			m_pPauseMenu->Show();
+			SoundManager::Get()->GetSystem()->playSound(m_pAmbient, nullptr, true, &m_pChannel);
 			
 		}
 		else
 		{
 			m_pPauseMenu->Hide();
+			SoundManager::Get()->GetSystem()->playSound(m_pAmbient, nullptr, false, &m_pChannel);
 		}
 	}
 
@@ -127,9 +134,11 @@ void BattleCityScene::Update()
 		break;
 	case CurrentGameState::Victory:
 		m_pEndScreen->ShowVictory();
+		SoundManager::Get()->GetSystem()->playSound(m_pAmbient, nullptr, true, &m_pChannel);
 		break;
 	case CurrentGameState::Defeat:
 		m_pEndScreen->ShowDefeat();
+		SoundManager::Get()->GetSystem()->playSound(m_pAmbient, nullptr, true, &m_pChannel);
 		break;
 	default:
 		break;

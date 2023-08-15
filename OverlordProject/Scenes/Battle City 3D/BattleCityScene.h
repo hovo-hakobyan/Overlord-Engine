@@ -60,5 +60,8 @@ private:
 	Hud* m_pHud{};
 
 	void LockCamera();
+
+	FMOD::Sound* m_pAmbient{};
+	FMOD::Channel* m_pChannel{ nullptr };
 };
 

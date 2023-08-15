@@ -89,9 +89,9 @@ void PlayerTank::Initialize(const SceneContext& sceneContext)
 	//Sound
 	const auto pSoundManager = SoundManager::Get()->GetSystem();
 	pSoundManager->createStream("Resources/Sounds/Shooting.wav", FMOD_DEFAULT, nullptr, &m_pShootingSound);
-	pSoundManager->createStream("Resources/Sounds/TankMoving.wav", FMOD_2D | FMOD_LOOP_NORMAL, nullptr, &m_pShootingSound);
+	pSoundManager->createStream("Resources/Sounds/TankMoving.wav", FMOD_2D | FMOD_LOOP_NORMAL, nullptr, &m_pMovingSound);
 	m_pShootingChannel->setVolume(1.f);
-	m_pMovingChannel->setVolume(1.f);
+	m_pMovingChannel->setVolume(0.4f);
 }
 
 void PlayerTank::Update(const SceneContext& sceneContext)
@@ -153,15 +153,26 @@ void PlayerTank::Update(const SceneContext& sceneContext)
 		
 	}
 
-	if (move.x != 0 || move.y !=0)
+	if (move.x == 0 && move.y ==0)
+	{
+		if (m_IsPlayingMovingSound)
+		{
+			m_IsPlayingMovingSound = false;
+			SoundManager::Get()->GetSystem()->playSound(m_pMovingSound, nullptr, true, &m_pMovingChannel);
+		}
+		
+	}
+	else
 	{
 		if (!m_IsPlayingMovingSound)
 		{
 			SoundManager::Get()->GetSystem()->playSound(m_pMovingSound, nullptr, false, &m_pMovingChannel);
 			m_IsPlayingMovingSound = true;
 		}
-		
+
 	}
+
+	
 
 	float deltaTime = sceneContext.pGameTime->GetElapsed();
 	float currentAcceleration = m_MoveAcceleration * deltaTime;
@@ -207,11 +218,6 @@ void PlayerTank::Update(const SceneContext& sceneContext)
 			pTransform->Rotate(0.0f, 0.0f, 0.0f, true);
 			m_pBoxShape->setLocalPose(PxTransform{ PxQuat{3.14159f,PxVec3{1,0,0}} });
 		}
-	}
-	else
-	{
-		m_IsPlayingMovingSound = false;
-		SoundManager::Get()->GetSystem()->playSound(m_pMovingSound, nullptr, true, &m_pMovingChannel);
 	}
 	
 	m_CurrentShootCooldown += deltaTime;
