@@ -181,11 +181,7 @@ void GameScene::RootDraw()
 		pChild->RootDraw(m_SceneContext);
 	}
 
-	//SpriteRenderer Draw
-	SpriteRenderer::Get()->Draw(m_SceneContext);
-
-	//TextRenderer Draw
-	TextRenderer::Get()->Draw(m_SceneContext);
+	
 
 	//Object-Scene Post-Draw
 	PostDraw();
@@ -244,6 +240,12 @@ void GameScene::RootDraw()
 
 		//Done!
 	}
+
+	//SpriteRenderer Draw
+	SpriteRenderer::Get()->Draw(m_SceneContext);
+
+	//TextRenderer Draw
+	TextRenderer::Get()->Draw(m_SceneContext);
 #pragma endregion
 }
 
