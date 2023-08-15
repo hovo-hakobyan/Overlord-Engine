@@ -6,6 +6,7 @@
 #include "Prefabs/PlayerTank.h"
 #include "Prefabs/CubePrefab.h"
 #include "WorldBuilder/EnvironmentBuilder.h"
+#include "Materials/DiffuseMaterial.h"
 
 MainMenu::MainMenu():
 	GameScene(L"MainMenu")
@@ -27,7 +28,7 @@ void MainMenu::Initialize()
 	const auto pDefaultMaterial = PxGetPhysics().createMaterial(0.5f, 0.5f, 0.5f);
 	GameSceneExt::CreatePhysXGroundPlane(*this);
 
-	LockCamera();
+	//LockCamera();
 
 	m_pPlayButton = new WorldButton("Textures/Menu/play.png");
 	AddChild(m_pPlayButton);
@@ -108,6 +109,20 @@ void MainMenu::Initialize()
 
 	m_SceneContext.pLights->SetDirectionalLight(XMFLOAT3{ 15.897f,5.0f,10.793f }, XMFLOAT3{ -1.f,-0.8f,0.5f });
 	
+	//Credits
+	auto creditsGameObj = new GameObject();
+	AddChild(creditsGameObj);
+	m_pCreditsModel = new ModelComponent(L"Meshes/credits.ovm");
+	m_pCreditsMat = MaterialManager::Get()->CreateMaterial<DiffuseMaterial>();
+	m_pCreditsMat->SetDiffuseTexture(L"Textures/wall/solidWallAlbedo.tif");
+	m_pCreditsModel->SetMaterial(m_pCreditsMat);
+	creditsGameObj->AddComponent(m_pCreditsModel);
+	auto pCreditsTransfer = creditsGameObj->GetTransform();
+	pCreditsTransfer->Rotate(90.0f, 0.0f, 0.0);
+	pCreditsTransfer->Scale(0.05f);
+	pCreditsTransfer->Translate(center.x-2.f, center.y, center.z + 5.0f);
+
+
 }
 
 

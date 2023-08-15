@@ -1,5 +1,6 @@
 #pragma once
 class WorldButton;
+class DiffuseMaterial;
 class MainMenu final : public GameScene
 {
 public:
@@ -47,7 +48,9 @@ private:
 	XMFLOAT2 m_HudTextPos{};
 	XMFLOAT4 m_HudTextColor{};
 
-	
+	ModelComponent* m_pCreditsModel;
+	DiffuseMaterial* m_pCreditsMat;
+
 };
 
 
