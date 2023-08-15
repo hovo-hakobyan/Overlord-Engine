@@ -32,10 +32,6 @@ void MainMenu::Initialize()
 	m_pPlayButton = new WorldButton("Textures/Menu/play.png");
 	AddChild(m_pPlayButton);
 
-
-	m_pWorldBuilderButton = new WorldButton("Textures/Menu/LevelBuilder.png");
-	AddChild(m_pWorldBuilderButton);
-
 	m_pExitButton = new WorldButton("Textures/Menu/exit.png");
 	AddChild(m_pExitButton);
 
@@ -46,17 +42,13 @@ void MainMenu::Initialize()
 
 	auto center = m_pLevelBuilder->GetLevelCenter();
 	center.y -= 0.1f;
-	center.x -= 4.5f;
+	center.x -= 2.5f;
 
 	auto transform = m_pPlayButton->GetTransform();
 	transform->Translate(center);
 	transform->Rotate(0, 90, 0);
 
-	center.x += 4.5f;
-	transform = m_pWorldBuilderButton->GetTransform();
-	transform->Translate(center);
-	transform->Rotate(0, 90, 0);
-
+	
 	center.x += 4.5f;
 	transform = m_pExitButton->GetTransform();
 	transform->Translate(center);
@@ -88,22 +80,6 @@ void MainMenu::Initialize()
 		}
 	);
 
-	m_pWorldBuilderButton->SetOnTriggerCallBack([=](GameObject*, GameObject*, PxTriggerAction triggerAction)
-		{
-			if (triggerAction == PxTriggerAction::ENTER)
-			{
-				//Logic when tank is on WorldBuilder button
-				m_ShouldCountDown = true;
-				m_CurrentButtonLoadTime = m_ButtonLoadMaxTime;
-				m_MenuAction = MenuActions::WorldBuilder;
-			}
-			if (triggerAction == PxTriggerAction::LEAVE)
-			{
-				m_ShouldCountDown = false;
-				m_MenuAction = MenuActions::None;
-			}
-		}
-	);
 
 	m_pExitButton->SetOnTriggerCallBack([=](GameObject*, GameObject*, PxTriggerAction triggerAction)
 		{
@@ -157,10 +133,6 @@ void MainMenu::Update()
 		Logger::LogInfo(L"Opening Play");
 		m_pPlayerTank->Reset();
 		SceneManager::Get()->SetActiveGameScene(L"LevelSelectScene");
-		break;
-	case MainMenu::MenuActions::WorldBuilder:
-		Logger::LogInfo(L"Opening Builder");
-		m_pPlayerTank->Reset();
 		break;
 	case MainMenu::MenuActions::Exit:
 		OverlordGame::SHOULD_EXIT = true;

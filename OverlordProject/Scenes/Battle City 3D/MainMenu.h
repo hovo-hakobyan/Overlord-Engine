@@ -21,11 +21,10 @@ protected:
 private:	
 	enum class MenuActions
 	{
-		Play,WorldBuilder,Exit, None
+		Play,Exit, None
 	};
 
 	WorldButton* m_pPlayButton{};
-	WorldButton* m_pWorldBuilderButton{};
 	WorldButton* m_pExitButton{};
 
 	class LevelBuilder* m_pLevelBuilder{};
