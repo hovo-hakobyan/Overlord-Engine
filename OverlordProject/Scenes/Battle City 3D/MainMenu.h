@@ -17,6 +17,8 @@ protected:
 	void Draw() override;
 	void OnGUI() override;
 	void PostDraw() override;
+	void OnSceneDeactivated() override;
+	void OnSceneActivated() override;
 
 private:	
 	enum class MenuActions

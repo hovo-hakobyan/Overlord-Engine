@@ -155,6 +155,22 @@ void MainMenu::PostDraw()
 {
 }
 
+void MainMenu::OnSceneDeactivated()
+{
+	if (m_pPlayerTank)
+	{
+		m_pPlayerTank->DisableMovement();
+	}
+}
+
+void MainMenu::OnSceneActivated()
+{
+	if (m_pPlayerTank)
+	{
+		m_pPlayerTank->EnableMovement();
+	}
+}
+
 
 
 void MainMenu::LockCamera()

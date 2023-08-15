@@ -27,6 +27,22 @@ void PlayerTank::Reset()
 
 }
 
+void PlayerTank::DisableMovement()
+{
+	m_ShouldMove = false;
+
+	if (m_IsPlayingMovingSound)
+	{
+		m_IsPlayingMovingSound = false;
+		SoundManager::Get()->GetSystem()->playSound(m_pMovingSound, nullptr, true, &m_pMovingChannel);
+	}
+}
+
+void PlayerTank::EnableMovement()
+{
+	m_ShouldMove = true;
+}
+
 void PlayerTank::Initialize(const SceneContext& sceneContext)
 {
 	m_pGameScene = static_cast<BattleCityScene*>(GetScene());
@@ -130,29 +146,29 @@ void PlayerTank::Update(const SceneContext& sceneContext)
 	XMFLOAT2 move = { 0.0f,0.0f };
 
 	auto pTransform = GetTransform();
-	if (sceneContext.pInput->IsActionTriggered(MoveForward))
-	{
-		move.y = 1;
-		
 
-	}
-	else if (sceneContext.pInput->IsActionTriggered(MoveBackward))
+	if (m_ShouldMove)
 	{
-		move.y = -1;
-	}
+		if (sceneContext.pInput->IsActionTriggered(MoveForward))
+		{
+			move.y = 1;
 
-	if (sceneContext.pInput->IsActionTriggered(MoveRight))
-	{
-		move.x = 1;
-		
 
-	}
-	else if (sceneContext.pInput->IsActionTriggered(MoveLeft))
-	{
-		move.x = -1;
-		
-	}
+		}
+		else if (sceneContext.pInput->IsActionTriggered(MoveBackward))
+		{
+			move.y = -1;
+		}
 
+		if (sceneContext.pInput->IsActionTriggered(MoveRight))
+		{
+			move.x = 1;
+		}
+		else if (sceneContext.pInput->IsActionTriggered(MoveLeft))
+		{
+			move.x = -1;
+		}
+	}
 	if (move.x == 0 && move.y ==0)
 	{
 		if (m_IsPlayingMovingSound)

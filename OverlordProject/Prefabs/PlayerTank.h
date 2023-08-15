@@ -12,6 +12,8 @@ public:
 	PlayerTank& operator=(PlayerTank&& other) = delete;
 
 	void Reset();
+	void DisableMovement();
+	void EnableMovement();
 protected:
 	virtual void Initialize(const SceneContext& sceneContext) override;
 	virtual void Update(const SceneContext&) override;
@@ -29,5 +31,6 @@ private:
 	FMOD::Channel* m_pMovingChannel{ nullptr };
 
 	bool m_IsPlayingMovingSound{};
+	bool m_ShouldMove{true};
 };
 

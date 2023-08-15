@@ -37,7 +37,7 @@ void LevelSelectScene::Initialize()
 	XMFLOAT3 playerStart{ 20.0f,0.0f,6.0f };
 	m_pPlayerTank = new PlayerTank(playerStart, XMFLOAT3{ 0.0f,0.5f,0.0f }, tankDesc);
 	AddChild(m_pPlayerTank);
-
+	
 	//Level
 	LevelBuilder::BuildSandbox(this, 10, 15, 3);
 	
@@ -167,6 +167,7 @@ void LevelSelectScene::Update()
 			m_pControlsSprite->GetTransform()->Translate(0, 0, 0.9f);
 			m_AreKeysShowing = true;
 			SoundManager::Get()->GetSystem()->playSound(m_pIntroSound, nullptr, false, &m_pChannel);
+			m_pPlayerTank->DisableMovement();
 		}
 		
 	}
@@ -194,7 +195,17 @@ void LevelSelectScene::Update()
 }
 void LevelSelectScene::OnSceneActivated()
 {
-
+	if (m_pPlayerTank)
+	{
+		m_pPlayerTank->EnableMovement();
+	}
+}
+void LevelSelectScene::OnSceneDeactivated()
+{
+	if (m_pPlayerTank)
+	{
+		m_pPlayerTank->DisableMovement();
+	}
 }
 void LevelSelectScene::LockCamera()
 {

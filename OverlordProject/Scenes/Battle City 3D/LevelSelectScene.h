@@ -15,6 +15,7 @@ protected:
 	void Initialize() override;
 	void Update() override;
 	void OnSceneActivated() override;
+	void OnSceneDeactivated() override;
 
 private:
 	class PlayerTank* m_pPlayerTank{};
