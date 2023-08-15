@@ -35,7 +35,7 @@ void BattleCityScene::Initialize()
 {
 	const auto pDefaultMaterial = PxGetPhysics().createMaterial(0.5f, 0.5f, 0.5f);
 	GameSceneExt::CreatePhysXGroundPlane(*this);
-	m_SceneContext.pLights->SetDirectionalLight(XMFLOAT3{ 6.897f,82.759f,13.793f }, XMFLOAT3{ -0.241f,-1.0f,-0.069f });
+	m_SceneContext.pLights->SetDirectionalLight(XMFLOAT3{ 15.897f,5.0f,10.793f }, XMFLOAT3{ -1.f,-0.8f,0.5f });
 
 	m_SceneContext.settings.drawGrid = false;
 	m_SceneContext.settings.drawPhysXDebug = false;
@@ -142,10 +142,12 @@ void BattleCityScene::Update()
 		break;
 	case CurrentGameState::Victory:
 		m_pEndScreen->ShowVictory();
+		m_pPlayerTank->DisableMovement();
 		SoundManager::Get()->GetSystem()->playSound(m_pAmbient, nullptr, true, &m_pChannel);
 		break;
 	case CurrentGameState::Defeat:
 		m_pEndScreen->ShowDefeat();
+		m_pPlayerTank->DisableMovement();
 		SoundManager::Get()->GetSystem()->playSound(m_pAmbient, nullptr, true, &m_pChannel);
 		break;
 	default:
@@ -189,7 +191,7 @@ void BattleCityScene::OnSceneDeactivated()
 
 	auto pTransform = m_pGrowingLava->GetTransform();
 	pTransform->Scale(0.08f,pTransform->GetScale().y,0.08f);
-
+	SoundManager::Get()->GetSystem()->playSound(m_pAmbient, nullptr, true, &m_pChannel);
 	SceneManager::Get()->RemoveGameScene(this,true);
 }
 

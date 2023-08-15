@@ -26,7 +26,7 @@ void LevelSelectScene::Initialize()
 
 	const auto pDefaultMaterial = PxGetPhysics().createMaterial(0.5f, 0.5f, 0.5f);
 	GameSceneExt::CreatePhysXGroundPlane(*this);
-	m_SceneContext.pLights->SetDirectionalLight(XMFLOAT3{ 6.897f,82.759f,13.793f }, XMFLOAT3{ -0.241f,-1.0f,-0.069f });
+	m_SceneContext.pLights->SetDirectionalLight(XMFLOAT3{ 15.897f,5.0f,10.793f }, XMFLOAT3{ -1.f,-0.8f,0.5f });
 
 
 	LockCamera();
