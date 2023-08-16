@@ -27,7 +27,7 @@ private:
 	BattleCityScene* m_pGameScene{};
 	ModelComponent* m_pModelComponent{};
 
-	float m_Speed{ 50.0f };
+	float m_Speed{ 30.0f };
 	bool m_IsEnabled = true;
 	bool m_IsDead = false;
 

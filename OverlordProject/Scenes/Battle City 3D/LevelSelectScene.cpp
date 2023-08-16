@@ -34,6 +34,7 @@ void LevelSelectScene::Initialize()
 	//Tank
 	TankDesc tankDesc{ pDefaultMaterial };
 	tankDesc.isCombat = false;
+	tankDesc.maxMoveSpeed = 6.0f;
 	XMFLOAT3 playerStart{ 20.0f,0.0f,6.0f };
 	m_pPlayerTank = new PlayerTank(playerStart, XMFLOAT3{ 0.0f,0.5f,0.0f }, tankDesc);
 	AddChild(m_pPlayerTank);

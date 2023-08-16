@@ -59,6 +59,7 @@ void MainMenu::Initialize()
 	//Tank
 	TankDesc tankDesc{ pDefaultMaterial };
 	tankDesc.isCombat = false;
+	tankDesc.maxMoveSpeed = 6.0f;
 	m_PlayerStart = m_pLevelBuilder->GetPlayerStartHatch()->GetTransform()->GetPosition();
 	m_pPlayerTank = new PlayerTank(m_PlayerStart, XMFLOAT3{ 0.0f,0.5f,0.0f }, tankDesc);
 	AddChild(m_pPlayerTank);

@@ -15,7 +15,7 @@ struct TankDesc
 		controller.material = pMaterial;
 	}
 
-	float maxMoveSpeed{ 5.f };
+	float maxMoveSpeed{ 3.f };
 	float moveAccelerationTime{ 0.3f };
 	PxBoxControllerDesc controller{};
 	bool isCombat{ true };
