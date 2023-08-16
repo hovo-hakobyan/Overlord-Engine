@@ -193,7 +193,9 @@ void BattleCityScene::OnSceneDeactivated()
 	auto pTransform = m_pGrowingLava->GetTransform();
 	pTransform->Scale(0.08f,pTransform->GetScale().y,0.08f);
 	SoundManager::Get()->GetSystem()->playSound(m_pAmbient, nullptr, true, &m_pChannel);
+	BaseTank::EnemyCounter = 20;
 	SceneManager::Get()->RemoveGameScene(this,true);
+
 }
 
 void BattleCityScene::LockCamera()
